@@ -1,0 +1,32 @@
+/*----------------------------------------*\
+  ELEMENTS
+\*----------------------------------------*/
+
+html,
+body {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+html {
+  @apply overflow-y-scroll;
+  @apply font-sans;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: rgb(154, 139, 20);
+
+  &:hover,
+  &:focus {
+    @apply text-tertiary-yellow;
+  }
+}
+
+.link--download {
+  @apply inline-block ;
+  @apply text-lg;
+}
+.link--download a {
+
+}

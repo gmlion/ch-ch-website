@@ -1,0 +1,71 @@
+.left-content p,
+.components p {
+  & a {
+    text-decoration-thickness: 2px;
+    text-decoration-color: #9a8b14;
+  }
+
+  & a[target='_blank'] {
+    @apply items-center;
+  }
+
+  /*& a[target='_blank']:after {
+    content: '';
+    display: block;
+    width: 1.55em;
+    height: 1.55em;
+  }*/
+}
+
+.components p {
+  & a[target='_blank'] {
+    background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTEwMjAtMjQxMkg1ODB2NTEyMGgtMTYwMHoiLz48cGF0aCBkPSJNMTQuMDY3IDQuNzZsMTEuMTMuNDQyLjMyMyAxMS4wNjUtMi4yOTMuMDY4LS4yMTMtNy4zMTRMNS45NDggMjYuMDg2bC0xLjYyMS0xLjYyMkwyMS40NDMgNy4zNDhsLTcuNDY3LS4yOTd6IiBmaWxsPSIjMDEyRTVBIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L2c+PC9zdmc+Cg==');
+    background-position: center right;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+  }
+}
+
+.left-content p {
+  & a[target='_blank'] {
+    background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTEwMjAtMjQxMkg1ODB2NTEyMGgtMTYwMHoiLz48cGF0aCBkPSJNMTQuMDY3IDQuNzZsMTEuMTMuNDQyLjMyMyAxMS4wNjUtMi4yOTMuMDY4LS4yMTMtNy4zMTRMNS45NDggMjYuMDg2bC0xLjYyMS0xLjYyMkwyMS40NDMgNy4zNDhsLTcuNDY3LS4yOTd6IiBmaWxsPSIjOUE4QjE0IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L2c+PC9zdmc+Cg==');
+    background-position: center right;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+  }
+}
+
+.left-content .download-icon {
+  @apply text-primary-yellow;
+}
+
+.bg-primary-red {
+  & a {
+    text-decoration-thickness: 2px;
+    text-decoration-color: white;
+  }
+
+  & .left-content p,
+  .components p {
+    & a[target='_blank'] {
+      background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTEwMjAtMjQxMkg1ODB2NTEyMGgtMTYwMHoiLz48cGF0aCBkPSJNMTQuMDY3IDQuNzZsMTEuMTMuNDQyLjMyMyAxMS4wNjUtMi4yOTMuMDY4LS4yMTMtNy4zMTRMNS45NDggMjYuMDg2bC0xLjYyMS0xLjYyMkwyMS40NDMgNy4zNDhsLTcuNDY3LS4yOTd6IiBmaWxsPSIjZmZmZmZmIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L2c+PC9zdmc+Cg==');
+      background-position: center right;
+      background-repeat: no-repeat;
+      padding-right: 30px;
+    }
+  }
+}
+
+.bg-primary-yellow {
+  & a {
+    text-decoration-thickness: 2px;
+    text-decoration-color: #012e5a;
+  }
+}
+
+a.anchor {
+  display: block;
+  position: relative;
+  top: -150px;
+  visibility: hidden;
+}

@@ -1,0 +1,23 @@
+/*----------------------------------------*\
+  accordion
+\*----------------------------------------*/
+
+.accordion {
+  @apply w-full;
+}
+
+.accordion-item {
+  @apply border-gray-50 border-b py-9;
+
+  &.accordion-item--first {
+    @apply border-t;
+  }
+
+  &.accordion-item--small {
+    @apply py-4;
+  }
+
+  &.accordion-item--no-border {
+    @apply border-0;
+  }
+}
