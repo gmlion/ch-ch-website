@@ -44,6 +44,10 @@ export default defineNuxtConfig({
     BASE_URL: process.env.BASE_URL,
     public: {
       searchUrl: process.env.API_URL_SEARCH,
+      i18n: {
+        // baseUrl: process.env.BASE_URL,
+        locales: {},
+      },
     },
   },
   modules: [

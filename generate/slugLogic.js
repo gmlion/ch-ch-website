@@ -1,16 +1,16 @@
 import { getIsoCodeFromLocale } from "@/utils/locale";
-import { buildUrlFromPublication } from "@/utils/url.ts";
+import { buildUrlFromPublication } from "@/utils/url";
 import { getAllPublications } from "@/utils/publication";
 import { makeNavigationPath, getFooterMenus } from "@/utils/url";
 import { makeSlug, electionSlugs } from "../utils/url";
+import makeFetch from "@/utils/makeFetch";
 
 /**
  * Fetch the menus from the API
  */
-const fetchMenus = async ({ $axios }) => {
-  console.log("fetching menus");
-  const menus = (await $axios.get("/menus")).data;
-
+const fetchMenus = async () => {
+  const response = await makeFetch().request("/menus");
+  const menus = await response.json();
   return menus;
 };
 
@@ -94,16 +94,14 @@ const deducePathDev = (menus, folder, isElection = false) => {
  * Load the publication data from the API.
  * This is used when using the site in the dev mode.
  */
-const loadPublicationData = async ({ route, $axios, app }, menus) => {
+const loadPublicationData = async (context, menus) => {
   // Load all publications
-  const allPublications = await getAllPublications($axios.get);
-
+  const allPublications = await getAllPublications();
   // Lets get the path without the language
-  const pathSlug = route.path.substring(4);
+  const pathSlug = context.ssrContext.url.substring(4);
   let documentId = 0;
   let stopRecursion = false;
-  const isElection = app.store.state.menu.isElection;
-
+  const isElection = context.ssrContext.store.state.menu.isElection;
   function crawlMenu(nodes, path) {
     if (stopRecursion) return;
 
@@ -124,7 +122,6 @@ const loadPublicationData = async ({ route, $axios, app }, menus) => {
   for (const menu of menus) {
     // Add whalen prefix based on language when splitting label.
     const slug = [];
-
     let language;
     if (isElection) {
       const labelSplit = menu.label.split("-");
@@ -213,9 +210,11 @@ const getPublicationInOtherLanguages = (
  * Fetch the publication data from the API
  */
 const loadDataFromAPI = async (context) => {
+  console.log("fetching data from API");
   const menus = await fetchMenus(context);
+
   const pubData = await loadPublicationData(context, menus);
-  const path = decodeURIComponent(context.route.path.substring(4));
+  const path = decodeURIComponent(context.ssrContext.url.substring(4));
   const isElection = context.app.store.state.menu.isElection;
 
   const menuPath = deducePathDev(menus, path, isElection);
@@ -246,7 +245,6 @@ const getPublicationData = async (context) => {
 };
 
 export default async (context) => {
-  console.log("monumental slug logic");
   const { currentPublication, allPublications, menuPath, menus } =
     await getPublicationData(context);
 

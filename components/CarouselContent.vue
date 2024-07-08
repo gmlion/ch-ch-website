@@ -62,7 +62,7 @@
 <script>
 import ContentComponentMixin from "@/components/ContentComponentMixin";
 // import { VPopover } from "v-tooltip";
-import { getPublicationById } from "@/utils/publication";
+import { getPublicationById } from "~/utils/publication";
 import { mapState } from "vuex";
 import { buildUrlFromPublication, getDocumentPath } from "../utils/url";
 import {

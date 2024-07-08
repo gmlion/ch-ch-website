@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import SearchableDropdown from '@/components/SearchableDropdown.vue'
-import { getAllPublications } from '@/utils/publication'
-import ContentBlockMixin from './ContentBlockMixin'
+import SearchableDropdown from "@/components/SearchableDropdown.vue";
+import { getAllPublications } from "~/utils/publication";
+import ContentBlockMixin from "./ContentBlockMixin";
 
 export default {
   components: { SearchableDropdown },
@@ -48,8 +48,8 @@ export default {
   async fetch() {
     try {
       const allPublications = await getAllPublications(this.$axios, {
-        contentTypes: 'commune',
-      })
+        contentTypes: "commune",
+      });
       const communes = allPublications
         .map((commune) => {
           return {
@@ -63,30 +63,30 @@ export default {
               phoneNumber: commune.metadata.phoneNumber,
               website: commune.metadata.website,
             },
-          }
+          };
         })
-        .reverse()
-      this.communes = communes
+        .reverse();
+      this.communes = communes;
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(err)
+      console.log(err);
     }
   },
   data() {
     return {
       selectedCommune: null,
       communes: [],
-    }
+    };
   },
   computed: {
     metadata() {
-      return this.selectedCommune.metadata
+      return this.selectedCommune.metadata;
     },
   },
   methods: {
     updateSelectedCommune(commune) {
-      this.selectedCommune = commune
+      this.selectedCommune = commune;
     },
   },
-}
+};
 </script>

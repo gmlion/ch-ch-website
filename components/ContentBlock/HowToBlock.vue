@@ -21,21 +21,21 @@
 </template>
 
 <script>
-import { getPublicationById } from '@/utils/publication'
-import ContentComponentMixin from '@/components/ContentComponentMixin'
-import ContentBlockMixin from './ContentBlockMixin'
+import { getPublicationById } from "~/utils/publication";
+import ContentComponentMixin from "@/components/ContentComponentMixin";
+import ContentBlockMixin from "./ContentBlockMixin";
 
 export default {
   mixins: [ContentBlockMixin, ContentComponentMixin],
-  inject: ['pageTitle'],
+  inject: ["pageTitle"],
   async fetch() {
     try {
       const id = parseInt(
         this.contentData?.content?.howto?.params?.teaser?.reference?.id
-      )
-      const publication = await getPublicationById(id, this.$axios)
-      this.howto = publication
-      this.howToStructuredData = this.getStructuredData()
+      );
+      const publication = await getPublicationById(id, this.$axios);
+      this.howto = publication;
+      this.howToStructuredData = this.getStructuredData();
     } catch (err) {}
   },
   data() {
@@ -45,196 +45,196 @@ export default {
       xDown: null,
       yDown: null,
       howToStructuredData: {},
-    }
+    };
   },
   computed: {
     headerData() {
-      return this.howto.content[0].containers.header
+      return this.howto.content[0].containers.header;
     },
     name() {
-      return this.getHeader('title')?.content?.title
+      return this.getHeader("title")?.content?.title;
     },
     description() {
-      return this.getHeader('p')?.content?.text
+      return this.getHeader("p")?.content?.text;
     },
     steps() {
-      return this.howto?.content?.[0].containers.steps || []
+      return this.howto?.content?.[0].containers.steps || [];
     },
     image() {
-      return this.getHeader('image')
+      return this.getHeader("image");
     },
   },
   mounted() {
-    this.$refs.howToBlock.addEventListener('touchstart', this.handleTouchStart)
-    this.$refs.howToBlock.addEventListener('touchmove', this.handleTouchMove)
+    this.$refs.howToBlock.addEventListener("touchstart", this.handleTouchStart);
+    this.$refs.howToBlock.addEventListener("touchmove", this.handleTouchMove);
   },
   methods: {
     getHeader(key) {
       return this.headerData.find((entry) => {
-        return entry.identifier.split('.').pop() === key
-      })
+        return entry.identifier.split(".").pop() === key;
+      });
     },
     nextStep() {
       if (this.currentStep === this.steps.length - 1) {
-        this.currentStep = 0
+        this.currentStep = 0;
       } else {
-        this.currentStep++
+        this.currentStep++;
       }
     },
     backStep() {
       if (this.currentStep === 0) {
-        this.currentStep = this.steps.length - 1
+        this.currentStep = this.steps.length - 1;
       } else {
-        this.currentStep--
+        this.currentStep--;
       }
     },
     getTextFromBlock(block) {
       // Just return text
       if (block?.content?.text) {
-        return block.content.text
+        return block.content.text;
       }
 
       // Build list html text
-      let text = ''
-      let closingTag = ''
+      let text = "";
+      let closingTag = "";
 
-      if (block.styles && block.styles['list-type'] === 'list--numbers') {
-        text = '<ol>'
-        closingTag = '</ol>'
+      if (block.styles && block.styles["list-type"] === "list--numbers") {
+        text = "<ol>";
+        closingTag = "</ol>";
       } else {
-        text = '<ul>'
-        closingTag = '</ul>'
+        text = "<ul>";
+        closingTag = "</ul>";
       }
 
       try {
         block.containers.list.forEach((listItem) => {
-          text += `<li>${listItem.content.text}</li>`
-        })
-        text += closingTag
+          text += `<li>${listItem.content.text}</li>`;
+        });
+        text += closingTag;
       } catch (err) {
-        const route = this.$router.fullPath
+        const route = this.$router.fullPath;
         // eslint-disable-next-line no-console
         console.warn(
           `There seems to be an incomplete how to block configuration in ${this.pageTitle()} / ${route}`,
           `error was ${err}`
-        )
+        );
       }
 
-      return text
+      return text;
     },
     getTouches(evt) {
-      return evt.touches || evt.originalEvent.touches
+      return evt.touches || evt.originalEvent.touches;
     },
     handleTouchStart(evt) {
-      const firstTouch = this.getTouches(evt)[0]
-      this.xDown = firstTouch.clientX
-      this.yDown = firstTouch.clientY
+      const firstTouch = this.getTouches(evt)[0];
+      this.xDown = firstTouch.clientX;
+      this.yDown = firstTouch.clientY;
     },
     handleTouchMove(evt) {
       if (!this.xDown || !this.yDown) {
-        return
+        return;
       }
 
-      const xUp = evt.touches[0].clientX
-      const yUp = evt.touches[0].clientY
+      const xUp = evt.touches[0].clientX;
+      const yUp = evt.touches[0].clientY;
 
-      const xDiff = this.xDown - xUp
-      const yDiff = this.yDown - yUp
+      const xDiff = this.xDown - xUp;
+      const yDiff = this.yDown - yUp;
 
-      const swipeDiff = 80
+      const swipeDiff = 80;
 
       if (Math.abs(xDiff) > Math.abs(yDiff)) {
         if (xDiff > swipeDiff) {
           // right swipe
-          this.nextStep()
-          this.xDown = null
-          this.yDown = null
+          this.nextStep();
+          this.xDown = null;
+          this.yDown = null;
         } else if (xDiff < -swipeDiff) {
           // left swipe
-          this.backStep()
-          this.xDown = null
-          this.yDown = null
+          this.backStep();
+          this.xDown = null;
+          this.yDown = null;
         }
       }
     },
     getStructuredData() {
-      const steps = []
-      if (!this.howto) return {}
+      const steps = [];
+      if (!this.howto) return {};
       this.steps.forEach((step) => {
         const stepImage = step.containers.step.find((step) => {
-          return step.identifier.split('.').pop() === 'image'
-        })?.content.image
+          return step.identifier.split(".").pop() === "image";
+        })?.content.image;
         const stepTitle = step.containers.step.find((step) => {
-          return step.identifier.split('.').pop() === 'title'
-        })?.content.title
+          return step.identifier.split(".").pop() === "title";
+        })?.content.title;
 
         const texts = step.containers.step
           .filter((step) => {
-            const element = step.identifier.split('.').pop()
-            return element === 'p' || element === 'list'
+            const element = step.identifier.split(".").pop();
+            return element === "p" || element === "list";
           })
-          .map((block) => this.getTextFromBlock(block))
+          .map((block) => this.getTextFromBlock(block));
 
         const stepJsonLd = {
-          '@type': 'HowToStep',
-          text: texts.join(' '),
-        }
+          "@type": "HowToStep",
+          text: texts.join(" "),
+        };
 
         if (stepTitle) {
-          stepJsonLd.name = stepTitle
+          stepJsonLd.name = stepTitle;
         }
 
         if (stepImage) {
           stepJsonLd.image = {
-            '@type': 'ImageObject',
+            "@type": "ImageObject",
             url: stepImage.originalUrl,
             height: stepImage.height,
             width: stepImage.width,
-          }
+          };
         }
 
-        steps.push(stepJsonLd)
-      })
+        steps.push(stepJsonLd);
+      });
 
       const jsonld = {
-        '@context': 'http://schema.org',
-        '@type': 'HowTo',
+        "@context": "http://schema.org",
+        "@type": "HowTo",
         name: this.name,
         step: steps,
-      }
+      };
       if (this.description) {
-        jsonld.description = this.description
+        jsonld.description = this.description;
       }
       if (this.image) {
         if (!this.image.content) {
-          const path = this.$route.fullPath
+          const path = this.$route.fullPath;
           // eslint-disable-next-line no-console
           console.warn(
             `There's no image specified in the HowTo Block of ${this.pageTitle()} / ${path}`
-          )
+          );
         } else {
-          const imageContent = this.image.content.image
+          const imageContent = this.image.content.image;
           jsonld.image = {
-            '@type': 'ImageObject',
+            "@type": "ImageObject",
             url: imageContent.originalUrl,
             height: imageContent.height,
             width: imageContent.width,
-          }
+          };
         }
       }
-      return jsonld
+      return jsonld;
     },
   },
   head() {
     return {
-      __dangerouslyDisableSanitizers: ['script'],
+      __dangerouslyDisableSanitizers: ["script"],
       script: [
         {
           innerHTML: JSON.stringify(this.howToStructuredData),
-          type: 'application/ld+json',
+          type: "application/ld+json",
         },
       ],
-    }
+    };
   },
-}
+};
 </script>

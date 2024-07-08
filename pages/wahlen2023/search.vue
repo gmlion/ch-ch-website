@@ -39,7 +39,7 @@
 <script>
 import SearchInput from "@/components/SearchInput.vue";
 import AllTopicLink from "@/components/AllTopicLink.vue";
-import { getAllPublications } from "@/utils/publication";
+import { getAllPublications } from "~/utils/publication";
 import { mapState } from "vuex";
 import {
   buildUrlFromPath,
