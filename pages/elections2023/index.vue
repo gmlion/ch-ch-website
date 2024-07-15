@@ -2,4 +2,4 @@
 const route = useRoute();
 console.log(route.fullPath);
 </script>
-<template>Slug</template>
+<template>Index {{ route.fullPath }}</template>

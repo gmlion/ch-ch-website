@@ -1,18 +1,9 @@
 import { getIsoCodeFromLocale } from "@/utils/locale";
 import { buildUrlFromPublication } from "@/utils/url";
-import { getAllPublications } from "@/utils/publication";
+import { getAllPublications } from "@/generate/store/publicationStore";
 import { makeNavigationPath, getFooterMenus } from "@/utils/url";
 import { makeSlug, electionSlugs } from "../utils/url";
-import makeFetch from "@/utils/makeFetch";
-
-/**
- * Fetch the menus from the API
- */
-const fetchMenus = async () => {
-  const response = await makeFetch().request("/menus");
-  const menus = await response.json();
-  return menus;
-};
+import {useMenuStore} from "@/generate/store/menuStore";
 
 /**
  * Extract a path from the menus
@@ -34,7 +25,7 @@ const deducePath = (publication, menus, isElection = false) => {
       } else {
         // deliberately compare numbers with strings here
         // eslint-disable-next-line
-        if (entry.documentId == publication.systemdata.documentId) {
+        if (entry.documentId === publication.systemdata.documentId) {
           // we found an entry. let's use that
           stopRecursion = true;
           return (menuPath = path.concat([entry]));
@@ -94,23 +85,28 @@ const deducePathDev = (menus, folder, isElection = false) => {
  * Load the publication data from the API.
  * This is used when using the site in the dev mode.
  */
-const loadPublicationData = async (context, menus) => {
+const loadPublicationData = async (context, menus, url) => {
   // Load all publications
   const allPublications = await getAllPublications();
+
   // Lets get the path without the language
-  const pathSlug = context.ssrContext.url.substring(4);
+  const pathSlug = url.substring(4);
   let documentId = 0;
   let stopRecursion = false;
-  const isElection = context.ssrContext.store.state.menu.isElection;
+  //const isElection = context.ssrContext.store.state.menu.isElection || false;
+  // TODO: update this as soon as the store is set
+  const isElection = false;
+
   function crawlMenu(nodes, path) {
     if (stopRecursion) return;
 
     for (const entry of nodes) {
       if (entry.nodes && entry.nodes.length > 0) {
         crawlMenu(entry.nodes, path.concat([entry]));
-      } else if (
-        makeNavigationPath(path.concat([entry])) ===
-        decodeURIComponent(pathSlug)
+      }
+      if (entry.nodes && entry.nodes.length > 0 &&
+          makeNavigationPath(path.concat([entry])) ===
+          decodeURIComponent(pathSlug)
       ) {
         documentId = parseInt(entry.documentId);
         stopRecursion = true;
@@ -133,10 +129,8 @@ const loadPublicationData = async (context, menus) => {
 
       slug.push({ label: electionSlugs[language] });
     }
-
     crawlMenu(menu.nodes, slug);
   }
-
   if (documentId === 0) {
     for (const publication of allPublications) {
       if (!publication.metadata.title) {
@@ -157,8 +151,9 @@ const loadPublicationData = async (context, menus) => {
   // Find current publication by document id
   const currentPublication = allPublications.find((publication) => {
     if (!publication.metadata.title) return false;
-
-    return documentId === publication.systemdata.documentId;
+    if (documentId === publication.systemdata.documentId) {
+      return publication;
+    }
   });
 
   return {
@@ -209,16 +204,13 @@ const getPublicationInOtherLanguages = (
 /**
  * Fetch the publication data from the API
  */
-const loadDataFromAPI = async (context) => {
-  console.log("fetching data from API");
-  const menus = await fetchMenus(context);
-
-  const pubData = await loadPublicationData(context, menus);
-  const path = decodeURIComponent(context.ssrContext.url.substring(4));
-  const isElection = context.app.store.state.menu.isElection;
-
+const loadDataFromAPI = async (context, url) => {
+  const menus = await useMenuStore();
+  const pubData = await loadPublicationData(context, menus, url);
+  const path = decodeURIComponent(url.substring(4));
+  // const isElection = context.ssrContext.store.state.menu.isElection;
+  const isElection = false;
   const menuPath = deducePathDev(menus, path, isElection);
-
   return {
     currentPublication: pubData.currentPublication,
     allPublications: pubData.allPublications,
@@ -227,9 +219,8 @@ const loadDataFromAPI = async (context) => {
   };
 };
 
-const getPublicationData = async (context) => {
+const getPublicationData = async (context, url) => {
   const payload = context.payload;
-
   if (payload && payload.publication) {
     // payload contains our data
     return {
@@ -240,18 +231,16 @@ const getPublicationData = async (context) => {
     };
   } else {
     // we need to fetch the data
-    return await loadDataFromAPI(context);
+    return await loadDataFromAPI(context, url);
   }
 };
 
-export default async (context) => {
+export default async (context, url) => {
   const { currentPublication, allPublications, menuPath, menus } =
-    await getPublicationData(context);
-
+    await getPublicationData(context, url);
   if (!currentPublication) {
     return;
   }
-
   const language = currentPublication.metadata.language.locale;
 
   let publicationInOtherLanguages = [];
@@ -262,15 +251,15 @@ export default async (context) => {
       currentPublication,
       allPublications,
       menus,
-      context.app.store.state.menu.isElection
+      false
     );
   }
 
   if (publicationInOtherLanguages) {
-    context.store.commit(
-      "publications/setAvailableLanguages",
-      publicationInOtherLanguages
-    );
+    //context.store.commit(
+    //  "publications/setAvailableLanguages",
+    //  publicationInOtherLanguages
+    //);
   }
 
   if (allPublications) {
@@ -295,18 +284,18 @@ export default async (context) => {
       const faqs = allPublications.filter(
         (publication) => publication.systemdata.contentType === "faq"
       );
-      context.store.commit("publications/setFAQs", faqs);
+      //context.store.commit("publications/setFAQs", faqs);
     }
 
     const categories = allPublications.filter(
       (publication) => publication.systemdata.contentType === "category"
     );
-    context.store.commit("publications/setCategories", categories);
+    //context.store.commit("publications/setCategories", categories);
   }
 
   if (menus) {
     const footerMenus = getFooterMenus(menus, allPublications);
-    context.store.commit("menu/setFooterMenus", footerMenus);
+    //context.store.commit("menu/setFooterMenus", footerMenus);
   }
 
   let canonical = currentPublication.metadata.canonical;

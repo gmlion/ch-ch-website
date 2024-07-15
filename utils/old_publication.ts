@@ -3,7 +3,7 @@ import type {
   PublicationOptions,
   WrapFunction,
 } from "~/core/types/publications";
-import makeFetch from "@/utils/makeFetch";
+import makeFetch from "../utils/makeFetch";
 import type { AllPublicationOptions } from "~/generate/types/slug";
 
 /**

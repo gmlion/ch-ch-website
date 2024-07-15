@@ -17,6 +17,7 @@
     "@nuxtjs/sitemap": "^5.2.1",
     "@nuxtjs/svg-sprite": "^1.0.2",
     "@pinia/nuxt": "^0.5.1",
+    "nanostores": "^0.10.3",
     "nuxt": "^3.12.2",
     "nuxt3-vuex-module": "^1.1.0",
     "simplebar-vue": "^2.3.5",

@@ -8,6 +8,13 @@ import type { NuxtPage } from "nuxt/schema";
 import fs from "node:fs";
 let lastBuildContent: Record<string, any> = {};
 import { electionSlugs, getBaseUrl, makeNavigationPath } from "./utils/url";
+//@ts-ignore
+export const setLastBuildContent = (newLastBuildContent) =>
+  (lastBuildContent = newLastBuildContent);
+
+export const getLastBuildContent = () => {
+  return lastBuildContent;
+};
 
 if (fs.existsSync(".dist_cache/build.json")) {
   lastBuildContent = JSON.parse(
@@ -38,12 +45,11 @@ const crawlMenu = (
         menu.version !== lastBuildContent[menu.label].version ||
         process.env.NODE_ENV === "development"
       ) {
-        process.env.GEN_DEBUG === "true" &&
-          console.log(
-            `build ${route} because of ${menu.version} !== ${
-              lastBuildContent[menu.label]?.version || 0
-            }`
-          );
+        // console.log(
+        //   `build ${route} because of ${menu.version} !== ${
+        //     lastBuildContent[menu.label]?.version || 0
+        //   }`
+        // );
         if (route) {
           const electionPart = isElection ? electionSlugs[language] + "/" : "";
           let pathString = "";
@@ -61,7 +67,7 @@ const crawlMenu = (
           routes.unshift({
             name: route,
             path: encodeURI(pathString),
-            file: __dirname + "/pages/" + electionPart,
+            file: __dirname + "/pages/" + electionPart + "index.vue",
           });
         }
 

@@ -4,17 +4,18 @@ import {
   notBuilded,
   setLastBuildContent,
   updated,
-} from "../nuxt.config.ts";
+} from "../crawlMenu";
 import {
   getAllPublications,
   makeKeyedPublications,
-} from "../utils/publication";
+} from "../generate/store/publicationStore";
 import {
   buildUrlFromPublication,
   electionSlugs,
   makeNavigationPath,
 } from "../utils/url";
-import makeFetch from "../utils/makeFetch.js";
+import makeFetch from "../utils/makeFetch";
+import {useMenuStore} from "../generate/store/menuStore";
 
 export default async () => {
   try {
@@ -47,17 +48,17 @@ export default async () => {
         buildContent[route.route] &&
         lastUpdate <= buildContent[route.route].date
       ) {
-        // process.env.GEN_DEBUG == true &&
-        console.log("not build " + route.route);
+        process.env.GEN_DEBUG == true &&
+          console.log("not build " + route.route);
         notBuilded.push(route.route);
         return;
       }
-      // process.env.GEN_DEBUG == true &&
-      console.log(
-        `build ${route.route} because of ${lastUpdate} > ${
-          lastBuildContent[route.route]?.date || 0
-        }`
-      );
+      process.env.GEN_DEBUG == true &&
+        console.log(
+          `build ${route.route} because of ${lastUpdate} > ${
+            lastBuildContent[route.route]?.date || 0
+          }`
+        );
       if (!buildContent[route.route]) {
         added.push(route.route);
       } else {
@@ -122,12 +123,12 @@ export default async () => {
     }
 
     const routes = [];
-    const axios = makeFetch();
 
-    const menus = (await axios.get("/menus")).data;
+    const menus = await useMenuStore();
+
 
     // Get the latest publications
-    let publications = await getAllPublications(axios.get);
+    let publications = await getAllPublications();
 
     // Lets filter out the communes (they are not needed and just increase the size)
     publications = publications.filter(
@@ -162,7 +163,6 @@ export default async () => {
         lastBuildContent[route.route] = { date: new Date().getTime() };
       }
     });
-
     setLastBuildContent(lastBuildContent);
 
     return routes;
