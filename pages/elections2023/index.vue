@@ -2,4 +2,6 @@
 const route = useRoute();
 console.log(route.fullPath);
 </script>
-<template>Index {{ route.fullPath }}</template>
+<template>
+  Index {{ route.fullPath }} from Locale {{ $t("homeTitle") }}
+</template>

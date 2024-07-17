@@ -1,5 +1,10 @@
 <script setup>
+import { useRoute } from "vue-router";
+
 const route = useRoute();
-console.log(route.fullPath);
+const currentLocale = route.path.split("/")[1];
 </script>
-<template>Index {{ route.fullPath }}</template>
+
+<template>
+  Index {{ route.fullPath }} from Locale {{ $t("homeTitle") }}
+</template>
