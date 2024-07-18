@@ -64,10 +64,11 @@ const crawlMenu = (
           } else {
             updated.push(pathString);
           }
+
           routes.unshift({
             name: route,
             path: encodeURI(pathString),
-            file: __dirname + "/pages/" + electionPart + "index.vue",
+            file: `${__dirname}/pages/${electionPart}menuEntry.vue`,
           });
         }
 

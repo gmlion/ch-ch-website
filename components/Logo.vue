@@ -114,8 +114,8 @@
           </svg>
         </a>
         <div class="flex items-center search-navi--mobile">
-          <language-picker-mobile class="mr-6" />
-          <search-link :is-mobile="true" />
+<!--          <language-picker-mobile class="mr-6" />-->
+<!--          <search-link :is-mobile="true" />-->
         </div>
       </div>
 
@@ -169,8 +169,8 @@
           </a>
         </div>
         <div class="flex items-center search-navi--mobile">
-          <language-picker-mobile class="mr-6" />
-          <search-link :is-mobile="true" />
+<!--          <language-picker-mobile class="mr-6" />-->
+<!--          <search-link :is-mobile="true" />-->
         </div>
       </div>
 

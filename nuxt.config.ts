@@ -8,6 +8,8 @@ import { useMenuStore } from "./generate/store/menuStore";
 import { usePublicationStore } from "./generate/store/publicationStore";
 import generateGeneralPublications from "./generate/generalPublications";
 import type { NuxtPage } from "nuxt/schema";
+import {languages} from "./generate/store/languages";
+import getPublicationsRoutes from "./getPublicationsRoutes";
 
 if (process.env.NO_INCREMENTAL_BUILD && fs.existsSync(".dist_cache")) {
   fs.rmSync(".dist_cache", { recursive: true });
@@ -30,13 +32,33 @@ export default defineNuxtConfig({
     },
     "pages:extend": async (routes) => {
       const menus = await useMenuStore();
+      const publicationRoutes = await getPublicationsRoutes()
       for (const menu of menus) {
         const [name, language] = menu.label.split("-");
         const isElection = name === "wahlen";
         crawlMenu(menu.nodes, [], language, menu, isElection, routes);
+
+        publicationRoutes.forEach((route) => {
+            routes.push(route);
+        });
+
+        routes.push(
+            {
+              name: `home-${language.toUpperCase()}`,
+              path: encodeURI(`/${language}/`),
+              file: `${__dirname}/pages/index.vue`,
+            }
+        )
       }
-    },
+
+      routes.push({
+        name: 'catch-all',
+        path: '/:pathMatch(.*)*',
+        file: `${__dirname}/pages/[slug].vue`
+      });
+      },
   },
+
   vite: {
     vue: {
       config: {

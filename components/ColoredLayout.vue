@@ -5,11 +5,11 @@
       :class="{ 'search-is-active': isSearchOpen }"
       class="w-full lg:min-h-screen lg:flex"
     >
-      <search-overlay
+      <!-- <search-overlay
         v-show="isSearchOpen"
         v-body-scroll-lock="isSearchOpen"
         :division-mode="divisionMode"
-      />
+      /> -->
       <div
         class="relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 sidebar lg:py-14 lg:pr-16 pusher"
         :class="leftClasses"
@@ -21,10 +21,10 @@
           :is-election="isElection"
         />
         <slot name="side" />
-        <side-fader
+        <!-- <side-fader
           v-if="showFader"
           class="left-0 right-0 bottom-36 !lg:hidden"
-        />
+        /> -->
         <!-- todo: check how to get search accessibilitywise, perhaps show in v-show and dont use display none but position to hide -->
       </div>
 
@@ -37,35 +37,34 @@
           :class="{ 'text-primary-blue': isSearchOpen }"
           class="flex relative z-40 justify-end mb-20 !lg:hidden h-[40px]"
         >
-          <language-picker-desktop class="mr-12" />
-          <search-link />
+          <!-- <language-picker-desktop class="mr-12" /> -->
+          <!-- <search-link /> -->
         </div>
         <a name="content"></a>
         <slot name="main" />
       </main>
       <slot name="right" />
     </div>
-    <footer-desktop
+    <!-- <footer-desktop
       class="!lg:hidden"
       :division-mode="divisionMode"
       :color="leftColor"
       :is-election="isElection"
     />
     <footer-mobile-minimal v-if="!isFooterHidden" class="lg:hidden" />
-    <footer-mobile-normal class="lg:hidden" :is-election="isElection" />
+    <footer-mobile-normal class="lg:hidden" :is-election="isElection" /> -->
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
 import Logo from "@/components/Logo.vue";
-import SideFader from "@/components/SideFader.vue";
-import SearchLink from "@/components/SearchLink.vue";
-import FooterDesktop from "./FooterDesktop.vue";
-import FooterMobileMinimal from "./FooterMobileMinimal.vue";
-import FooterMobileNormal from "./FooterMobileNormal.vue";
-import LanguagePickerDesktop from "./LanguagePickerDesktop.vue";
-import SearchOverlay from "./SearchOverlay.vue";
+// import SideFader from "@/components/SideFader.vue";
+// import SearchLink from "@/components/SearchLink.vue";
+// import FooterDesktop from "./FooterDesktop.vue";
+// import FooterMobileMinimal from "./FooterMobileMinimal.vue";
+// import FooterMobileNormal from "./FooterMobileNormal.vue";
+// import LanguagePickerDesktop from "./LanguagePickerDesktop.vue";
+// import SearchOverlay from "./SearchOverlay.vue";
 
 const DIVISION_MODES = {
   HALVES: "halves",
@@ -79,14 +78,14 @@ const colorValidator = (value) => {
 export default {
   name: "ColoredLayout",
   components: {
-    LanguagePickerDesktop,
+    // LanguagePickerDesktop,
     Logo,
-    SideFader,
-    FooterDesktop,
-    FooterMobileMinimal,
-    FooterMobileNormal,
-    SearchOverlay,
-    SearchLink,
+    // SideFader,
+    // FooterDesktop,
+    // FooterMobileMinimal,
+    // FooterMobileNormal,
+    // SearchOverlay,
+    // SearchLink,
   },
   props: {
     leftColor: {
@@ -132,9 +131,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["global/isScreenMd"]),
-    ...mapState("global", ["isSearchOpen"]),
-    ...mapState("menu", ["isElection"]),
     logoClasses() {
       let classes = "";
       if (this.leftColor === "blue") classes = "text-primary-white";

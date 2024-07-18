@@ -9,6 +9,7 @@ import { flattenMenu } from "./generalPublications";
 
 const languages = ["de", "fr", "it", "en", "rm"];
 
+
 export default async () => {
   const axios = makeFetch();
 

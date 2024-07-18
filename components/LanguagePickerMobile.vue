@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import LanguagePickerMixin from "@/components/LanguagePickerMixin.vue";
+// import LanguagePickerMixin from "@/components/LanguagePickerMixin.vue";
 // import "vue-select-3/dist/vue-select-3.css";
 // import vSelect from "vue-select-3";
 
@@ -31,7 +31,7 @@ export default {
   components: {
     // vSelect,
   },
-  mixins: [LanguagePickerMixin],
+  // mixins: [LanguagePickerMixin],
   computed: {
     options() {
       return this.availableLocales.map((locale) => locale.code);

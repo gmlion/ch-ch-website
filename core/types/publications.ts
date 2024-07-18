@@ -11,6 +11,8 @@ export interface Carousel extends PublicationComponent {
     link: Link;
   };
 }
+
+
 export interface PublicationContainerComponent extends PublicationComponent {
   containers: {
     carousel: Carousel[];
