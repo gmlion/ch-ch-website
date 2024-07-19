@@ -6,8 +6,6 @@ const currentLocale = route.path.split("/")[1];
 </script>
 
 <template>
-  Index {{ route.fullPath }} from Locale {{ $t("homeTitle") }}
-
   <colored-layout
     left-color="white"
     right-color="blue"

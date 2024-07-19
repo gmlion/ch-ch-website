@@ -13,37 +13,41 @@
       <svg-icon class="fill-current w-7 h-7 text-primary-blue" name="search" />
       <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#accessibility_concerns -->
       <span class="hidden">
-        {{ $t('searchButtonTitle') }}
+        {{ $t("searchButtonTitle") }}
       </span>
     </button>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { electionSlugs } from '../utils/url'
-
+import { electionSlugs } from "../utils/url";
+import { isSearchOpen } from "../store/pageLayout";
+import { isElection } from "../store/pageState";
 export default {
   props: {
     initialValue: {
       required: false,
       type: String,
-      default: '',
+      default: "",
     },
   },
   data() {
     return {
       searchText: this.initialValue,
-    }
+    };
   },
   computed: {
-    ...mapState('global', ['isSearchOpen']),
-    ...mapState('menu', ['isElection']),
+    isSearchOpen() {
+      return isSearchOpen.get();
+    },
+    isElection() {
+      return isElection.get();
+    },
   },
   watch: {
     isSearchOpen(newValue) {
       if (newValue) {
-        this.$refs.searchInput.focus()
+        this.$refs.searchInput.focus();
       }
     },
   },
@@ -51,16 +55,16 @@ export default {
     onKeyUp(event) {
       // If enter was pressed
       if (event.keyCode === 13) {
-        this.search(this.searchText)
+        this.search(this.searchText);
       }
     },
     search() {
-      let electionPath = ''
+      let electionPath = "";
       if (this.isElection) {
-        electionPath = electionSlugs[this.$i18n.locale] + '/'
+        electionPath = electionSlugs[this.$i18n.locale] + "/";
       }
-      window.location.href = `/${this.$i18n.locale}/${electionPath}search?q=${this.searchText}`
+      window.location.href = `/${this.$i18n.locale}/${electionPath}search?q=${this.searchText}`;
     },
   },
-}
+};
 </script>

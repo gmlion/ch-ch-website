@@ -6,13 +6,13 @@
   >
     <div class="w-full m-auto lg:w-112">
       <div class="flex justify-between mb-24 lg:mb-12">
-        <h2 class="text-3xl lg:text-4xl pt-7">{{ $t('search') }}</h2>
+        <h2 class="text-3xl lg:text-4xl pt-7">{{ $t("search") }}</h2>
         <div class="lg:hidden">
-          <button class="text-primary-blue" @click="toggleSearch">
+          <button class="text-primary-blue" @click="handleToggleSearch">
             <svg-icon class="w-8 h-8 fill-current" name="close-small" />
             <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#accessibility_concerns -->
             <span class="hidden">
-              {{ $t('toggleSearchButtonTitle') }}
+              {{ $t("toggleSearchButtonTitle") }}
             </span>
           </button>
         </div>
@@ -22,51 +22,56 @@
   </div>
 </template>
 
-<script>
-import { mapMutations, mapState } from 'vuex'
-import SearchInput from './SearchInput.vue'
+<script lang="ts" setup>
+import { computed, onMounted, onBeforeUnmount, ref } from "vue";
+import { useStore } from "@nanostores/vue";
+import { useRoute } from "vue-router";
+import SearchInput from "./SearchInput.vue";
+import {
+  isSearchOpen as isSearchOpenStore,
+  toggleSearch as toggleSearchStore,
+} from "../store/pageLayout";
 
-export default {
-  name: 'SearchOverlay',
-  components: { SearchInput },
-  props: {
-    divisionMode: {
-      type: String,
-      required: false,
-      default: '',
-    },
-  },
-  computed: {
-    ...mapState('global', ['isSearchOpen']),
-    widthClasses() {
-      return {
-        'lg:w-3/5': this.divisionMode === 'fifths' && !this.isOpen,
-        'lg:w-1/2': this.divisionMode === 'halves' && !this.isOpen,
-      }
-    },
-    // these are to position the fixed element on the right side
-    leftClasses() {
-      return {
-        'lg:left-2/5': this.divisionMode === 'fifths' && !this.isOpen,
-        'lg:left-1/2': this.divisionMode === 'halves' && !this.isOpen,
-      }
-    },
-  },
-  mounted() {
-    window.addEventListener('keydown', this.onEscape)
-  },
-  beforeDestroy() {
-    window.removeEventListener('keydown', this.onEscape)
-  },
-  methods: {
-    ...mapMutations('global', ['toggleSearch']),
-    onEscape(event) {
-      if (event.key === 'Escape' && this.isSearchOpen) {
-        this.toggleSearch()
-      }
-    },
-  },
-}
+const props = defineProps<{
+  divisionMode?: string;
+}>();
+
+const isSearchOpen = useStore(isSearchOpenStore);
+
+const isOpen = ref(false);
+
+const widthClasses = computed(() => {
+  return {
+    "lg:w-3/5": props.divisionMode === "fifths" && !isOpen.value,
+    "lg:w-1/2": props.divisionMode === "halves" && !isOpen.value,
+  };
+});
+
+const handleToggleSearch = () => {
+  console.log("handleToggleSearch", isSearchOpen.value);
+  toggleSearchStore.set(!isSearchOpen.value);
+};
+
+const leftClasses = computed(() => {
+  return {
+    "lg:left-2/5": props.divisionMode === "fifths" && !isOpen.value,
+    "lg:left-1/2": props.divisionMode === "halves" && !isOpen.value,
+  };
+});
+
+const onEscape = (event: KeyboardEvent) => {
+  if (event.key === "Escape" && isSearchOpen.value) {
+    toggleSearchStore.set(false);
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("keydown", onEscape);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", onEscape);
+});
 </script>
 
 <style lang="postcss" scoped>

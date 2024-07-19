@@ -1,11 +1,5 @@
-<script setup lang="ts">
-console.log("slug")
-</script>
+<script setup lang="ts"></script>
 
-<template>
-Here is the [slug]
-</template>
+<template>Here is the [slug]</template>
 
-<style scoped lang="postcss">
-
-</style>
+<style scoped lang="postcss"></style>

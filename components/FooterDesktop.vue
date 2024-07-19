@@ -38,7 +38,7 @@
       >
         <a
           v-for="link in links"
-          :key="link.label"
+          :key="link.name"
           class="footer-link"
           :target="link.target"
           :href="link.link"
@@ -61,62 +61,51 @@
   </footer>
 </template>
 
-<script>
-import FooterSocialMedia from "@/components/FooterSocialMedia";
-import FooterMixin from "@/components/FooterMixin";
+<script lang="ts" setup>
+import { ref, computed, defineProps, defineEmits } from "vue";
+import FooterSocialMedia from "@/components/FooterSocialMedia.vue";
+import type { LinkItem } from "~/store/types/page";
+import { useFooterMenuStore } from "~/generate/store/footerMenuStore";
 
-export default {
-  name: "FooterDesktop",
-  components: {
-    FooterSocialMedia,
-  },
-  mixins: [FooterMixin],
-  props: {
-    color: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    divisionMode: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    isElection: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      isOpen: false,
-    };
-  },
-  computed: {
-    footerClasses() {
-      return {
-        "lg:w-2/5": this.divisionMode === "fifths" && !this.isOpen,
-        "lg:w-1/2": this.divisionMode === "halves" && !this.isOpen,
-        "border-transparent": !this.isOpen,
-        "w-full border-gray-600": this.isOpen,
-        "pb-[10.75rem]": !this.isOpen,
-        // test/idea: if we want to isOpen horizintal
-        // 'h-screen fixed top-0': this.isOpen,
-        [`bg-primary-${this.color}`]: this.color !== "white" && !this.isOpen,
-        [`text-primary-white`]:
-          this.color !== "white" && this.color !== "yellow" && !this.isOpen,
-        "text-gray-900": this.color === "yellow" && !this.isOpen,
-        [`bg-primary-white text-primary-blue`]:
-          this.color === "white" || this.isOpen,
-      };
-    },
-  },
-  methods: {
-    toggleFooterIsOpen() {
-      this.isOpen = !this.isOpen;
-    },
-  },
+const props = defineProps<{
+  color?: string;
+  divisionMode?: string;
+  isElection?: boolean;
+}>();
+
+const emit = defineEmits<{
+  (event: "update:isOpen", isOpen: boolean): void;
+}>();
+
+const isOpen = ref(false);
+
+const footerClasses = computed(() => {
+  return {
+    "lg:w-2/5": props.divisionMode === "fifths" && !isOpen.value,
+    "lg:w-1/2": props.divisionMode === "halves" && !isOpen.value,
+    "border-transparent": !isOpen.value,
+    "w-full border-gray-600": isOpen.value,
+    "pb-[10.75rem]": !isOpen.value,
+    [`bg-primary-${props.color}`]: props.color !== "white" && !isOpen.value,
+    [`text-primary-white`]:
+      props.color !== "white" && props.color !== "yellow" && !isOpen.value,
+    "text-gray-900": props.color === "yellow" && !isOpen.value,
+    [`bg-primary-white text-primary-blue`]:
+      props.color === "white" || isOpen.value,
+  };
+});
+
+const toggleFooterIsOpen = () => {
+  isOpen.value = !isOpen.value;
 };
+useAsyncData("footerStore", async () => {
+  const data = await useMenu();
+  console.log("footer", data.length);
+  return data;
+});
+const links = ref<LinkItem[]>([]); // Populate this with your actual links
+
+const lastLink = ref<LinkItem | null>(null); // Populate this with your actual last link
 </script>
 
 <style lang="postcss">

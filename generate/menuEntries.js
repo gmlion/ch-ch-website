@@ -6,7 +6,7 @@ import {
   updated,
 } from "../crawlMenu";
 import {
-  getAllPublications,
+  usePublicationStore,
   makeKeyedPublications,
 } from "../generate/store/publicationStore";
 import {
@@ -15,7 +15,7 @@ import {
   makeNavigationPath,
 } from "../utils/url";
 import makeFetch from "../utils/makeFetch";
-import {useMenuStore} from "../generate/store/menuStore";
+import { useMenuStore } from "../generate/store/menuStore";
 
 export default async () => {
   try {
@@ -126,9 +126,8 @@ export default async () => {
 
     const menus = await useMenuStore();
 
-
     // Get the latest publications
-    let publications = await getAllPublications();
+    let publications = await usePublicationStore();
 
     // Lets filter out the communes (they are not needed and just increase the size)
     publications = publications.filter(

@@ -72,6 +72,8 @@ const crawlMenu = (
           });
         }
 
+        
+
         crawlMenu(
           entry.nodes,
           path.concat([entry]),
