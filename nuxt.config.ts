@@ -1,18 +1,9 @@
 import fs from "node:fs";
 import { i18nLocales } from "./utils/locale";
-import getSitemap from "./generate/sitemap";
 import crawlMenu from "./crawlMenu";
-import getRoutes from "./generate/getRoutes";
-import generateMenuRoutes from "./generate/menuEntries";
 import { useMenuStore } from "./generate/store/menuStore";
 import { usePublicationStore } from "./generate/store/publicationStore";
-import generateGeneralPublications from "./generate/generalPublications";
-import type { NuxtPage } from "nuxt/schema";
-import { languages } from "./generate/store/languages";
 import getPublicationsRoutes from "./getPublicationsRoutes";
-import { useFooterMenuStore } from "./generate/store/footerMenuStore";
-import type { NuxtPayload } from "nuxt/app";
-import appSetup from "./plugins/appSetup";
 
 if (process.env.NO_INCREMENTAL_BUILD && fs.existsSync(".dist_cache")) {
   fs.rmSync(".dist_cache", { recursive: true });
@@ -26,15 +17,8 @@ export default defineNuxtConfig({
     },
   ],
   hooks: {
-    async "nitro:config"(nitroConfig) {
-      /*         const menuRoutes = await generateMenuRoutes()
-                const generalPublications = await generateGeneralPublications()
-                const routes = [...menuRoutes, ...generalPublications]
-                nitroConfig?.prerender?.routes &&
-                nitroConfig.prerender.routes.push(...routes);*/
-    },
     ready: async () => {
-      console.log("Building...");
+      console.log("Building... fetch initial data");
       await useMenuStore();
       await usePublicationStore();
     },

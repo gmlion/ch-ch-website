@@ -99,8 +99,8 @@ const toggleFooterIsOpen = () => {
   isOpen.value = !isOpen.value;
 };
 useAsyncData("footerStore", async () => {
-  const data = await useMenu();
-  console.log("footer", data.length);
+  const data = await useFooterMenuStore();
+
   return data;
 });
 const links = ref<LinkItem[]>([]); // Populate this with your actual links
