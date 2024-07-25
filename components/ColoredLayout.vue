@@ -1,5 +1,4 @@
 <template>
-  <!-- A fragment is destroying the navigation layout and I don't know why -->
   <div>
     <div
       :class="{ 'search-is-active': isSearchOpen }"
@@ -7,7 +6,7 @@
     >
       <search-overlay v-show="isSearchOpen" :division-mode="divisionMode" />
       <div
-        class="relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 sidebar lg:py-14 lg:pr-16 pusher"
+        class="relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 pusher min-w-[350px]"
         :class="leftClasses"
       >
         <a href="#content" class="hidden">{{ $t("jumpToContent") }}</a>
@@ -38,8 +37,7 @@
       </main>
       <slot name="right" />
     </div>
-    <footer-desktop
-      class="!lg:hidden"
+    <Footer
       :division-mode="divisionMode"
       :color="leftColor"
       :is-election="isElection"
@@ -48,17 +46,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, useSlots } from "vue";
+import { computed } from "vue";
 import { isSearchOpen as isSearchOpenStore } from "../store/pageLayout";
 import { isElection as isElectionStore } from "~/store/pageState";
 
 import Logo from "@/components/Logo.vue";
 import SideFader from "@/components/SideFader.vue";
-// import FooterDesktop from './FooterDesktop.vue'
-// import FooterMobileMinimal from './FooterMobileMinimal.vue'
-// import FooterMobileNormal from './FooterMobileNormal.vue'
-// import LanguagePickerDesktop from './LanguagePickerDesktop.vue'
+// import LanguagePickerDesktop from './LanguagePickerDesktop.vue' WIP
 import { useStore } from "@nanostores/vue";
+import Footer from "./Footer.vue";
 
 const DIVISION_MODES = {
   HALVES: "halves",
@@ -106,7 +102,7 @@ const leftClasses = computed(() => ({
   [`text-${textcolor(props.leftColor!)}`]: true,
   "lg:h-screen": props.showFader,
   "lg:relative": props.showFader,
-  "lg:pr-10": false, // Update this condition as per your requirement
+  "lg:pr-10": false,
   ...leftWidth.value,
 }));
 
@@ -126,9 +122,3 @@ const rightWidth = computed(() => ({
   "lg:w-1/2": props.divisionMode === DIVISION_MODES.HALVES,
 }));
 </script>
-
-<style lang="postcss">
-.sidebar {
-  min-width: 350px;
-}
-</style>

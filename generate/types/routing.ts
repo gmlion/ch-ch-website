@@ -5,6 +5,8 @@ export interface MenuNode {
   documentId?: string;
   type: "document" | "uri";
   uri?: string;
+  target?: string;
+  document: any;
 }
 
 export interface PathType {

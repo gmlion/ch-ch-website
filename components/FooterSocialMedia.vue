@@ -7,8 +7,7 @@
       class="text-primary-blue"
     >
       <svg-icon
-        class="fill-current"
-        :class="iconSize"
+        class="fill-current h-6 w-5 lg:h-8 lg:w-7"
         name="youtube"
         :title="$t('youtubeIconTitle')"
       />
@@ -20,34 +19,10 @@
       class="ml-6 text-primary-blue"
     >
       <svg-icon
-        class="fill-current"
-        :class="iconSize"
+        class="fill-current h-6 w-5 lg:h-8 lg:w-7"
         name="twitter"
         :title="$t('twitterIconTitle')"
       />
     </a>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'FooterSocialMedia',
-  props: {
-    size: {
-      type: String,
-      validator: (value) => {
-        return ['big', 'small'].includes(value)
-      },
-      default: 'big',
-    },
-  },
-  computed: {
-    iconSize() {
-      return {
-        'h-8 w-7': this.size === 'big',
-        'h-6 w-5': this.size === 'small',
-      }
-    },
-  },
-}
-</script>

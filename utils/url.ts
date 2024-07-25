@@ -1,3 +1,4 @@
+import type { MenuNode } from "~/generate/types/routing";
 import { getIsoCodeFromLocale } from "./locale";
 
 export const electionSlugs: Record<string, string> = {
@@ -166,4 +167,9 @@ export const getBaseUrl = (): string | undefined => {
   }
 
   return url ? url + "/" : undefined;
+};
+
+export const getUriFromNode = (node: MenuNode) => {
+  if (node.type === "uri") return node.uri;
+  return buildUrlFromPublication(node.document, [node]);
 };
