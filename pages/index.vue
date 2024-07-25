@@ -7,6 +7,7 @@ const currentLocale = route.path.split("/")[1];
 
 <template>
   <colored-layout
+    class="color-index"
     left-color="white"
     right-color="blue"
     division-mode="halves"

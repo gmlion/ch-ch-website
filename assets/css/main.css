@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.color-index .logo-color-classes {
+  @apply text-primary-claim;
+}
+
+.color-index .left-layout {
+  @apply bg-primary-white text-primary-blue lg:h-screen lg:relative lg:w-1/2;
+}
+
+.color-index .right-layout {
+  @apply bg-primary-blue text-primary-white lg:w-1/2;
+}

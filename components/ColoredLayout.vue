@@ -1,3 +1,26 @@
+<script lang="ts" setup>
+import { isSearchOpen as isSearchOpenStore } from "../store/pageLayout";
+import { isElection as isElectionStore } from "~/store/pageState";
+
+// import LanguagePickerDesktop from './LanguagePickerDesktop.vue' WIP
+import { useStore } from "@nanostores/vue";
+import Footer from "./Footer.vue";
+
+const props = defineProps<{
+  leftColor?: string;
+  rightColor?: string;
+  divisionMode?: string;
+  isFooterHidden?: boolean;
+  showFader?: boolean;
+}>();
+
+let isSearchOpen = useStore(isSearchOpenStore);
+watch(isSearchOpen, (newValue) => {
+  console.log("isSearchOpen changed to:", newValue);
+});
+const isElection = useStore(isElectionStore);
+</script>
+
 <template>
   <div>
     <div
@@ -6,15 +29,10 @@
     >
       <search-overlay v-show="isSearchOpen" :division-mode="divisionMode" />
       <div
-        class="relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 pusher min-w-[350px]"
-        :class="leftClasses"
+        class="left-layout relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 pusher min-w-[350px]"
       >
         <a href="#content" class="hidden">{{ $t("jumpToContent") }}</a>
-        <logo
-          :class="{ hidden: isSearchOpen, 'lg:block': true }"
-          :color-classes="logoClasses"
-          :is-election="isElection"
-        />
+        <logo :class="{ hidden: isSearchOpen, 'lg:block': true }" />
         <slot name="side" />
         <side-fader
           v-if="showFader"
@@ -23,8 +41,7 @@
       </div>
 
       <main
-        class="flex flex-col w-full px-4 py-10 transition-colors lg:px-12 main lg:py-14 main-content pusher"
-        :class="rightClasses"
+        class="right-layout flex flex-col w-full px-4 py-10 transition-colors lg:px-12 main lg:py-14 main-content pusher"
       >
         <div
           :class="{ 'text-primary-blue': isSearchOpen }"
@@ -44,81 +61,3 @@
     />
   </div>
 </template>
-
-<script lang="ts" setup>
-import { computed } from "vue";
-import { isSearchOpen as isSearchOpenStore } from "../store/pageLayout";
-import { isElection as isElectionStore } from "~/store/pageState";
-
-import Logo from "@/components/Logo.vue";
-import SideFader from "@/components/SideFader.vue";
-// import LanguagePickerDesktop from './LanguagePickerDesktop.vue' WIP
-import { useStore } from "@nanostores/vue";
-import Footer from "./Footer.vue";
-
-const DIVISION_MODES = {
-  HALVES: "halves",
-  FIFTHS: "fifths",
-};
-
-const colorValidator = (value: string): boolean =>
-  ["blue", "red", "yellow", "white"].includes(value);
-
-const props = defineProps<{
-  leftColor?: string;
-  rightColor?: string;
-  divisionMode?: string;
-  isFooterHidden?: boolean;
-  showFader?: boolean;
-}>();
-
-let isSearchOpen = useStore(isSearchOpenStore);
-watch(isSearchOpen, (newValue) => {
-  console.log("isSearchOpen changed to:", newValue);
-});
-const isElection = useStore(isElectionStore);
-
-const logoClasses = computed(() => {
-  let classes = "";
-  if (props.leftColor === "blue") classes = "text-primary-white";
-  else if (props.leftColor === "white") classes = "text-primary-claim";
-  else if (props.leftColor === "yellow") classes = "text-primary-blue";
-  else if (props.leftColor === "red") classes = "text-primary-white";
-  else classes = "text-black";
-  classes += ` bg-primary-${props.leftColor}`;
-  return classes;
-});
-
-const textcolor = (bgColor: string): string => {
-  if (bgColor === "blue") return "primary-white";
-  if (bgColor === "red") return "primary-white";
-  if (bgColor === "yellow") return "primary-blue";
-  if (bgColor === "white") return "primary-blue";
-  return "primary-white";
-};
-
-const leftClasses = computed(() => ({
-  [`bg-primary-${props.leftColor}`]: true,
-  [`text-${textcolor(props.leftColor!)}`]: true,
-  "lg:h-screen": props.showFader,
-  "lg:relative": props.showFader,
-  "lg:pr-10": false,
-  ...leftWidth.value,
-}));
-
-const rightClasses = computed(() => ({
-  [`bg-primary-${props.rightColor}`]: true,
-  [`text-${textcolor(props.rightColor!)}`]: true,
-  ...rightWidth.value,
-}));
-
-const leftWidth = computed(() => ({
-  "lg:w-2/5": props.divisionMode === DIVISION_MODES.FIFTHS,
-  "lg:w-1/2": props.divisionMode === DIVISION_MODES.HALVES,
-}));
-
-const rightWidth = computed(() => ({
-  "lg:w-3/5": props.divisionMode === DIVISION_MODES.FIFTHS,
-  "lg:w-1/2": props.divisionMode === DIVISION_MODES.HALVES,
-}));
-</script>
