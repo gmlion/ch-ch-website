@@ -7,7 +7,7 @@ import type {
 import type { AllPublicationOptions } from "~/generate/types/slug";
 
 export const publicationStore = atom<Publication[]>([]);
-
+export const availableLanguages =  atom<null | [{locale: string, route:string}]>(null)
 export const usePublicationStore = async () => {
   if (publicationStore.get().length === 0) {
     console.log("no publication store, fetching");
@@ -25,7 +25,7 @@ export const getAllPublications = async (options?: AllPublicationOptions[]) => {
   let publications: Publication[] = [];
   let offset = 0;
 
-  // Lets crawl trough the api
+  // crawl through the api
   while (true) {
     // Get the next 10 pages
     const publicationResponses = await getNext10Pages({
@@ -33,9 +33,6 @@ export const getAllPublications = async (options?: AllPublicationOptions[]) => {
       offset,
     });
 
-    // Sometimes it is nested in the property data,
-    // sometimes not
-    // Lets use data if it is defined
     let publicationPages;
     if (publicationResponses) {
       publicationPages = publicationResponses.map((response) =>

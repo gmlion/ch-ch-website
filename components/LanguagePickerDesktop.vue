@@ -1,26 +1,26 @@
+<script lang="ts" setup>
+
+import {useI18n} from "vue-i18n";
+
+const { locale, locales } = useI18n();
+
+
+</script>
 <template>
-  <nav id="language" :aria-label="$t('navAriaLanguagePickerDesktop')">
-    <ul class="flex space-x-4">
-      <li v-for="locale in availableLocales" :key="locale.code">
+  <nav id="language" :aria-label="$t('navAriaLanguagePickerDesktop')" class="absolute top-4 right-4 lg:static flex items-center">
+    <ul class="flex space-x-4" >
+      <li  v-for="localeEl in locales">
         <button
-          class="uppercase font-regular"
-          :class="{
-            'font-bold': $i18n.locale == locale.code,
-            'text-gray-600 cursor-not-allowed': isNotAvailable(locale.code),
+            class="uppercase font-regular"
+            :class="{
+            'font-bold': locale === localeEl.code,
+            'text-gray-600 cursor-not-allowed': isNotAvailable(localeEl.code),
           }"
-          @click.prevent.stop="changeLocale(locale.code)"
+            @click.prevent.stop="changeLocale(localeEl.code, locale, $route)"
         >
-          {{ locale.code }}
+          {{ localeEl.code }}
         </button>
       </li>
     </ul>
   </nav>
 </template>
-
-<script>
-import LanguagePickerMixin from '@/components/LanguagePickerMixin.vue'
-
-export default {
-  mixins: [LanguagePickerMixin],
-}
-</script>

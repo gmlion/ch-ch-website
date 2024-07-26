@@ -15,9 +15,6 @@ const props = defineProps<{
 }>();
 
 let isSearchOpen = useStore(isSearchOpenStore);
-watch(isSearchOpen, (newValue) => {
-  console.log("isSearchOpen changed to:", newValue);
-});
 const isElection = useStore(isElectionStore);
 </script>
 
@@ -45,8 +42,9 @@ const isElection = useStore(isElectionStore);
       >
         <div
           :class="{ 'text-primary-blue': isSearchOpen }"
-          class="flex relative z-40 justify-end mb-20 !lg:hidden h-[40px]"
+          class="flex lg:relative z-40 justify-end mb-20 h-[40px]"
         >
+          <language-picker-desktop class="mr-12" />
           <search-link />
         </div>
         <a name="content"></a>
