@@ -44,7 +44,7 @@ const isElection = useStore(isElectionStore);
           :class="{ 'text-primary-blue': isSearchOpen }"
           class="flex lg:relative z-40 justify-end mb-20 h-[40px]"
         >
-          <language-picker-desktop class="mr-12" />
+          <language-picker class="mr-12" />
           <search-link />
         </div>
         <a name="content"></a>
