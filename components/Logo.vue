@@ -17,7 +17,7 @@ onMounted(() => {
   >
     <SkipLink />
     <meta itemprop="name" content="CHCH LOGO" />
-    <a class="no-underline" :href="`/${$i18n.locale}`" itemprop="url">
+    <a class="no-underline block w-[fit-content]" :href="`/${$i18n.locale}`" itemprop="url">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="406"

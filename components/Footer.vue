@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed, defineProps, defineEmits } from "vue";
+import { ref, computed } from "vue";
 import { useFooterMenuStore } from "~/generate/store/footerMenuStore";
 import { getUriFromNode } from "~/utils/url";
 const { locale } = useI18n();
