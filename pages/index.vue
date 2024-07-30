@@ -1,26 +1,28 @@
 <script setup>
-import { useRoute } from "vue-router";
+const { locale } = useI18n();
+import { useIndexMenu } from "~/generate/store/menuStore";
 
-const route = useRoute();
-const currentLocale = route.path.split("/")[1];
+const indexPageData = useAsyncData("indexPageDataStore", async () => {
+  const data = await useIndexMenu(locale.value);
+
+  return data;
+});
 </script>
 
 <template>
   <colored-layout
     class="color-index"
     left-color="white"
-    right-color="blue"
     division-mode="halves"
-    :is-footer-hidden="true"
     :show-fader="true"
   >
-    <template slot="side">
+    <template #side>
       <div role="complementary" class="sr-only">
         <h1>{{ $t("homeTitle") }}</h1>
       </div>
-      <!-- <main-navigation-mobile class="lg:hidden" /> -->
+      <main-navigation id="navigation" @navigateTo="navigateMain" />
     </template>
-    <template v-if="isHome" slot="main">
+    <template #main>
       {{ $t("homeTitle") + "HOOOOME" }}
     </template>
   </colored-layout>

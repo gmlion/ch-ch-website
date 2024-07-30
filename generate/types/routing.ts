@@ -7,6 +7,7 @@ export interface MenuNode {
   uri?: string;
   target?: string;
   document: any;
+  isExpanded?: boolean;
 }
 
 export interface PathType {
@@ -43,4 +44,5 @@ export interface MenuResponseData {
   nodes: MenuResponseData[];
   documentId?: string;
   type: "document" | "uri";
+  isExpanded?: boolean;
 }

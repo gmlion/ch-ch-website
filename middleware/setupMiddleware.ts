@@ -1,10 +1,13 @@
-import { useFooterMenuStore } from "~/generate/store/footerMenuStore";
-import { useMenuStore } from "~/generate/store/menuStore";
-import { usePublicationStore } from "~/generate/store/publicationStore";
+// import { useMenuStore } from "~/generate/store/menuStore";
+// import { usePublicationStore } from "~/generate/store/publicationStore";
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  await useMenuStore();
-  await usePublicationStore();
-  await useFooterMenuStore();
-  return;
+  try {
+    // await useMenuStore();
+    // await usePublicationStore();
+
+    return;
+  } catch (error) {
+    console.error("Middleware error:", error);
+  }
 });

@@ -8,9 +8,7 @@ import Footer from "./Footer.vue";
 
 const props = defineProps<{
   leftColor?: string;
-  rightColor?: string;
   divisionMode?: string;
-  isFooterHidden?: boolean;
   showFader?: boolean;
 }>();
 
@@ -24,7 +22,10 @@ const isElection = useStore(isElectionStore);
       :class="{ 'search-is-active': isSearchOpen }"
       class="w-full lg:min-h-screen lg:flex"
     >
-      <search-overlay v-show="isSearchOpen" :division-mode="divisionMode" />
+      <search-overlay
+        v-show="isSearchOpen"
+        :division-mode="props.divisionMode"
+      />
       <div
         class="left-layout relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 pusher min-w-[350px]"
       >
@@ -32,7 +33,7 @@ const isElection = useStore(isElectionStore);
         <logo :class="{ hidden: isSearchOpen, 'lg:block': true }" />
         <slot name="side" />
         <side-fader
-          v-if="showFader"
+          v-if="props.showFader"
           class="left-0 right-0 bottom-36 !lg:hidden"
         />
       </div>
@@ -53,8 +54,8 @@ const isElection = useStore(isElectionStore);
       <slot name="right" />
     </div>
     <Footer
-      :division-mode="divisionMode"
-      :color="leftColor"
+      :division-mode="props.divisionMode"
+      :color="props.leftColor"
       :is-election="isElection"
     />
   </div>

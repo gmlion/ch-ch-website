@@ -1,13 +1,24 @@
 import { atom } from "nanostores";
 import makeFetch from "../../utils/makeFetch";
 import type {
+  MinimizedPublicationType,
   Publication,
   PublicationOptions,
 } from "../../core/types/publications";
 import type { AllPublicationOptions } from "~/generate/types/slug";
+import type {
+  MenuResponse,
+  MenuResponseData,
+  PathType,
+} from "../types/routing";
 
 export const publicationStore = atom<Publication[]>([]);
-export const availableLanguages =  atom<null | [{locale: string, route:string}]>(null)
+export const indexPublicationStore = atom<Publication | null>(null);
+export const usedPublicationsStore = atom<MinimizedPublicationType[]>([]);
+
+export const availableLanguages = atom<
+  null | [{ locale: string; route: string }]
+>(null);
 export const usePublicationStore = async () => {
   if (publicationStore.get().length === 0) {
     console.log("no publication store, fetching");
@@ -65,6 +76,93 @@ export const makeKeyedPublications = (publications: Publication[]) => {
     publication,
   ]);
   return Object.fromEntries(pairs);
+};
+
+export const useUsedPublications = async (menuForLanguage: MenuResponse) => {
+  if (usedPublicationsStore.get().length > 0) {
+    console.log("usedPublicationsStore already exists");
+    return usedPublicationsStore.get();
+  }
+  console.log("usedPublicationsStore does not exist, setup...");
+
+  const usedPublications: MinimizedPublicationType[] = [];
+  const publications = await usePublicationStore();
+
+  function crawlMenu(nodes: MenuResponseData[], path: PathType[]) {
+    for (const entry of nodes) {
+      if (entry.nodes && entry.nodes.length > 0) {
+        crawlMenu(entry.nodes, path.concat([entry]));
+      } else {
+        const publication = publications.find(
+          (publication) =>
+            publication &&
+            publication.systemdata.documentId === Number(entry.documentId)
+        );
+        if (publication) {
+          const minimizedPublication: MinimizedPublicationType = {
+            metadata: {
+              title: publication.metadata.title,
+              language: {
+                locale: publication.metadata.language.locale,
+              },
+            },
+            systemdata: {
+              documentId: publication.systemdata.documentId,
+            },
+          };
+          usedPublications.push(minimizedPublication);
+        }
+      }
+    }
+  }
+
+  crawlMenu(menuForLanguage.nodes, []);
+
+  usedPublicationsStore.set(usedPublications);
+  console.log("usedPublicationsStore set", usedPublications);
+  return usedPublications;
+};
+
+export const setIndexPublication = async (locale: string) => {
+  if (indexPublicationStore.get() !== null) {
+    console.log("indexPublicationStore already exists");
+    return indexPublicationStore.get();
+  }
+  console.log("indexPublicationStore does not exist, setup...");
+  const publications = await usePublicationStore();
+  for (const publication of publications) {
+    if (!publication.metadata.language) {
+      continue;
+    }
+    const language = publication.metadata.language.locale;
+    const isoCode = getIsoCodeFromLocale(language);
+
+    if (isoCode !== locale) {
+      continue;
+    }
+
+    const contentType = publication.systemdata.contentType;
+    if (contentType !== "homepage") {
+      continue;
+    }
+
+    if (publication.metadata["tag-category"]) {
+      // const tags = await resolveTags(
+      //   $axios,
+      //   publication.metadata['tag-category']
+      // )
+      // if (tags.length === 0 || !tags.includes('chch')) {
+      //   // not chch tags. We skip
+      //   continue
+      // }
+      console.error(
+        "tags not implemented",
+        publication.metadata["tag-category"]
+      );
+    }
+    indexPublicationStore.set(publication);
+    return indexPublicationStore.get();
+  }
 };
 
 async function getPage(

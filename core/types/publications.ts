@@ -12,7 +12,6 @@ export interface Carousel extends PublicationComponent {
   };
 }
 
-
 export interface PublicationContainerComponent extends PublicationComponent {
   containers: {
     carousel: Carousel[];
@@ -70,6 +69,12 @@ export interface Metadata {
   slug: string;
   seoRobots: string;
   teaserImage: teaserImage;
+  "tag-category"?: {
+    $ref: string;
+    reference: {
+      id: string;
+    };
+  };
 }
 
 export interface Publication {
@@ -80,6 +85,10 @@ export interface Publication {
 
 export type WrapFunction = (...args: any[]) => any;
 
+export type MinimizedPublicationType = {
+  metadata: { title: string; language: { locale: string } };
+  systemdata: { documentId: number };
+};
 export interface PublicationOptions {
   offset: number;
   contentTypes?: string;
