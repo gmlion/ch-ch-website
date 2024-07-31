@@ -83,7 +83,6 @@ export const buildUrlFromPublication = (
   const isoCode = getIsoCodeFromLocale(language);
 
   const electionPath = isElection ? electionSlugs[isoCode] + "/" : "";
-
   if (!publication.metadata.title) {
     publication.metadata.title = "No-Title";
   }

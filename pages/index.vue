@@ -1,12 +1,5 @@
 <script setup>
-const { locale } = useI18n();
-import { useIndexMenu } from "~/generate/store/menuStore";
-
-const indexPageData = useAsyncData("indexPageDataStore", async () => {
-  const data = await useIndexMenu(locale.value);
-
-  return data;
-});
+const showGallery = ref(false);
 </script>
 
 <template>
@@ -20,10 +13,10 @@ const indexPageData = useAsyncData("indexPageDataStore", async () => {
       <div role="complementary" class="sr-only">
         <h1>{{ $t("homeTitle") }}</h1>
       </div>
-      <main-navigation id="navigation" @navigateTo="navigateMain" />
+      <main-navigation id="navigation" @navigateToMenuNode="navigateMain()" />
     </template>
-    <template #main>
-      {{ $t("homeTitle") + "HOOOOME" }}
+    <template v-if="!showGallery">
+      <sub-navigation-desktop #main />
     </template>
   </colored-layout>
 </template>

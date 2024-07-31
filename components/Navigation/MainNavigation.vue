@@ -4,7 +4,8 @@ import { useIndexMenu } from "~/generate/store/menuStore";
 import { useUsedPublications } from "~/generate/store/publicationStore";
 import { useAsyncData } from "#app";
 import { useI18n } from "vue-i18n";
-//import "simplebar/dist/simplebar.min.css";
+import type { MenuNode } from "~/generate/types/routing";
+import { createRoute } from "./utils/utils";
 
 const { locale } = useI18n();
 
@@ -12,21 +13,25 @@ const { data: menuData } = await useAsyncData("menuData", async () => {
   return await useIndexMenu(locale.value);
 });
 
-const { data: publications } = await useAsyncData(
-  "usedPublications",
-  async () => {
-    if (menuData.value?.menu) {
-      return await useUsedPublications(menuData.value.menu);
-    }
-    return [];
+const { data: linkItems } = await useAsyncData("linkItems", async () => {
+  const navLinkItems: { entry: MenuNode; route: string | undefined }[] = [];
+  if (menuData.value?.menu) {
+    const usedPublications = await useUsedPublications(menuData.value.menu);
+    menuData.value?.menu.nodes.forEach((entry) => {
+      let item = {
+        entry: entry,
+        route: createRoute(entry, usedPublications, "main"),
+      };
+      navLinkItems.push(item);
+    });
   }
-);
+  return navLinkItems;
+});
 </script>
 
 <template>
   <div class="relative h-full overflow-auto">
     <simplebar class="relative h-full" data-simplebar-auto-hide="false">
-      {{ publications }}
       <nav
         class="flex-1 overflow-y-auto px-11"
         role="navigation"
@@ -34,11 +39,15 @@ const { data: publications } = await useAsyncData(
       >
         <ul class="pb-12">
           <li
-            v-for="entry in menuData?.menu?.nodes"
-            :key="entry.label"
+            v-for="item in linkItems"
+            :key="item.entry.label"
             class="mt-4 text-primary-blue first:mt-0"
           >
-            {{ entry.label }}
+            <navigation-link
+              :entry="item.entry"
+              :route="item.route!"
+              mode="main"
+            />
           </li>
         </ul>
       </nav>

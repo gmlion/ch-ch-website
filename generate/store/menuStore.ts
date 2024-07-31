@@ -1,11 +1,13 @@
 import { atom } from "nanostores";
-import { type MenuResponse } from "../types/routing";
+import { type MenuResponse, type MenuResponseData } from "../types/routing";
 import makeFetch from "../../utils/makeFetch";
 import { type IndexMenu } from "../types/menu";
 import { setIndexPublication } from "./publicationStore";
 
 export const menuStore = atom<MenuResponse[]>([]);
+export const currentPath = atom<MenuResponseData[]>([]);
 export const indexMenuStore = atom<MenuResponse | null>(null);
+export const menuPush = atom<MenuResponse | null>(null);
 
 export const useMenuStore = async () => {
   if (menuStore.get().length === 0) {
@@ -60,4 +62,29 @@ export const useIndexMenu = async (locale: string): Promise<IndexMenu> => {
     homePublication: homePublication,
     lang: locale,
   };
+};
+
+export const startPath = (entry: MenuResponseData) => {
+  currentPath.set([entry]);
+};
+
+export const setMenuPush = (
+  entry: MenuResponseData,
+  menuIndex: number | undefined
+) => {
+  if (menuIndex !== undefined) {
+    const indexMenu = indexMenuStore.get();
+    if (indexMenu && indexMenu.nodes && indexMenu.nodes[menuIndex]) {
+      indexMenu.nodes[menuIndex].children = [];
+      indexMenuStore.set(indexMenu);
+    }
+    if (indexMenu && indexMenu.nodes) {
+      indexMenu.nodes[menuIndex].children = [entry];
+      indexMenuStore.set(indexMenu);
+    } else {
+      currentPath.set([entry]);
+    }
+  }
+
+  return menuPush.get();
 };

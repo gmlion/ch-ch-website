@@ -8,6 +8,7 @@ export interface MenuNode {
   target?: string;
   document: any;
   isExpanded?: boolean;
+  children?: MenuResponseData[];
 }
 
 export interface PathType {

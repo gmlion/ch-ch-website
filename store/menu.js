@@ -10,20 +10,20 @@ export const state = () => ({
    */
   currentPath: [],
   isElection: false,
-})
+});
 
 export const mutations = {
   setIsElection(state, isElection) {
-    state.isElection = isElection
+    state.isElection = isElection;
   },
   setMenu(state, menu) {
-    state.menu = menu
+    state.menu = menu;
   },
   setOtherMenu(state, menu) {
-    state.otherMenu = menu
+    state.otherMenu = menu;
   },
   setFooterMenus(state, footerMenus) {
-    state.footerMenus = footerMenus
+    state.footerMenus = footerMenus;
   },
   /**
    * When navigating further down, we add the entry to the currentPath
@@ -32,11 +32,11 @@ export const mutations = {
   push(state, { navigationEntry, menuIndex }) {
     if (menuIndex !== undefined) {
       if (!state.menu.nodes[menuIndex].children) {
-        state.menu.nodes[menuIndex].children = []
+        state.menu.nodes[menuIndex].children = [];
       }
-      state.menu.nodes[menuIndex].children.push(navigationEntry)
+      state.menu.nodes[menuIndex].children.push(navigationEntry);
     } else {
-      state.currentPath.push(navigationEntry)
+      state.currentPath.push(navigationEntry);
     }
   },
   /**
@@ -44,56 +44,57 @@ export const mutations = {
    */
   pop(state, menuIndex) {
     if (menuIndex !== undefined) {
-      state.menu.nodes[menuIndex].children.pop()
+      state.menu.nodes[menuIndex].children.pop();
     } else {
-      state.currentPath.pop()
+      state.currentPath.pop();
     }
   },
   /**
    * Start the currentPath. This is done with a main navigation entry
    */
   startPath(state, entry) {
-    state.currentPath = [entry]
+    state.currentPath = [entry];
   },
   clearPath(state) {
-    state.currentPath = []
+    state.currentPath = [];
   },
   /**
    * Go back to a certain entry
    */
   goBackToEntry(state, entry) {
-    const index = state.currentPath.indexOf(entry)
-    state.currentPath = state.currentPath.slice(0, index + 1)
+    const index = state.currentPath.indexOf(entry);
+    state.currentPath = state.currentPath.slice(0, index + 1);
   },
 
   setCurrentPath(state, currentPath) {
-    state.currentPath = currentPath
+    state.currentPath = currentPath;
   },
 
   collapseEntry(state, entryIndex) {
-    state.menu.nodes[entryIndex].isExpanded = false
+    state.menu.nodes[entryIndex].isExpanded = false;
   },
 
   expandEntry(state, entryIndex) {
-    state.menu.nodes[entryIndex].isExpanded = true
+    state.menu.nodes[entryIndex].isExpanded = true;
   },
-}
+};
 
 export const getters = {
   mainMenu(state) {
-    if (!state.menu) return {}
-    return state.menu.nodes
+    if (!state.menu) return {};
+    return state.menu.nodes;
   },
   /**
    * Return the last node of the path
    */
   leaf(state) {
-    const len = state.currentPath.length
-    return state.currentPath[len - 1]
+    const len = state.currentPath.length;
+    return state.currentPath[len - 1];
   },
   selectedMainEntry(state) {
-    if (!state.currentPath.length) return {}
+    console.log("selectedMainEntry", state.currentPath);
+    if (!state.currentPath.length) return {};
 
-    return state.currentPath[0]
+    return state.currentPath[0];
   },
-}
+};
