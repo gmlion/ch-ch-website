@@ -6,3 +6,14 @@ export interface IndexMenu {
   homePublication: Publication | undefined | null;
   lang: string | undefined | null;
 }
+
+export interface MenuItem {
+  id: string;
+  label: string;
+  type: string;
+  route?: string;
+  target?: string;
+  parentId?: string;
+  parentLabel?: string;
+  children: MenuItem[];
+}

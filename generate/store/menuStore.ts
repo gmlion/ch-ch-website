@@ -1,13 +1,16 @@
 import { atom } from "nanostores";
-import { type MenuResponse, type MenuResponseData } from "../types/routing";
+import { type MenuNode, type MenuResponse } from "../types/routing";
 import makeFetch from "../../utils/makeFetch";
-import { type IndexMenu } from "../types/menu";
-import { setIndexPublication } from "./publicationStore";
+import { type IndexMenu, type MenuItem } from "../types/menu";
+import { setIndexPublication, useUsedPublications } from "./publicationStore";
+import { createRoute } from "../../components/Navigation/utils/utils";
+import type { MinimizedPublicationType } from "~/core/types/publications";
 
 export const menuStore = atom<MenuResponse[]>([]);
-export const currentPath = atom<MenuResponseData[]>([]);
+export const currentPaths = atom<MenuItem[]>([]);
 export const indexMenuStore = atom<MenuResponse | null>(null);
 export const menuPush = atom<MenuResponse | null>(null);
+export const homeMenuItems = atom<MenuItem[] | null>(null);
 
 export const useMenuStore = async () => {
   if (menuStore.get().length === 0) {
@@ -25,10 +28,6 @@ export const useMenuStore = async () => {
 export const setIndexMenuForLanguages = async (
   locale: string
 ): Promise<MenuResponse | null> => {
-  if (indexMenuStore.get() !== null) {
-    console.log("indexMenuStore already exists");
-    return indexMenuStore.get();
-  }
   console.log("indexMenuStore does not exist, setup...");
   const menus = await useMenuStore();
   let menuForLanguage: MenuResponse | null = null;
@@ -49,8 +48,36 @@ export const setIndexMenuForLanguages = async (
     return node;
   });
 
-  indexMenuStore.set(menuForLanguage);
-  return indexMenuStore.get();
+  return menuForLanguage;
+};
+
+export const setPaths = (
+  navigationEntry: MenuItem,
+  isFirstLevel: boolean = false
+) => {
+  const currentPathsStore = currentPaths.get();
+
+  const index = currentPathsStore.findIndex(
+    (entry) => entry.id === navigationEntry.id
+  );
+
+  if (isFirstLevel) {
+    currentPaths.set([]);
+    currentPaths.set([navigationEntry]);
+    return;
+  }
+
+  if (index !== -1) {
+    currentPaths.set(currentPathsStore.slice(0, index + 1));
+  } else {
+    currentPaths.set([navigationEntry].concat(currentPathsStore));
+  }
+};
+
+export const removeFirstLevelItem = () => {
+  const currentPathsStore = currentPaths.get();
+
+  currentPaths.set(currentPathsStore.slice(1));
 };
 
 export const useIndexMenu = async (locale: string): Promise<IndexMenu> => {
@@ -64,27 +91,39 @@ export const useIndexMenu = async (locale: string): Promise<IndexMenu> => {
   };
 };
 
-export const startPath = (entry: MenuResponseData) => {
-  currentPath.set([entry]);
-};
+export const getHomeMenuItems = async (locale: string) => {
+  const navLinkItems: MenuItem[] = [];
+  const menuData = await useIndexMenu(locale);
+  if (menuData?.menu) {
+    const usedPublications = await useUsedPublications(menuData.menu);
+    menuData?.menu.nodes.forEach((entry) => {
+      let item: MenuItem = createMenuItems(entry, usedPublications);
 
-export const setMenuPush = (
-  entry: MenuResponseData,
-  menuIndex: number | undefined
-) => {
-  if (menuIndex !== undefined) {
-    const indexMenu = indexMenuStore.get();
-    if (indexMenu && indexMenu.nodes && indexMenu.nodes[menuIndex]) {
-      indexMenu.nodes[menuIndex].children = [];
-      indexMenuStore.set(indexMenu);
-    }
-    if (indexMenu && indexMenu.nodes) {
-      indexMenu.nodes[menuIndex].children = [entry];
-      indexMenuStore.set(indexMenu);
-    } else {
-      currentPath.set([entry]);
-    }
+      return navLinkItems.push(item);
+    });
   }
 
-  return menuPush.get();
+  return navLinkItems;
+};
+
+const createMenuItems = (
+  entry: MenuNode,
+  usedPublications: MinimizedPublicationType[],
+  parentId: string = ""
+) => {
+  let item: MenuItem = {
+    id: entry.id,
+    label: entry.label,
+    type: entry.type,
+    target: entry.target,
+    parentId: parentId,
+    children: entry.nodes
+      ? entry.nodes.map((child) =>
+          createMenuItems(child, usedPublications, entry.id)
+        )
+      : [],
+    route: createRoute(entry, usedPublications, "main"),
+  };
+
+  return item;
 };

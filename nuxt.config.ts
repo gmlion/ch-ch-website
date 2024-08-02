@@ -22,21 +22,26 @@ export default defineNuxtConfig({
       const publications = await usePublicationStore();
 
       const publicationRoutes = await getPublicationsRoutes(publications);
+      let languages: string[] = [];
       for (const menu of menus) {
         const [name, language] = menu.label.split("-");
+        if (!languages.includes(language)) {
+          languages.push(language);
+        }
         const isElection = name === "wahlen";
         crawlMenu(menu.nodes, [], language, menu, isElection, routes);
 
         publicationRoutes.forEach((route) => {
           routes.push(route);
         });
-
+      }
+      languages.forEach((language) => {
         routes.push({
           name: `home-${language.toUpperCase()}`,
           path: encodeURI(`/${language}/`),
           file: `${__dirname}/pages/index.vue`,
         });
-      }
+      });
 
       routes.push({
         name: "catch-all",
@@ -56,7 +61,13 @@ export default defineNuxtConfig({
       },
     },
   },
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true,
+    },
+  },
   runtimeConfig: {
     API_TOKEN: process.env.API_TOKEN,
     BASE_URL: process.env.BASE_URL,
@@ -108,7 +119,7 @@ export default defineNuxtConfig({
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     },
   },
-  css: ["./assets/css/main.css"],
+  css: ["./assets/scss/main.scss"],
   postcss: {
     plugins: {
       tailwindcss: {},

@@ -1,5 +1,7 @@
-<script setup>
+<script setup lang="ts">
 const showGallery = ref(false);
+
+// To do: Metadata and Carousel
 </script>
 
 <template>
@@ -13,10 +15,10 @@ const showGallery = ref(false);
       <div role="complementary" class="sr-only">
         <h1>{{ $t("homeTitle") }}</h1>
       </div>
-      <main-navigation id="navigation" @navigateToMenuNode="navigateMain()" />
+      <main-navigation id="navigation" />
     </template>
-    <template v-if="!showGallery">
-      <sub-navigation-desktop #main />
+    <template v-if="!showGallery" #main>
+      <sub-navigation-desktop />
     </template>
   </colored-layout>
 </template>
