@@ -98,6 +98,7 @@ export default defineNuxtConfig({
         display: "swap",
       },
     ],
+    "vue3-carousel-nuxt"
   ],
 
   i18n: {

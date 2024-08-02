@@ -1,14 +1,94 @@
 type Design = { name: string; version: string };
 type Language = { label: string; locale: string; groupId: string };
+
+export interface CarouselContent {
+  component: string;
+  identifier: string;
+  id: string;
+  content: {
+    link?: {
+      params: {
+        link: {
+          $ref: string;
+          reference: {
+            id: string;
+          };
+        };
+      };
+      service: string;
+    };
+    image?: {
+      url: string;
+      width: number;
+      height: number;
+      mediaId: string;
+      mimeType: string;
+      originalUrl: string;
+      imageService: string;
+    };
+    title?: string;
+    text?: string;
+  };
+}
+
+export interface CarouselContainer {
+  component: string;
+  identifier: string;
+  id: string;
+  content: {
+    link?: {
+      params: {
+        link: {
+          $ref: string;
+          reference: {
+            id: string;
+          };
+        };
+      };
+      service: string;
+    };
+    image?: {
+      url: string;
+      width: number;
+      height: number;
+      mediaId: string;
+      mimeType: string;
+      originalUrl: string;
+      imageService: string;
+    };
+    title?: string;
+    text?: string;
+  };
+}
+
+export interface Carousel {
+  component: string;
+  identifier: string;
+  id: string;
+  content: {
+    link?: {
+      params: {
+        link: {
+          $ref: string;
+          reference: {
+            id: string;
+          };
+        };
+      };
+      service: string;
+    };
+  };
+  styles: {
+    "carousel-color": string;
+  };
+  containers: {
+    "carousel-content": CarouselContent[];
+  };
+}
 interface Content extends PublicationComponent {
   containers: {
     left: PublicationContainerComponent[] | [];
     right: PublicationContainerComponent[] | [];
-  };
-}
-export interface Carousel extends PublicationComponent {
-  content: {
-    link: Link;
   };
 }
 
@@ -53,6 +133,8 @@ export interface SystemData {
 }
 
 export interface Metadata {
+  twitterImage: any;
+  openGraphImage: any;
   title: string;
   language: Language;
   description: string;
@@ -80,7 +162,7 @@ export interface Metadata {
 export interface Publication {
   systemdata: SystemData;
   metadata: Metadata;
-  content: Content;
+  content: Content[];
 }
 
 export type WrapFunction = (...args: any[]) => any;

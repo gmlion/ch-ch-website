@@ -8,4 +8,10 @@
 
 .color-index .right-layout {
   @apply bg-primary-blue text-primary-white lg:w-1/2;
+  &.layout-yellow {
+    @apply bg-primary-yellow;
+  }
+  &.layout-red {
+    @apply bg-primary-red;
+  }
 }
