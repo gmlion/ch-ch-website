@@ -6,26 +6,26 @@
 </template>
 
 <script>
-import { cleanUpText } from '@/utils/text'
-import ContentBlockMixin from './ContentBlockMixin'
+import { cleanUpText } from "~/utils/_text";
+import ContentBlockMixin from "./ContentBlockMixin";
 
 export default {
   mixins: [ContentBlockMixin],
   fetch() {
-    this.text = cleanUpText(this.contentData.content.title)
+    this.text = cleanUpText(this.contentData.content.title);
   },
   data() {
     return {
-      text: '',
-    }
+      text: "",
+    };
   },
   computed: {
     slug() {
-      if (this.contentData.content && 'slug' in this.contentData.content) {
-        return this.contentData.content.slug
+      if (this.contentData.content && "slug" in this.contentData.content) {
+        return this.contentData.content.slug;
       }
-      return ''
+      return "";
     },
   },
-}
+};
 </script>

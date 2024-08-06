@@ -1,27 +1,22 @@
 <script lang="ts" setup>
-import type { Carousel } from "~/core/types/publications";
+import type { Carousel } from "./types/types";
+import { getCarouselItems } from "./utils/homeCarouselUtils";
 
 const props = defineProps<{
   carouselContent: Carousel[];
-  layoutYellow?: boolean;
-  redLayout?: boolean;
 }>();
 
-onBeforeMount(() => {
-  const layoutElement = document.querySelector(".right-layout");
-  if (layoutElement && props.layoutYellow) {
-    layoutElement.classList.add("layout-yellow");
-  }
-  if (layoutElement && props.redLayout) {
-    layoutElement.classList.add("layout-red");
-  }
+const { data: carouselItems } = await useAsyncData(async () => {
+  return await getCarouselItems(props.carouselContent);
 });
 </script>
 
 <template>
   <Carousel>
-    <Slide v-for="carouselItem in carouselContent" :key="carouselItem.id">
-      <div class="carousel__item">{{ carouselItem.id }}</div>
+    <Slide v-for="carouselItem in carouselItems" :key="carouselItem.id">
+      <div class="carousel__item">
+        <CarouselContent :carousel-content="carouselItem" />
+      </div>
     </Slide>
 
     <template #addons>

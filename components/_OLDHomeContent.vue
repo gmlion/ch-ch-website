@@ -35,7 +35,7 @@
 // import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 // import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import twConfig from "../tailwind.config";
-import CarouselContent from "./CarouselContent.vue";
+import CarouselContent from "./HomeCarousel/CarouselContent.vue";
 
 const SLIDE_TIME = 8000;
 

@@ -8,7 +8,7 @@
   >
     <div v-if="contentData.isFirst" class="flex justify-end mb-7">
       <button class="relative text-lg font-semibold toggle" @click="toggleAll">
-        {{ showOpenAll ? $t('openAll') : $t('closeAll') }}
+        {{ showOpenAll ? $t("openAll") : $t("closeAll") }}
       </button>
     </div>
     <accordion-item
@@ -39,13 +39,13 @@
 </template>
 
 <script>
-import AccordionItem from '@/components/AccordionItem.vue'
-import ContentComponentMixin from '@/components/ContentComponentMixin'
-import { mapState } from 'vuex'
-import AccordionMixin from '@/components/ContentBlock/AccordionMixin'
-import { slugify } from '@/utils/slugifyAnchorElements'
-import { cleanUpText } from '../../utils/text'
-import ContentBlockMixin from './ContentBlockMixin'
+import AccordionItem from "@/components/AccordionItem.vue";
+import ContentComponentMixin from "@/components/ContentComponentMixin";
+import { mapState } from "vuex";
+import AccordionMixin from "@/components/ContentBlock/AccordionMixin";
+import { slugify } from "@/utils/slugifyAnchorElements";
+import { cleanUpText } from "../../utils/_text";
+import ContentBlockMixin from "./ContentBlockMixin";
 
 export default {
   components: {
@@ -64,33 +64,33 @@ export default {
       (faq) =>
         faq.systemdata.documentId ===
         parseInt(this.contentData.content.faq.params.teaser.reference.id)
-    )
-    this.faqDocument = faqDocument
+    );
+    this.faqDocument = faqDocument;
   },
   data() {
     return {
       faqDocument: null,
-    }
+    };
   },
   computed: {
-    ...mapState('publications', ['faqs']),
+    ...mapState("publications", ["faqs"]),
     items() {
       if (!this.faqDocument) {
-        return []
+        return [];
       }
-      return this.faqDocument.content[0].containers.body
+      return this.faqDocument.content[0].containers.body;
     },
     question() {
       if (!this.faqDocument) {
-        return ''
+        return "";
       }
-      return cleanUpText(this.faqDocument.content[0].content?.question || '')
+      return cleanUpText(this.faqDocument.content[0].content?.question || "");
     },
     slug() {
-      if (!this.question) return ''
+      if (!this.question) return "";
 
-      return slugify(this.question)
+      return slugify(this.question);
     },
   },
-}
+};
 </script>

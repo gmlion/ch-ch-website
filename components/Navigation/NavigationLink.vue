@@ -2,6 +2,7 @@
 import { createUrlTarget } from "./utils/utils";
 import { setPaths } from "~/generate/store/menuStore";
 import type { MenuItem } from "~/generate/types/menu";
+import { hideCarousel } from "~/store/pageState";
 
 const URITYPE = "uri";
 
@@ -15,7 +16,11 @@ const isLink = props.entry.children.length === 0;
 
 const target = createUrlTarget(props.entry.type, URITYPE, props.entry.target!);
 const navigateToMenuNode = (navigationEntry: MenuItem) => {
+  hideCarouselHome();
   setPaths(navigationEntry, props.firstLevel);
+};
+const hideCarouselHome = () => {
+  hideCarousel.set(true);
 };
 </script>
 

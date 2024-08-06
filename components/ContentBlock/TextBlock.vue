@@ -16,45 +16,45 @@
 </template>
 
 <script>
-import { replaceInternalLinks, replaceEmptyLinks } from '../../utils/text'
-import ContentBlockMixin from './ContentBlockMixin'
+import { replaceInternalLinks, replaceEmptyLinks } from "../../utils/_text";
+import ContentBlockMixin from "./ContentBlockMixin";
 
 export default {
   mixins: [ContentBlockMixin],
   async fetch() {
     try {
-      const text = this.contentData.content.text
-      const emptyLinksRemoved = replaceEmptyLinks(text)
+      const text = this.contentData.content.text;
+      const emptyLinksRemoved = replaceEmptyLinks(text);
       const { replacedText, cantonPickers } = await replaceInternalLinks(
         emptyLinksRemoved,
         this.$axios.get,
         this.$store.state.menu.isElection
-      )
-      this.text = replacedText
-      this.cantonPickers = cantonPickers
+      );
+      this.text = replacedText;
+      this.cantonPickers = cantonPickers;
     } catch (err) {
-      this.text = this.contentData.content.text
+      this.text = this.contentData.content.text;
       // eslint-disable-next-line
-      console.log(err)
+      console.log(err);
     }
   },
   data() {
     return {
-      text: '',
+      text: "",
       cantonPickers: [],
-    }
+    };
   },
   mounted() {
     // Initalize the cantonpicker links
     this.cantonPickers.forEach((cantonPicker, index) => {
       const element = document.querySelector(
         `[canton-picker-id="${cantonPicker.cantonPickerId}"]`
-      )
-      element.addEventListener('click', () => {
-        this.$refs.cantonBlocks[index].showBlock()
-      })
-      element.classList.add('cursor-pointer')
-    })
+      );
+      element.addEventListener("click", () => {
+        this.$refs.cantonBlocks[index].showBlock();
+      });
+      element.classList.add("cursor-pointer");
+    });
   },
-}
+};
 </script>

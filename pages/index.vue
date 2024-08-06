@@ -16,7 +16,7 @@ const { data: homePageData } = await useAsyncData(async () => {
   return homePageData;
 });
 
-// To do: Metadata and Carousel
+// TODO: Carousel & Colorful scrollbar
 </script>
 
 <template>
@@ -42,7 +42,6 @@ const { data: homePageData } = await useAsyncData(async () => {
       >
         <home-carousel
           class="h-full"
-          :layout-yellow="true"
           :carousel-content="
             homePageData?.content[0].containers.right[0].containers.carousel
           "

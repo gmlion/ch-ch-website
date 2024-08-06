@@ -30,7 +30,7 @@ export const createRoute = (
   // if (process.env.NODE_ENV !== "development") {
   //   url += "/";
   // }
-  console.log(url);
+
   return url;
 };
 

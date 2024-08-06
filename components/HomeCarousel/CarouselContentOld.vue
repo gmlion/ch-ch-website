@@ -28,6 +28,12 @@
     ref="leadContainer"
     class="h-full lg:overflow-hidden"
   >
+    <text-block
+      ref="lead"
+      v-line-clamp="lines"
+      :content-data="carouselLead"
+      class="mb-4 carousel-lead"
+    />
     <!-- Disable if lines are not clamped (lines === 9999) -->
     <!-- <v-popover
       ref="popover"
@@ -64,12 +70,12 @@ import ContentComponentMixin from "@/components/ContentComponentMixin";
 // import { VPopover } from "v-tooltip";
 import { getPublicationById } from "~/utils/publication";
 import { mapState } from "vuex";
-import { buildUrlFromPublication, getDocumentPath } from "../utils/url";
+import { buildUrlFromPublication, getDocumentPath } from "../../utils/url";
 import {
   cleanUpText,
   replaceEmptyLinks,
   replaceInternalLinks,
-} from "../utils/text";
+} from "../../utils/_text";
 import FreeHtmlBlock from "./ContentBlock/FreeHtmlBlock.vue";
 
 export default {
