@@ -53,6 +53,7 @@ export interface Image {
   mimeType: string;
   originalUrl: string;
   imageService: string;
+  additionalData: ImageItem;
 }
 
 export interface ImageMetaData {
@@ -66,7 +67,7 @@ export interface CarouselItem {
   href?: string;
   title?: string;
   text?: string;
-  image?: ImageItem;
+  image?: Image;
   backgroundColor?: string;
 }
 
@@ -84,7 +85,7 @@ type ImageTranslationMetadata = {
   title: string;
 };
 
-type ImageTranslation = {
+export type ImageTranslation = {
   locale: string;
   metadata: ImageTranslationMetadata;
 };
@@ -109,4 +110,11 @@ export type ImageItem = {
   createdAt: string;
   updatedAt: string;
   state: "active" | "inactive";
+};
+
+export type CarouselOnChangeProperties = {
+  currentSlideIndex: number;
+  prevSlideIndex: number;
+  slidesCount: number;
+  slidingToIndex: number;
 };

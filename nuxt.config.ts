@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import { i18nLocales } from "./utils/locale";
-import crawlMenu from "./crawlMenu";
 import { useMenuStore } from "./generate/store/menuStore";
 import { usePublicationStore } from "./generate/store/publicationStore";
 import getPublicationsRoutes from "./getPublicationsRoutes";
+import crawlMenu from "./crawlMenu";
 
 if (process.env.NO_INCREMENTAL_BUILD && fs.existsSync(".dist_cache")) {
   fs.rmSync(".dist_cache", { recursive: true });
@@ -16,6 +16,9 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  routeRules: {
+    "/**": { isr: true },
+  },
   hooks: {
     "pages:extend": async (routes) => {
       const menus = await useMenuStore();
@@ -78,6 +81,7 @@ export default defineNuxtConfig({
   modules: [
     "@nuxtjs/svg-sprite",
     "@nuxtjs/i18n",
+    "nuxt-swiper",
     "@nuxtjs/robots",
     "@nuxtjs/sitemap",
     [
@@ -98,9 +102,8 @@ export default defineNuxtConfig({
         display: "swap",
       },
     ],
-    "vue3-carousel-nuxt"
+    "vue3-carousel-nuxt",
   ],
-
   i18n: {
     strategy: "no_prefix",
     detectBrowserLanguage: {

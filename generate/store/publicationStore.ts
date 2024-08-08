@@ -119,7 +119,7 @@ export const useUsedPublications = async (menuForLanguage: MenuResponse) => {
   crawlMenu(menuForLanguage.nodes, []);
 
   usedPublicationsStore.set(usedPublications);
-  console.log("usedPublicationsStore set", usedPublications);
+  console.log("usedPublicationsStore set");
   return usedPublications;
 };
 

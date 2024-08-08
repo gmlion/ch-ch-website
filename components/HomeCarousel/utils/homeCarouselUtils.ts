@@ -52,3 +52,30 @@ export const getCarouselItems = async (
 
   return carouselItemsArray;
 };
+
+export const changeSectionBackground = (color: string | undefined) => {
+  if (!window) return;
+  const rightLayout = document.querySelector(".right-layout");
+  if (rightLayout) {
+    if (rightLayout.classList.contains("layout-yellow")) {
+      rightLayout.classList.remove("layout-yellow");
+    }
+    if (color !== undefined && color === "bg-primary-yellow") {
+      rightLayout.classList.add("layout-yellow");
+    } else {
+      rightLayout.classList.remove("layout-yellow");
+    }
+  }
+};
+
+export const onSlideChange = (
+  slideIndex: number,
+  carouselItems: CarouselItem[]
+) => {
+  if (!carouselItems) return;
+  let bgColor: string | undefined = "";
+
+  bgColor = carouselItems[slideIndex].backgroundColor;
+
+  changeSectionBackground(bgColor);
+};

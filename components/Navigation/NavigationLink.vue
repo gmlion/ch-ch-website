@@ -28,7 +28,7 @@ const hideCarouselHome = () => {
   <a
     v-if="isLink"
     :href="entry.route"
-    class="leading-tight no-underline text-inherit"
+    class="leading-tight no-underline text-inherit text-navigation-fluid"
     :target="target"
     :class="
       (props.mode === 'main'

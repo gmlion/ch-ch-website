@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 import colors from "tailwindcss/colors";
-
 export default {
   files: ["./safelist.txt"],
   safelist: ["bg-primary-red", "stroke-white", "stroke-blue"],
@@ -797,5 +796,65 @@ export default {
     "focus-visible",
     "active",
     "disabled",
+  ],
+  plugins: [
+    require("tailwindcss-fluid")({
+      textSizes: {
+        sm: {
+          min: "0.938rem",
+          max: "0.938rem",
+          minvw: "1024",
+          maxvw: "1920px",
+        },
+        md: {
+          min: "1.125rem",
+          max: "1.125rem",
+          minvw: "1024",
+          maxvw: "1920px",
+        },
+        lg: {
+          min: "1.5rem",
+          max: "1.5rem",
+          minvw: "1024",
+          maxvw: "1920px",
+        },
+        xl: {
+          min: "1.5rem",
+          max: "1.75rem",
+          minvw: "1024",
+          maxvw: "1920px",
+        },
+        "2xl": {
+          min: "1.75rem",
+          max: "2.125rem",
+          minvw: "1024",
+          maxvw: "1920px",
+        },
+        "3xl": {
+          min: "2.125rem",
+          max: "2.5rem",
+          minvw: "1024",
+          maxvw: "1920px",
+        },
+        navigation: {
+          min: "1.5rem",
+          max: "2.5rem",
+          minvw: "320px",
+          maxvw: "1624px",
+        },
+        claim: {
+          min: "1.063rem",
+          max: "1.313rem",
+          minvw: "320px",
+          maxvw: "1024px",
+        },
+        "footer-claim": {
+          min: "0.8rem",
+          max: "1rem",
+          minvw: "1024px",
+          maxvw: "1438px",
+        },
+      },
+    }),
   ],
 };

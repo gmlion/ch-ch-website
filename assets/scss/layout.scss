@@ -6,12 +6,35 @@
   @apply bg-primary-white text-primary-blue lg:h-screen lg:relative lg:w-1/2;
 }
 
+.swiper-button-next,
+.swiper-button-prev {
+  display: none;
+  width: 36px;
+  height: 36px;
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
 .color-index .right-layout {
-  @apply bg-primary-blue text-primary-white lg:w-1/2;
+  @apply bg-primary-red text-primary-white lg:w-1/2;
+  .swiper-button-next,
+  .swiper-button-prev {
+    @apply text-primary-white;
+  }
+
   &.layout-yellow {
     @apply bg-primary-yellow;
+    .swiper-button-next,
+    .swiper-button-prev {
+      @apply text-primary-blue;
+    }
   }
-  &.layout-red {
-    @apply bg-primary-red;
+  &.layout-blue {
+    @apply bg-primary-blue;
+    .swiper-button-next,
+    .swiper-button-prev {
+      @apply text-primary-blue;
+    }
   }
 }

@@ -4,7 +4,6 @@ import { useIndexMenu } from "~/generate/store/menuStore";
 import { useStore } from "@nanostores/vue";
 import { hideCarousel } from "~/store/pageState";
 
-const { locale } = useI18n();
 const hideCarouselState = useStore(hideCarousel);
 
 const { data: homePageData } = await useAsyncData(async () => {
