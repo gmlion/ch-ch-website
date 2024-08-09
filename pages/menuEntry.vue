@@ -1,10 +1,23 @@
 <script setup lang="ts">
-console.log("menuEntry");
+// TODO: Create store that gets the id of the current url element and set it to a store
+// TODO: Create Breadcrumb which gets one step back in the menu
 </script>
 
 <template>
-  <div>
-    <h1>Menu Entry</h1>
-    <p>Menu Entry</p>
-  </div>
+  <colored-layout
+    class="color-index"
+    left-color="white"
+    right-color="layout-blue"
+    division-mode="halves"
+    :show-fader="true"
+  >
+    <template #side>
+      <main-navigation id="navigation" start-item-id="F9yt8EwUiCq2" />
+      <BackToOverviewLink />
+    </template>
+
+    <template #main>
+      <sub-navigation-desktop />
+    </template>
+  </colored-layout>
 </template>

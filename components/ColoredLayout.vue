@@ -8,6 +8,7 @@ import Footer from "./Footer.vue";
 
 const props = defineProps<{
   leftColor?: string;
+  rightColor?: "layout-blue" | "layout-yellow";
   divisionMode?: string;
   showFader?: boolean;
 }>();
@@ -27,7 +28,7 @@ const isElection = useStore(isElectionStore);
         :division-mode="props.divisionMode"
       />
       <div
-        class="left-layout relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 pusher min-w-[350px]"
+        class="left-layout relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 pusher min-w-[350px] lg:pb-36"
       >
         <a href="#content" class="hidden">{{ $t("jumpToContent") }}</a>
         <logo :class="{ hidden: isSearchOpen, 'lg:block': true }" />
@@ -40,6 +41,7 @@ const isElection = useStore(isElectionStore);
 
       <main
         class="right-layout flex flex-col w-full px-4 py-10 transition-colors lg:px-12 main lg:py-14 main-content pusher"
+        :class="props.rightColor"
       >
         <div
           :class="{ 'text-primary-blue': isSearchOpen }"
@@ -53,6 +55,7 @@ const isElection = useStore(isElectionStore);
       </main>
       <slot name="right" />
     </div>
+
     <Footer
       :division-mode="props.divisionMode"
       :color="props.leftColor"

@@ -4,6 +4,15 @@ import { currentPaths } from "~/generate/store/menuStore";
 import type { MenuItem } from "~/generate/types/menu";
 
 const currentPathsStore = useStore(currentPaths);
+
+onMounted(() => {
+  const rightLayout = document.querySelector(".right-layout");
+
+  if (rightLayout) {
+    rightLayout.classList.remove("layout-yellow");
+    rightLayout.classList.add("layout-blue");
+  }
+});
 </script>
 
 <template>

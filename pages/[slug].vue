@@ -1,5 +1,17 @@
 <script setup lang="ts"></script>
 
-<template>Here is the [slug]</template>
+<template>
+  <colored-layout
+    class="color-index"
+    left-color="white"
+    division-mode="halves"
+    :show-fader="true"
+  >
+    <template #side>
+      <!-- <main-navigation id="navigation" /> -->
+      slug page (catch all)
+    </template>
 
-<style scoped lang="postcss"></style>
+    <template #main> </template>
+  </colored-layout>
+</template>

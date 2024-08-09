@@ -16,14 +16,11 @@ const swiperRef = ref<any>(null);
 const showSwiper = ref(false);
 
 onMounted(() => {
-  showSwiper.value = true; // Show the Swiper once the component is mounted
+  showSwiper.value = true;
 });
 
 const onSwiper = (swiperInstance: any) => {
   swiperRef.value = swiperInstance;
-
-  console.log("Swiper is mounted:", swiperInstance); // Log that Swiper is mounted
-
   const prevButton = swiperInstance.navigation.prevEl as HTMLElement;
   const nextButton = swiperInstance.navigation.nextEl as HTMLElement;
 

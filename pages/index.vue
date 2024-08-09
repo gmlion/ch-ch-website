@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import type { Publication } from "~/core/types/publications";
-import { useIndexMenu } from "~/generate/store/menuStore";
 import { useStore } from "@nanostores/vue";
 import { hideCarousel } from "~/store/pageState";
-
+import { setIndexPublication } from "~/generate/store/publicationStore";
 const hideCarouselState = useStore(hideCarousel);
 
 const { data: homePageData } = await useAsyncData(async () => {
   const { locale } = useI18n();
-  const homePageData = (await useIndexMenu(locale.value)).homePublication;
+  const homePageData = await setIndexPublication(locale.value);
 
   useHead(metaDataGenerator(homePageData as Publication, locale.value));
 

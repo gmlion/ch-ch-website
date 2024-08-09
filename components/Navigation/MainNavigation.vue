@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import Simplebar from "simplebar-vue";
 import "../../../node_modules/simplebar-vue/dist/simplebar.min.css";
-
 import { useI18n } from "vue-i18n";
-import { getHomeMenuItems } from "~/generate/store/menuStore";
+import { getMainMenuItems } from "~/generate/store/menuStore";
+const props = defineProps<{
+  startItemId?: string;
+}>();
 
 const { data: linkItems } = await useAsyncData(async () => {
   const { locale } = useI18n();
 
-  return await getHomeMenuItems(locale.value);
+  return await getMainMenuItems(locale.value, props.startItemId);
 });
 </script>
 
@@ -24,7 +26,7 @@ const { data: linkItems } = await useAsyncData(async () => {
           <li
             v-for="item in linkItems"
             :key="item.label"
-            class="mt-4 text-primary-blue hover:text-secondary-yellow first:mt-0 w-[fit-content]"
+            class="mt-4 text-primary-blue hover:text-tertiarys-yellow first:mt-0 w-[fit-content]"
           >
             <navigation-link :entry="item" mode="main" :first-level="true" />
           </li>

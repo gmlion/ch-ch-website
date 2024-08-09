@@ -1,8 +1,8 @@
 import { atom } from "nanostores";
 import { type MenuNode, type MenuResponse } from "../types/routing";
 import makeFetch from "../../utils/makeFetch";
-import { type IndexMenu, type MenuItem } from "../types/menu";
-import { setIndexPublication, useUsedPublications } from "./publicationStore";
+import { type MenuItem } from "../types/menu";
+import { useUsedPublications } from "./publicationStore";
 import { createRoute } from "../../components/Navigation/utils/utils";
 import type { MinimizedPublicationType } from "~/core/types/publications";
 
@@ -25,7 +25,7 @@ export const useMenuStore = async () => {
   return menuStore.get();
 };
 
-export const setIndexMenuForLanguages = async (
+export const indexMenuByLanguages = async (
   locale: string
 ): Promise<MenuResponse | null> => {
   console.log("indexMenuStore does not exist, setup...");
@@ -80,30 +80,51 @@ export const removeFirstLevelItem = () => {
   currentPaths.set(currentPathsStore.slice(1));
 };
 
-export const useIndexMenu = async (locale: string): Promise<IndexMenu> => {
-  const menu = await setIndexMenuForLanguages(locale);
-  const homePublication = await setIndexPublication(locale);
-
-  return {
-    menu: menu,
-    homePublication: homePublication,
-    lang: locale,
-  };
-};
-
-export const getHomeMenuItems = async (locale: string) => {
+export const getMainMenuItems = async (
+  locale: string,
+  startItemId?: string
+) => {
   const navLinkItems: MenuItem[] = [];
-  const menuData = await useIndexMenu(locale);
-  if (menuData?.menu) {
-    const usedPublications = await useUsedPublications(menuData.menu);
-    menuData?.menu.nodes.forEach((entry) => {
-      let item: MenuItem = createMenuItems(entry, usedPublications);
+  const menuData = await indexMenuByLanguages(locale);
 
-      return navLinkItems.push(item);
+  if (menuData) {
+    const usedPublications = await useUsedPublications(menuData);
+    let nodesToProcess = menuData.nodes;
+
+    if (startItemId) {
+      // Find the start item by ID if provided
+      const startItem = findItemById(menuData.nodes, startItemId);
+      if (startItem) {
+        nodesToProcess = startItem.nodes;
+      } else {
+        // If start item is not found, return an empty list
+        return navLinkItems;
+      }
+    }
+
+    // Process the nodes
+    nodesToProcess.forEach((entry) => {
+      let item: MenuItem = createMenuItems(entry, usedPublications);
+      navLinkItems.push(item);
     });
   }
 
   return navLinkItems;
+};
+
+const findItemById = (nodes: MenuNode[], id: string): MenuNode | undefined => {
+  for (const node of nodes) {
+    if (node.id === id) {
+      return node;
+    }
+    if (node.nodes) {
+      const found = findItemById(node.nodes, id);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  return undefined;
 };
 
 const createMenuItems = (
