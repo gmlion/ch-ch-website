@@ -14,8 +14,6 @@ const { data: homePageData } = await useAsyncData(async () => {
 
   return homePageData;
 });
-
-// TODO: Carousel & Colorful scrollbar
 </script>
 
 <template>

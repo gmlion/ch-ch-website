@@ -18,6 +18,11 @@
 
 .color-index .right-layout {
   @apply bg-primary-red text-primary-white lg:w-1/2;
+
+  .search-icon {
+    @apply text-primary-white;
+  }
+
   .swiper-button-next,
   .swiper-button-prev {
     @apply text-primary-white;
@@ -25,6 +30,11 @@
 
   &.layout-yellow {
     @apply bg-primary-yellow;
+
+    .search-icon {
+      @apply text-primary-blue;
+    }
+
     .swiper-button-next,
     .swiper-button-prev {
       @apply text-primary-blue;
@@ -32,6 +42,11 @@
   }
   &.layout-blue {
     @apply bg-primary-blue;
+
+    .search-icon {
+      @apply text-primary-white;
+    }
+
     .swiper-button-next,
     .swiper-button-prev {
       @apply text-primary-blue;

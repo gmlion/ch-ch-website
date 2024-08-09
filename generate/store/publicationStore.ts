@@ -124,10 +124,6 @@ export const useUsedPublications = async (menuForLanguage: MenuResponse) => {
 };
 
 export const setIndexPublication = async (locale: string) => {
-  if (indexPublicationStore.get() !== null) {
-    console.log("indexPublicationStore already exists");
-    return indexPublicationStore.get();
-  }
   console.log("indexPublicationStore does not exist, setup...");
   const publications = await usePublicationStore();
   for (const publication of publications) {

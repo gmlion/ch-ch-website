@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Simplebar from "simplebar-vue";
+import "../../../node_modules/simplebar-vue/dist/simplebar.min.css";
 
 import { useI18n } from "vue-i18n";
 import { getHomeMenuItems } from "~/generate/store/menuStore";

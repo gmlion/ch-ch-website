@@ -16,9 +16,11 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+
   routeRules: {
     "/**": { isr: true },
   },
+
   hooks: {
     "pages:extend": async (routes) => {
       const menus = await useMenuStore();
@@ -64,6 +66,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   devtools: {
     enabled: true,
 
@@ -71,6 +74,7 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
+
   runtimeConfig: {
     API_TOKEN: process.env.API_TOKEN,
     BASE_URL: process.env.BASE_URL,
@@ -78,6 +82,7 @@ export default defineNuxtConfig({
       searchUrl: process.env.API_URL_SEARCH,
     },
   },
+
   modules: [
     "@nuxtjs/svg-sprite",
     "@nuxtjs/i18n",
@@ -104,6 +109,7 @@ export default defineNuxtConfig({
     ],
     "vue3-carousel-nuxt",
   ],
+
   i18n: {
     strategy: "no_prefix",
     detectBrowserLanguage: {
@@ -114,6 +120,7 @@ export default defineNuxtConfig({
     langDir: "lang/",
     locales: i18nLocales,
   },
+
   app: {
     head: {
       meta: [
@@ -123,11 +130,15 @@ export default defineNuxtConfig({
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     },
   },
+
   css: ["./assets/scss/main.scss"],
+
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
+
+  compatibilityDate: "2024-08-09",
 });

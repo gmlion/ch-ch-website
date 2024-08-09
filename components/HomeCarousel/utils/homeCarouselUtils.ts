@@ -19,8 +19,7 @@ export const getCarouselItems = async (
     };
 
     if (item.styles && item.styles["carousel-color"]) {
-      carouselObject.backgroundColor =
-        item.styles["carousel-color"] || "bg-primary-red";
+      carouselObject.backgroundColor = item.styles["carousel-color"];
     }
 
     if (item.content.link?.params?.link?.reference?.id) {
