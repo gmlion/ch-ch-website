@@ -12,6 +12,12 @@ export interface MenuItem {
   route?: string;
   target?: string;
   parentId?: string;
-  parentLabel?: string;
+  parentUrl?: string;
   children: MenuItem[];
+}
+
+export interface Breadcrumb {
+  id: string;
+  label: string;
+  route: string;
 }

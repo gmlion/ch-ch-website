@@ -35,7 +35,7 @@ onMounted(() => {
         </li>
       </ul>
     </div>
-    <div v-if="currentPathsStore.length > 1">
+    <div v-if="currentPathsStore.length >= 1">
       <navigation-back-button class="mt-8 hover:text-primary-yellow" />
     </div>
   </div>

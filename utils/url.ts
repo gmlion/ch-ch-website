@@ -1,5 +1,6 @@
 import type { MenuNode } from "~/generate/types/routing";
 import { getIsoCodeFromLocale } from "./locale";
+import type { MinimizedPublicationType } from "~/core/types/publications";
 
 export const electionSlugs: Record<string, string> = {
   de: "wahlen2023",
@@ -71,8 +72,8 @@ export const getDocumentPath = (
 };
 
 export const buildUrlFromPublication = (
-  publication: any,
-  path: any[] = [],
+  publication: MinimizedPublicationType | undefined,
+  path: MenuNode[] = [],
   isElection: boolean = false
 ): string => {
   if (!publication) {
@@ -90,7 +91,6 @@ export const buildUrlFromPublication = (
   const slug = makeSlug(publication.metadata.title);
   if (path && path.length > 0) {
     const navigationPath = makeNavigationPath(path);
-
     return `/${isoCode}/${electionPath}${navigationPath}`;
   } else {
     return `/${isoCode}/${electionPath}${slug}`;

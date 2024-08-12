@@ -18,7 +18,7 @@ const { data: linkItems } = await useAsyncData(async () => {
   <div class="relative h-full overflow-auto">
     <simplebar class="relative h-full" data-simplebar-auto-hide="false">
       <nav
-        class="flex-1 overflow-y-auto px-11"
+        class="flex-1 overflow-y-auto px-11 lg:px-0"
         role="navigation"
         :aria-label="$t('navAriaDesktop')"
       >

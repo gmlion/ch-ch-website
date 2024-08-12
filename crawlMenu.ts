@@ -6,8 +6,8 @@ import type {
 } from "./generate/types/routing";
 import type { NuxtPage } from "nuxt/schema";
 import fs from "node:fs";
+import { electionSlugs, makeNavigationPath } from "./utils/url";
 let lastBuildContent: Record<string, any> = {};
-import { electionSlugs, getBaseUrl, makeNavigationPath } from "./utils/url";
 //@ts-ignore
 export const setLastBuildContent = (newLastBuildContent) =>
   (lastBuildContent = newLastBuildContent);
@@ -68,11 +68,13 @@ const crawlMenu = (
           routes.unshift({
             name: route,
             path: encodeURI(pathString),
+            meta: {
+              id: entry.id,
+              title: entry.label,
+            },
             file: `${__dirname}/pages/${electionPart}menuEntry.vue`,
           });
         }
-
-        
 
         crawlMenu(
           entry.nodes,

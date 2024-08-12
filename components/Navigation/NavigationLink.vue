@@ -5,7 +5,7 @@ import type { MenuItem } from "~/generate/types/menu";
 import { hideCarousel } from "~/store/pageState";
 
 const URITYPE = "uri";
-
+const route = useRoute();
 const props = defineProps<{
   entry: MenuItem;
   mode?: string;
@@ -13,8 +13,9 @@ const props = defineProps<{
 }>();
 
 const isLink = props.entry.children.length === 0;
-
+const href = route.path + props.entry.route?.slice(1);
 const target = createUrlTarget(props.entry.type, URITYPE, props.entry.target!);
+
 const navigateToMenuNode = (navigationEntry: MenuItem) => {
   hideCarouselHome();
   setPaths(navigationEntry, props.firstLevel);
@@ -25,9 +26,9 @@ const hideCarouselHome = () => {
 </script>
 
 <template>
-  <a
+  <NuxtLink
     v-if="isLink"
-    :href="entry.route"
+    :href="href"
     class="leading-tight no-underline text-inherit text-navigation-fluid"
     :target="target"
     :class="
@@ -37,7 +38,7 @@ const hideCarouselHome = () => {
     "
   >
     {{ entry.label }}
-  </a>
+  </NuxtLink>
   <a
     v-else
     href="#"
