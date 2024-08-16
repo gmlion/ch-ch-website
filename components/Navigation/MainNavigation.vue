@@ -26,7 +26,7 @@ const { data: linkItems } = await useAsyncData(async () => {
           <li
             v-for="item in linkItems"
             :key="item.label"
-            class="mt-4 text-primary-blue hover:text-tertiarys-yellow first:mt-0 w-[fit-content]"
+            class="mt-4 text-primary-blue hover:text-tertiary-yellow first:mt-0 w-[fit-content]"
           >
             <navigation-link :entry="item" mode="main" :first-level="true" />
           </li>

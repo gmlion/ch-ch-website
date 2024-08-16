@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { Publication } from "~/core/types/publications";
 import { useStore } from "@nanostores/vue";
-import { hideCarousel } from "~/store/pageState";
 import { setIndexPublication } from "~/generate/store/publicationStore";
-const hideCarouselState = useStore(hideCarousel);
+import { currentPaths } from "~/generate/store/menuStore";
+
+const currentPathsStore = useStore(currentPaths);
 
 const { data: homePageData } = await useAsyncData(async () => {
   const { locale } = useI18n();
@@ -13,9 +14,14 @@ const { data: homePageData } = await useAsyncData(async () => {
 
   return homePageData;
 });
+const galleryData =
+  homePageData.value?.content[0].containers.right[0].containers.carousel;
 </script>
 
 <template>
+  <div>
+    <!-- {{ currentPathsStore }} -->
+  </div>
   <colored-layout
     class="color-index"
     left-color="white"
@@ -28,18 +34,15 @@ const { data: homePageData } = await useAsyncData(async () => {
       </div>
       <main-navigation id="navigation" />
     </template>
-    <template v-if="hideCarouselState" #main>
+    <template v-if="currentPathsStore.length > 0" #main>
       <sub-navigation-desktop />
     </template>
-    <template v-else #main>
-      <div
-        class="h-full flex-1"
-        v-if="homePageData?.content[0].containers.right[0].containers.carousel"
-      >
+    <template v-show="currentPathsStore.length < 1" #main>
+      <div class="h-full flex-1" v-show="galleryData">
         <home-carousel
           class="h-full"
           :carousel-content="
-            homePageData?.content[0].containers.right[0].containers.carousel
+            galleryData!
           "
         />
       </div>

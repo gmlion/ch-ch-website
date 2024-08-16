@@ -29,9 +29,7 @@ locales.value.forEach((localeVal) => {
 });
 </script>
 <template>
-  <div>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </div>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>

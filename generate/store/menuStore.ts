@@ -8,7 +8,7 @@ export const currentPaths = atom<MenuItem[]>([]);
 export const indexMenuStore = atom<MenuResponse | null>(null);
 export const menuPush = atom<MenuResponse | null>(null);
 export const homeMenuItems = atom<MenuItem[] | null>(null);
-
+export const activeNavItem = atom<string | null>(null);
 export const useMenuStore = async () => {
   if (menuStore.get().length === 0) {
     console.log("no menu store, fetching");
@@ -135,12 +135,15 @@ const createMenuItems = (
     target: entry.target,
     parentId: parentId,
     parentUrl: parentUrl ? makeSlug(parentUrl) : undefined,
-    route: `${parentUrl ? makeSlug(parentUrl) : ""}/${makeSlug(entry.label)}`,
+    route: `${parentUrl ? makeSlug(parentUrl) + "/" : ""}${makeSlug(
+      entry.label
+    )}`,
     children: entry.nodes
-      ? entry.nodes.map((child) => createMenuItems(child, entry.label))
+      ? entry.nodes.map((child) =>
+          createMenuItems(child, entry.label, entry.id)
+        )
       : [],
   };
-
   return item;
 };
 
