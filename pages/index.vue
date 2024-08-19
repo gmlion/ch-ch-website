@@ -34,11 +34,14 @@ const galleryData =
       </div>
       <main-navigation id="navigation" />
     </template>
-    <template v-if="currentPathsStore.length > 0" #main>
-      <sub-navigation-desktop />
-    </template>
-    <template v-show="currentPathsStore.length < 1" #main>
-      <div class="h-full flex-1" v-show="galleryData">
+    <template #main>
+      <div v-if="currentPathsStore.length > 0">
+        <sub-navigation-desktop />
+      </div>
+      <div
+        class="h-full flex-1"
+        v-show="galleryData && currentPathsStore.length < 1"
+      >
         <home-carousel
           class="h-full"
           :carousel-content="

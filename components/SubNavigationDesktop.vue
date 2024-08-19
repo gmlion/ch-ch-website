@@ -9,7 +9,6 @@ onMounted(() => {
   const rightLayout = document.querySelector(".right-layout");
 
   if (rightLayout) {
-    rightLayout.classList.remove("layout-yellow");
     rightLayout.classList.add("layout-blue");
   }
 });

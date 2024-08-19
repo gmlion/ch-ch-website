@@ -2,7 +2,6 @@
 import { createUrlTarget } from "./utils/utils";
 import { activeNavItem, setPaths } from "~/generate/store/menuStore";
 import type { MenuItem } from "~/generate/types/menu";
-import { hideCarousel } from "~/store/pageState";
 import { useStore } from "@nanostores/vue";
 
 const URITYPE = "uri";
@@ -15,11 +14,11 @@ const props = defineProps<{
 const activeMenuItem = useStore(activeNavItem);
 
 const isLink = props.entry.children.length === 0;
-const href = `${route.path.slice(0)}${props.entry.route}`;
+const normalizedPath = route.path.endsWith("/") ? route.path : `${route.path}/`;
+const href = `${normalizedPath}${props.entry.route}`;
 const target = createUrlTarget(props.entry.type, URITYPE, props.entry.target!);
 
 const navigateToMenuNode = (navigationEntry: MenuItem) => {
-  hideCarouselHome();
   setPaths(navigationEntry, props.firstLevel);
   setActiveMenuItem(navigationEntry);
 };
@@ -30,10 +29,6 @@ const setActiveMenuItem = (navigationEntry: MenuItem) => {
   } else {
     activeNavItem.set(null);
   }
-};
-
-const hideCarouselHome = () => {
-  hideCarousel.set(true);
 };
 </script>
 
