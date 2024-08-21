@@ -7,8 +7,8 @@ import { useStore } from "@nanostores/vue";
 import Footer from "./Footer.vue";
 
 const props = defineProps<{
-  leftColor?: string;
-  rightColor?: "layout-blue" | "layout-yellow";
+  footerColor?: string;
+  rightColor?: "layout-blue" | "layout-yellow" | "layout-white";
   divisionMode?: string;
   showFader?: boolean;
 }>();
@@ -58,7 +58,7 @@ const isElection = useStore(isElectionStore);
 
     <Footer
       :division-mode="props.divisionMode"
-      :color="props.leftColor"
+      :color="props.footerColor"
       :is-election="isElection"
     />
   </div>

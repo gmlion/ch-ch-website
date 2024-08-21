@@ -3,7 +3,7 @@ import { getPublicationUrlById } from "~/core/utils/publicationUtils";
 
 export const replaceLivingDocsIdsWithUrls = (
   html: string,
-  publications: Publication[]
+  publications: Publication
 ) => {
   const regex = /data-li-document-ref="(\d+)"/g;
   const matches = html.matchAll(regex);

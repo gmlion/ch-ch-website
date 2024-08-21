@@ -24,7 +24,7 @@ const galleryData =
   </div>
   <colored-layout
     class="color-index"
-    left-color="white"
+    footer-color="white"
     division-mode="halves"
     :show-fader="true"
   >

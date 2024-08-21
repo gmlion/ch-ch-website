@@ -41,17 +41,6 @@ export const makeSlug = (title: string): string => {
   return slug;
 };
 
-// Find the menu url by documentid
-export const findDocumentUrlById = (
-  documentId: number,
-  menu: { nodes: any[] },
-  publications: any[]
-): string => {
-  const keyedPublications = makeKeyedPublications(publications);
-  const documentPath = getDocumentPath(documentId, menu);
-  return buildUrlFromPublication(keyedPublications[documentId], documentPath);
-};
-
 export const getDocumentPath = (
   documentId: number,
   menu: { nodes: any[] }

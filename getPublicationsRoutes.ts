@@ -1,6 +1,6 @@
 import { makeKeyedPublications } from "./generate/store/publicationStore";
 import { buildUrlFromPublication } from "./utils/url";
-import type { PathType } from "./generate/types/routing";
+import type { MenuNode, PathType } from "./generate/types/routing";
 import type { Publication } from "./core/types/publications";
 import { useMenuStore } from "./generate/store/menuStore";
 import type { NuxtPage } from "nuxt/schema";
@@ -25,7 +25,7 @@ export default async (publications: Publication[]) => {
 
   const addPublicationToRoutes = (
     documentId: string,
-    path: PathType[]
+    path: MenuNode[]
   ): NuxtPage => {
     const publication = keyedPublications[documentId];
     const url = buildUrlFromPublication(publication, path);
@@ -33,6 +33,7 @@ export default async (publications: Publication[]) => {
       name: `publication-${documentId}`,
       path: url,
       file: `${__dirname}/pages/publication.vue`,
+      meta: { id: documentId },
     };
     return route;
   };

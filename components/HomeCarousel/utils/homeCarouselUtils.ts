@@ -1,13 +1,14 @@
 import { getPublicationUrlById } from "~/core/utils/publicationUtils";
 import type { Carousel, CarouselItem } from "../types/types";
-import { usePublicationStore } from "~/generate/store/publicationStore";
+import { makeKeyedPublications } from "~/generate/store/publicationStore";
 
 export const getCarouselItems = async (
   carouselItems: Carousel[]
 ): Promise<CarouselItem[]> => {
-  const publications = await usePublicationStore();
-  let carouselItemsArray: CarouselItem[] = [];
+  const publications = await makeKeyedPublications();
 
+  let carouselItemsArray: CarouselItem[] = [];
+  if (publications === null) return carouselItemsArray;
   for (const item of carouselItems) {
     let carouselObject: CarouselItem = {
       id: item.id,
@@ -23,12 +24,17 @@ export const getCarouselItems = async (
     }
 
     if (item.content.link?.params?.link?.reference?.id) {
-      const id = parseInt(item.content.link.params.link.reference.id) || NaN;
-      if (!isNaN(id)) {
-        carouselObject.href = getPublicationUrlById(id, publications);
-      }
+      const id = item.content.link.params.link.reference.id;
+      console.log("id", publications[6187][0]);
+      if (publications)
+        carouselObject.href = getPublicationUrlById(
+          parseInt(id),
+          publications[172][0]
+        );
+      console.log("carouselObject.href", carouselObject.href);
     }
-
+    const id = item?.content?.link?.params.link.reference.id || "0";
+    console.log("id", id);
     for (const content of item.containers["carousel-content"]) {
       if (content.content.title) {
         carouselObject.title = content.content.title;
@@ -36,7 +42,7 @@ export const getCarouselItems = async (
       if (content.content.text) {
         carouselObject.text = replaceLivingDocsIdsWithUrls(
           content.content.text,
-          publications
+          publications[id][0]
         );
       }
       if (content.content.image && carouselObject.image === undefined) {

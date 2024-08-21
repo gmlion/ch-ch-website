@@ -16,7 +16,6 @@ export default function metaDataGenerator(
       },
     ],
     meta: [
-      //TO DO - CHECK IT OUT ON PRODUCTION
       {
         hid: "robots",
         name: "robots",

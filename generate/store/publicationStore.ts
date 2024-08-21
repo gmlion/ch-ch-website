@@ -15,10 +15,14 @@ import type {
 export const publicationStore = atom<Publication[]>([]);
 export const indexPublicationStore = atom<Publication | null>(null);
 export const usedPublicationsStore = atom<MinimizedPublicationType[]>([]);
+export const keyedPublicationsStore = atom<{
+  [key: string]: Publication[];
+} | null>(null);
 
 export const availableLanguages = atom<
   null | [{ locale: string; route: string }]
 >(null);
+
 export const usePublicationStore = async () => {
   if (publicationStore.get().length === 0) {
     console.log("no publication store, fetching");
@@ -70,12 +74,36 @@ export const getAllPublications = async (options?: AllPublicationOptions[]) => {
 /**
  * Turn the array of publications into an object using the documentId as key
  */
-export const makeKeyedPublications = (publications: Publication[]) => {
-  const pairs = publications.map((publication: Publication) => [
-    publication.systemdata?.documentId || 0,
-    publication,
-  ]);
-  return Object.fromEntries(pairs);
+export const makeKeyedPublications = async (): Promise<{
+  [key: string]: Publication[];
+} | null> => {
+  if (keyedPublicationsStore.get()) {
+    console.log("keyedPublicationsStore already exists");
+    return keyedPublicationsStore.get();
+  }
+
+  const publications = await usePublicationStore();
+  console.log("keyedPublicationsStore does not exist, setup...");
+
+  // Create a map of arrays grouped by documentId
+  const publicationMap: { [key: string]: Publication[] } = {};
+
+  publications.forEach((publication: Publication) => {
+    if (publication.systemdata?.documentId === 6187) {
+      console.log("publication without documentId", publication);
+    }
+    const documentId = publication.systemdata?.documentId;
+
+    // Initialize array if not exists, then push publication to the array
+    if (!publicationMap[documentId]) {
+      publicationMap[documentId] = [];
+    }
+    publicationMap[documentId].push(publication);
+  });
+
+  keyedPublicationsStore.set(publicationMap);
+
+  return publicationMap;
 };
 
 export const useUsedPublications = async (menuForLanguage: MenuResponse) => {
