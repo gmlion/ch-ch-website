@@ -16,6 +16,7 @@ const swiperRef = ref<any>(null);
 const showSwiper = ref(false);
 
 onMounted(() => {
+  console.log(carouselItems.value);
   showSwiper.value = true;
 });
 

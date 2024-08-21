@@ -79,6 +79,7 @@ export const buildUrlFromPublication = (
 
   const slug = makeSlug(publication.metadata.title);
   if (path && path.length > 0) {
+    console.log("navigation path", path);
     const navigationPath = makeNavigationPath(path);
     return `/${isoCode}/${electionPath}${navigationPath}`;
   } else {

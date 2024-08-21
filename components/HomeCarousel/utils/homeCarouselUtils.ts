@@ -1,14 +1,10 @@
-import { getPublicationUrlById } from "~/core/utils/publicationUtils";
 import type { Carousel, CarouselItem } from "../types/types";
 import { makeKeyedPublications } from "~/generate/store/publicationStore";
-
 export const getCarouselItems = async (
   carouselItems: Carousel[]
 ): Promise<CarouselItem[]> => {
   const publications = await makeKeyedPublications();
-
   let carouselItemsArray: CarouselItem[] = [];
-  if (publications === null) return carouselItemsArray;
   for (const item of carouselItems) {
     let carouselObject: CarouselItem = {
       id: item.id,
@@ -22,28 +18,32 @@ export const getCarouselItems = async (
     if (item.styles && item.styles["carousel-color"]) {
       carouselObject.backgroundColor = item.styles["carousel-color"];
     }
-
-    if (item.content.link?.params?.link?.reference?.id) {
-      const id = item.content.link.params.link.reference.id;
-      console.log("id", publications[6187][0]);
-      if (publications)
-        carouselObject.href = getPublicationUrlById(
-          parseInt(id),
-          publications[172][0]
-        );
-      console.log("carouselObject.href", carouselObject.href);
+    const id = item.content.link?.params?.link?.reference?.id;
+    if (publications && id && publications[id]) {
+      if (publications[id]) {
+        const url = buildUrlFromPublication(publications[id][0]);
+        carouselObject.href = url;
+      }
     }
-    const id = item?.content?.link?.params.link.reference.id || "0";
-    console.log("id", id);
     for (const content of item.containers["carousel-content"]) {
       if (content.content.title) {
         carouselObject.title = content.content.title;
       }
       if (content.content.text) {
-        carouselObject.text = replaceLivingDocsIdsWithUrls(
-          content.content.text,
-          publications[id][0]
-        );
+        if (publications) {
+          const regex = /data-li-document-ref="(\d+)"/g;
+          const matches = content.content.text.matchAll(regex);
+          let replacedHTML = content.content.text;
+          for (const match of matches) {
+            const regexId = match[1];
+            if (regexId) {
+              const url = buildUrlFromPublication(publications[regexId][0]);
+              const hrefRegex = new RegExp(`href="[^"]*"`);
+              replacedHTML = replacedHTML.replace(hrefRegex, `href="${url}"`);
+            }
+          }
+          carouselObject.text = replacedHTML;
+        }
       }
       if (content.content.image && carouselObject.image === undefined) {
         carouselObject.image = await getCompleteImageObject(
@@ -51,7 +51,6 @@ export const getCarouselItems = async (
         );
       }
     }
-
     carouselItemsArray.push(carouselObject);
   }
 
