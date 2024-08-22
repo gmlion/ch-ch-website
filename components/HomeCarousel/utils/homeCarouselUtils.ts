@@ -21,7 +21,7 @@ export const getCarouselItems = async (
     const id = item.content.link?.params?.link?.reference?.id;
     if (publications && id && publications[id]) {
       if (publications[id]) {
-        const url = buildUrlFromPublication(publications[id][0]);
+        const url = buildUrlFromPublication(publications[id]);
         carouselObject.href = url;
       }
     }
@@ -37,7 +37,7 @@ export const getCarouselItems = async (
           for (const match of matches) {
             const regexId = match[1];
             if (regexId) {
-              const url = buildUrlFromPublication(publications[regexId][0]);
+              const url = buildUrlFromPublication(publications[regexId]);
               const hrefRegex = new RegExp(`href="[^"]*"`);
               replacedHTML = replacedHTML.replace(hrefRegex, `href="${url}"`);
             }

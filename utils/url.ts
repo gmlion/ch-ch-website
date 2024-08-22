@@ -1,6 +1,7 @@
 import type { MenuNode } from "~/generate/types/routing";
 import { getIsoCodeFromLocale } from "./locale";
 import type { MinimizedPublicationType } from "~/core/types/publications";
+import { makeKeyedPublications } from "../generate/store/publicationStore";
 
 export const electionSlugs: Record<string, string> = {
   de: "wahlen2023",
@@ -79,7 +80,6 @@ export const buildUrlFromPublication = (
 
   const slug = makeSlug(publication.metadata.title);
   if (path && path.length > 0) {
-    console.log("navigation path", path);
     const navigationPath = makeNavigationPath(path);
     return `/${isoCode}/${electionPath}${navigationPath}`;
   } else {
@@ -108,29 +108,18 @@ export const buildUrlFromTitle = (
   return `/${isoCode}/${electionPath}${slug}`;
 };
 
-const makeKeyedPublications = (publications: any[]): Record<string, any> => {
-  const pairs = publications.map((publication) => [
-    publication.systemdata.documentId,
-    publication,
-  ]);
-  return Object.fromEntries(pairs);
-};
-
-export const getFooterMenus = (
-  menus: any[],
-  allPublications: any[]
-): any[] | null => {
+export const getFooterMenus = async (menus: any[]): Promise<any[] | null> => {
   if (!menus) {
     return null;
   }
-  const keyPublications = makeKeyedPublications(allPublications);
+  const keyPublications = await makeKeyedPublications();
 
   const crawlMenu = (nodes: any[]): void => {
     for (const node of nodes) {
       if (node.nodes && node.nodes.length > 0) {
         crawlMenu(node.nodes);
       } else if (node.documentId) {
-        node.document = keyPublications[node.documentId];
+        if (keyPublications) node.document = keyPublications[node.documentId];
       }
     }
   };

@@ -162,12 +162,12 @@ export const getBreadcrumb = async (
   ): MenuItem[] | null => {
     for (const node of nodes) {
       if (node.id === id) {
-        return [node]; // Start building the breadcrumb trail
+        return [node];
       }
       if (node.children && node.children.length > 0) {
         const result = findNodeAndParents(node.children, id, level);
         if (result) {
-          return [node, ...result]; // Append the current node to the trail
+          return [node, ...result];
         }
       }
     }

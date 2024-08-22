@@ -1,4 +1,4 @@
-.color-index .logo-color-classes {
+.logo-color-classes {
   @apply text-primary-claim;
 }
 
@@ -16,6 +16,19 @@
   }
 }
 
+.left-layout {
+  &.layout-blue {
+    @apply bg-primary-blue text-primary-white;
+
+    .logo-color-classes {
+      @apply text-primary-white;
+    }
+    .logo-claim {
+      background-color: transparent;
+      @apply text-primary-white;
+    }
+  }
+}
 .color-index .right-layout {
   @apply bg-primary-red text-primary-white lg:w-1/2;
 
@@ -28,6 +41,13 @@
     @apply text-primary-white;
   }
 
+  &.layout-white {
+    @apply bg-primary-white text-primary-blue;
+
+    .search-icon {
+      @apply text-primary-blue;
+    }
+  }
   &.layout-yellow {
     @apply bg-primary-yellow;
 

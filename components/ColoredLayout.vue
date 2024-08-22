@@ -4,11 +4,11 @@ import { isElection as isElectionStore } from "~/store/pageState";
 
 // import LanguagePickerDesktop from './LanguagePickerDesktop.vue' WIP
 import { useStore } from "@nanostores/vue";
-import Footer from "./Footer.vue";
 
 const props = defineProps<{
   footerColor?: string;
   rightColor?: "layout-blue" | "layout-yellow" | "layout-white";
+  leftColor?: "layout-blue";
   divisionMode?: string;
   showFader?: boolean;
 }>();
@@ -29,6 +29,7 @@ const isElection = useStore(isElectionStore);
       />
       <div
         class="left-layout relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 pusher min-w-[350px] lg:pb-36"
+        :class="leftColor"
       >
         <a href="#content" class="hidden">{{ $t("jumpToContent") }}</a>
         <logo :class="{ hidden: isSearchOpen, 'lg:block': true }" />
@@ -56,10 +57,10 @@ const isElection = useStore(isElectionStore);
       <slot name="right" />
     </div>
 
-    <Footer
+    <!-- <Footer
       :division-mode="props.divisionMode"
       :color="props.footerColor"
       :is-election="isElection"
-    />
+    /> -->
   </div>
 </template>

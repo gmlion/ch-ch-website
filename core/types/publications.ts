@@ -7,6 +7,7 @@ interface Content extends PublicationComponent {
   containers: {
     left: PublicationContainerComponent[] | [];
     right: PublicationContainerComponent[] | [];
+    body: PublicationContainerComponent[] | [];
   };
 }
 
@@ -31,6 +32,24 @@ export interface PublicationComponent {
   indentifier: string;
   id: string;
   position?: string;
+  content: {
+    title?: string;
+    text?: string;
+    faq: FAQ
+  };
+}
+
+
+export interface FAQ {
+  service: "faq-teaser";
+  params: {
+    teaser: {
+      $ref: "document";
+      reference: {
+        id: string;
+      };
+    };
+  };
 }
 type teaserImage = string | undefined;
 export interface SystemData {

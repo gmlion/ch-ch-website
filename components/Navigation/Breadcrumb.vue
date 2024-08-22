@@ -11,10 +11,10 @@ const props = defineProps<{
 <template>
   <ul class="flex gap-4 text-lg mb-6 flex-wrap">
     <li>
-      <NuxtLink
+      <a
         class="nav-breadcrumb font-semibold no-underline text-tertiary-yellow hover:text-secondary-yellow"
         :href="'/' + locale"
-        >{{ $t("allTopics") }}</NuxtLink
+        >{{ $t("allTopics") }}</a
       >
     </li>
     <li
@@ -27,13 +27,13 @@ const props = defineProps<{
         class="w-4 h-4 text-inherit text-tertiary-yellow"
         aria-hidden="true"
       />
-      <NuxtLink
+      <a
         v-if="index < breadcrumb.length - 1"
         class="nav-breadcrumb font-semibold no-underline text-tertiary-yellow hover:text-secondary-yellow"
         :href="'/' + locale + '/' + item.route.slice(1)"
       >
         {{ item.label }}
-      </NuxtLink>
+      </a>
       <span v-else class="text-gray-600">{{ item.label }}</span>
     </li>
   </ul>

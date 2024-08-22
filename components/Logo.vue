@@ -17,7 +17,11 @@ onMounted(() => {
   >
     <SkipLink />
     <meta itemprop="name" content="CHCH LOGO" />
-    <a class="no-underline block w-[fit-content]" :href="`/${$i18n.locale}`" itemprop="url">
+    <a
+      class="no-underline block w-[fit-content]"
+      :href="`/${$i18n.locale}`"
+      itemprop="url"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="406"
@@ -34,7 +38,7 @@ onMounted(() => {
         </g>
       </svg>
       <span
-        class="relative block mt-4 text-claim-fluid text-primary-claim bg-primary-white lg:text-[21px] logo-color-classes"
+        class="relative block mt-4 logo-claim text-claim-fluid text-primary-claim bg-primary-white lg:text-[21px] logo-color-classes"
       >
         {{ $t("claim") }}
       </span>

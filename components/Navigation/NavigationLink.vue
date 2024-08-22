@@ -33,7 +33,7 @@ const setActiveMenuItem = (navigationEntry: MenuItem) => {
 </script>
 
 <template>
-  <NuxtLink
+  <a
     v-if="isLink"
     :href="href"
     class="leading-tight no-underline text-inherit text-navigation-fluid"
@@ -48,7 +48,7 @@ const setActiveMenuItem = (navigationEntry: MenuItem) => {
     ]"
   >
     {{ entry.label }}
-  </NuxtLink>
+  </a>
   <a
     v-else
     href="#"
