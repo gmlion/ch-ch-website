@@ -86,6 +86,7 @@ export default defineNuxtConfig({
         "nuxt-swiper",
         "@nuxtjs/robots",
         "@nuxtjs/sitemap",
+        '@nuxtjs/tailwindcss',
         [
             "nuxt-headlessui",
             {
@@ -105,8 +106,20 @@ export default defineNuxtConfig({
             },
         ],
         "vue3-carousel-nuxt",
+        "shadcn-nuxt",
+        "@nuxtjs/tailwindcss"
     ],
-
+    shadcn: {
+        /**
+         * Prefix for all the imported component
+         */
+        prefix: '',
+        /**
+         * Directory that the component lives in.
+         * @default "./components/ui"
+         */
+        componentDir: './components/ui'
+    },
     i18n: {
         strategy: "no_prefix",
         detectBrowserLanguage: {

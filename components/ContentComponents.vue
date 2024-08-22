@@ -8,7 +8,10 @@ const props = defineProps<{
 <template>
 
 <div v-for="component in props.contentComponent" :key="component.id">
-  <component v-if="component.type === 'faq-teaser'" :is="Collapsible" :content="component.content"  />
+  <div v-if="component.type === 'faq-teaser'"    >
+  <Collapsible :content="component.content" />
+
+  </div>
   <!-- <component v-else-if="props.contentComponents[0].component === 'another-component'" :is="AnotherComponen</div> !-->
 </div>
 </template>

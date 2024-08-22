@@ -1,5 +1,5 @@
 import type {PublicationContainerComponent} from "~/core/types/publications";
-import {createCollapsibleArray} from "~/components/Collapsible/utils/utils";
+import {createCollapsibleArray} from "~/components/Collapsible/utils/collapsibleUtils";
 import type {ContentComponent} from "~/core/types/contentComponents";
 import {randomUUID} from "uncrypto";
 

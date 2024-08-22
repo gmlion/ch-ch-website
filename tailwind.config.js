@@ -1,18 +1,86 @@
+const animate = require("tailwindcss-animate")
 /** @type {import('tailwindcss').Config} */
 import colors from "tailwindcss/colors";
 export default {
   files: ["./safelist.txt"],
-  safelist: ["bg-primary-red", "stroke-white", "stroke-blue"],
+  safelist: ["bg-primary-red", "stroke-white", "stroke-blue", "dark"],
+  prefix: "",
+  darkMode: ["class"],
   content: [
-    "./components/**/*.{js,vue,ts}",
-    "./layouts/**/*.vue",
-    "./pages/**/*.vue",
-    "./plugins/**/*.{js,ts}",
-    "./app.vue",
-    "./error.vue",
+    './pages/**/*.{ts,tsx,vue}',
+    './components/**/*.{ts,tsx,vue}',
+    './app/**/*.{ts,tsx,vue}',
+    './src/**/*.{ts,tsx,vue}',
   ],
   presets: [],
   theme: {
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        xl: "calc(var(--radius) + 4px)",
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: 0 },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: 0 },
+        },
+        "collapsible-down": {
+          from: { height: 0 },
+          to: { height: 'var(--radix-collapsible-content-height)' },
+        },
+        "collapsible-up": {
+          from: { height: 'var(--radix-collapsible-content-height)' },
+          to: { height: 0 },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "collapsible-down": "collapsible-down 0.2s ease-in-out",
+        "collapsible-up": "collapsible-up 0.2s ease-in-out",
+      },
+    },
     screens: {
       sm: "320px",
       md: "480px",
@@ -110,6 +178,8 @@ export default {
       spin: "spin 1s linear infinite",
       ping: "ping 1s cubic-bezier(0, 0, 0.2, 1) infinite",
       pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      "accordion-down": "accordion-down 0.2s ease-out",
+      "accordion-up": "accordion-up 0.2s ease-out",
       bounce: "bounce 1s infinite",
     },
     backgroundColor: (theme) => theme("colors"),
@@ -117,16 +187,16 @@ export default {
       none: "none",
       "gradient-to-t": "linear-gradient(to top, var(--tw-gradient-stops))",
       "gradient-to-tr":
-        "linear-gradient(to top right, var(--tw-gradient-stops))",
+          "linear-gradient(to top right, var(--tw-gradient-stops))",
       "gradient-to-r": "linear-gradient(to right, var(--tw-gradient-stops))",
       "gradient-to-br":
-        "linear-gradient(to bottom right, var(--tw-gradient-stops))",
+          "linear-gradient(to bottom right, var(--tw-gradient-stops))",
       "gradient-to-b": "linear-gradient(to bottom, var(--tw-gradient-stops))",
       "gradient-to-bl":
-        "linear-gradient(to bottom left, var(--tw-gradient-stops))",
+          "linear-gradient(to bottom left, var(--tw-gradient-stops))",
       "gradient-to-l": "linear-gradient(to left, var(--tw-gradient-stops))",
       "gradient-to-tl":
-        "linear-gradient(to top left, var(--tw-gradient-stops))",
+          "linear-gradient(to top left, var(--tw-gradient-stops))",
     },
     backgroundOpacity: (theme) => theme("opacity"),
     backgroundPosition: {
@@ -171,7 +241,7 @@ export default {
     boxShadow: {
       sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
       DEFAULT:
-        "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+          "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
       md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
       lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
       xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
@@ -179,7 +249,13 @@ export default {
       inner: "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
       none: "none",
     },
-    container: {},
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     cursor: {
       auto: "auto",
       default: "default",
@@ -706,7 +782,7 @@ export default {
       none: "none",
       all: "all",
       DEFAULT:
-        "background-color, border-color, color, fill, stroke, opacity, box-shadow, transform",
+          "background-color, border-color, color, fill, stroke, opacity, box-shadow, transform",
       colors: "background-color, border-color, color, fill, stroke",
       opacity: "opacity",
       shadow: "box-shadow",
@@ -798,6 +874,7 @@ export default {
     "disabled",
   ],
   plugins: [
+    animate,
     require("tailwindcss-fluid")({
       textSizes: {
         sm: {
@@ -857,4 +934,5 @@ export default {
       },
     }),
   ],
+
 };
