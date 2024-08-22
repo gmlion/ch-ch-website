@@ -9,19 +9,19 @@ const router = useRouter();
 const startItemId = router.currentRoute.value.meta.id as string;
 const {locale} = useI18n();
 let titleLead: { title?: string; lead?: string } = {};
-let contentComponentData: ContentComponent[] = [];
-const {data: breadcrumbItems} = await useAsyncData(async () => {
-  const {locale} = useI18n();
-  return await getBreadcrumb(startItemId, locale.value);
-});
+
 const {data: publicationData} = await useAsyncData(async () => {
   const publication = getPublicationById(startItemId);
   if (publication) return publication;
 });
-
+const {data: contentComponentData} = await useAsyncData(async () => {
+  if(publicationData.value) {
+    const contentComponentsData = publicationData.value.content[0].containers.right;
+    return await contentComponents(contentComponentsData);
+  }
+})
 if (publicationData.value) {
-  const contentComponentsData = publicationData.value.content[0].containers.right;
-  contentComponentData = await contentComponents(contentComponentsData);  // Await the result
+ // Await the result
 }
 
 if (publicationData) {
@@ -46,7 +46,7 @@ if (publicationData) {
       :show-fader="false"
   >
     <template #side>
-      <Breadcrumb :breadcrumb="breadcrumbItems!" :visible-elements="4"/>
+      <Breadcrumb :breadcrumb="[]" :visible-elements="4"/>
 
       <div>
         <h1 class="text-primary-white text-3xl-fluid">{{ titleLead.title }}</h1>
@@ -58,7 +58,7 @@ if (publicationData) {
     </template>
 
     <template #main>
-      <ContentComponents :content-component="contentComponentData"/>  <!-- Update to use the variable -->
+      <ContentComponents :content-component="contentComponentData!"/>  <!-- Update to use the variable -->
     </template>
   </colored-layout>
 </template>
