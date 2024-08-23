@@ -2,7 +2,17 @@
   @apply text-primary-claim;
 }
 
-.color-index .left-layout {
+.division-fifth {
+  .left-layout {
+    @apply lg:w-[40%];
+  }
+
+  .right-layout {
+    @apply lg:w-[60%];
+  }
+}
+
+.left-layout {
   @apply bg-primary-white text-primary-blue lg:h-screen lg:relative lg:w-1/2;
 }
 
@@ -23,13 +33,15 @@
     .logo-color-classes {
       @apply text-primary-white;
     }
+
     .logo-claim {
       background-color: transparent;
       @apply text-primary-white;
     }
   }
 }
-.color-index .right-layout {
+
+.right-layout {
   @apply bg-primary-red text-primary-white lg:w-1/2;
 
   .search-icon {
@@ -48,6 +60,7 @@
       @apply text-primary-blue;
     }
   }
+
   &.layout-yellow {
     @apply bg-primary-yellow;
 
@@ -60,6 +73,7 @@
       @apply text-primary-blue;
     }
   }
+
   &.layout-blue {
     @apply bg-primary-blue;
 
@@ -70,6 +84,45 @@
     .swiper-button-next,
     .swiper-button-prev {
       @apply text-primary-blue;
+    }
+  }
+}
+
+.richtext {
+  h1,
+  .h1 {
+    @apply text-3xl-fluid font-semibold;
+  }
+
+  h2,
+  .h2 {
+    @apply text-2xl-fluid font-semibold;
+  }
+
+  h3,
+  .h3 {
+    @apply text-xl-fluid font-semibold;
+  }
+
+  h4,
+  .h4 {
+    @apply text-lg-fluid font-bold;
+  }
+
+  .lead {
+    @apply text-xl-fluid;
+  }
+
+  p {
+    @apply text-lg;
+  }
+  a {
+    text-decoration: underline;
+    text-decoration-color: rgb(154, 139, 20);
+
+    &:hover,
+    &:focus {
+      @apply text-tertiary-yellow;
     }
   }
 }

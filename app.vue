@@ -31,6 +31,6 @@ locales.value.forEach((localeVal) => {
 </script>
 <template>
   <NuxtLayout>
-    <NuxtPage />
+    <NuxtPage page-key="static" />
   </NuxtLayout>
 </template>

@@ -20,8 +20,9 @@ const isElection = useStore(isElectionStore);
 <template>
   <div>
     <div
-      :class="{ 'search-is-active': isSearchOpen }"
-      class="w-full lg:min-h-screen lg:flex"
+      :class="[{ 'search-is-active': isSearchOpen }, {'division-fifth': props.divisionMode === 'fifth'}]"
+      class="w-full lg:min-h-screen lg:flex main-layout"
+
     >
       <search-overlay
         v-show="isSearchOpen"

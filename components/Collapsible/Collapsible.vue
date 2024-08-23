@@ -1,16 +1,18 @@
 <script lang="ts" setup>
 import type {CollapsibleContent} from "~/core/types/contentComponents";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion'
+
 const props = defineProps<{ content: CollapsibleContent[] }>();
 </script>
 
 <template>
   <div>
     <Accordion type="single" collapsible>
-      <AccordionItem value="item-1">
-        <AccordionTrigger>Is it accessible?</AccordionTrigger>
+
+      <AccordionItem v-for="item in props.content" :value="item.id" :key="item.id">
+        <AccordionTrigger class=" text-left font-semibold text-primary-blue hover:text-primary-gold text-2xl-fluid">{{ item.title }}</AccordionTrigger>
         <AccordionContent>
-          Yes. It adheres to the WAI-ARIA design pattern.
+          <div class="richtext" v-html="item.content.content"></div>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

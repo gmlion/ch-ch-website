@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type {Publication} from "~/core/types/publications";
-import {getBreadcrumb} from "~/generate/store/menuStore";
 import {getPublicationById} from "~/generate/store/publicationStore";
 import {contentComponents} from "~/utils/contentComponentsHandler";
-import type {ContentComponent} from "~/core/types/contentComponents";
 
 const router = useRouter();
 const startItemId = router.currentRoute.value.meta.id as string;
@@ -20,9 +18,13 @@ const {data: contentComponentData} = await useAsyncData(async () => {
     return await contentComponents(contentComponentsData);
   }
 })
-if (publicationData.value) {
- // Await the result
-}
+
+const {data: contentComponentLeft} = await useAsyncData(async () => {
+    if (publicationData.value) {
+      const contentComponentLeft = publicationData.value.content[0].containers.left;
+      return await contentComponents(contentComponentLeft);
+    }
+})
 
 if (publicationData) {
   useHead(
@@ -37,12 +39,13 @@ if (publicationData) {
 </script>
 
 <template>
+  {{publicationData?.content[0].containers.right}}
   <colored-layout
       class="color-index"
       left-color="layout-blue"
       footer-color="blue"
       right-color="layout-white"
-      division-mode="halves"
+      division-mode="fifth"
       :show-fader="false"
   >
     <template #side>
@@ -51,6 +54,9 @@ if (publicationData) {
       <div>
         <h1 class="text-primary-white text-3xl-fluid">{{ titleLead.title }}</h1>
         <p class="text-xl-fluid mt-8">{{ titleLead.lead }}</p>
+      </div>
+      <div v-if="contentComponentLeft">
+        <ContentComponents :content-component="contentComponentLeft!"/>  <!-- Update to use the variable -->
       </div>
       <div class="mt-auto">
         <BackToOverviewLink/>

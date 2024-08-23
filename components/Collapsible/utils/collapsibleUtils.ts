@@ -1,5 +1,6 @@
 import type {PublicationContainerComponent} from "~/core/types/publications";
 import type {CollapsibleContent} from "~/core/types/contentComponents";
+import {handleRichtext} from "~/utils/richtext"
 import {getPublicationById} from "~/generate/store/publicationStore";
 import {slugify} from "~/utils/slugifyAnchorElements";
 
@@ -16,7 +17,7 @@ export const createCollapsibleArray = async (content: PublicationContainerCompon
         collapsibleItem = {
             id: publication?.systemdata.documentId.toString() || "",
             title: publication?.metadata.title || "",
-            content: { content: publication?.content[0].containers.body[0].content.text || "" },
+            content: { content: handleRichtext(publication?.content[0].containers.body[0]!) || "" },
             slug: slugify(publication?.metadata.title!)
         }
 

@@ -1,3 +1,5 @@
+import type {InfoBox} from "~/core/types/publications";
+
 export interface CollapsibleContent {
     id: string;
     title: string;
@@ -12,5 +14,16 @@ interface CollapsibleRichtext {
 export interface ContentComponent {
     id: string;
     type: string;
-    content: CollapsibleContent[];
+    content: CollapsibleContent[] | InfoBox[];
+}
+
+export interface RichtextContent {
+    text: string;
+}
+
+export interface RichtextComponent {
+    component: string;
+    identifier: string;
+    id: string;
+    content: RichtextContent;
 }
