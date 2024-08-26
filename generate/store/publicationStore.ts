@@ -105,50 +105,6 @@ export const makeKeyedPublications = async (): Promise<{
     return publicationMap;
 };
 
-export const useUsedPublications = async (menuForLanguage: MenuResponse) => {
-    if (usedPublicationsStore.get().length > 0) {
-        console.log("usedPublicationsStore already exists");
-        return usedPublicationsStore.get();
-    }
-    console.log("usedPublicationsStore does not exist, setup...");
-
-    const usedPublications: MinimizedPublicationType[] = [];
-    const publications = await usePublicationStore();
-
-    function crawlMenu(nodes: MenuResponseData[], path: PathType[]) {
-        for (const entry of nodes) {
-            if (entry.nodes && entry.nodes.length > 0) {
-                crawlMenu(entry.nodes, path.concat([entry]));
-            } else {
-                const publication = publications.find(
-                    (publication) =>
-                        publication &&
-                        publication.systemdata.documentId === Number(entry.documentId)
-                );
-                if (publication) {
-                    const minimizedPublication: MinimizedPublicationType = {
-                        metadata: {
-                            title: publication.metadata.title,
-                            language: {
-                                locale: publication.metadata.language.locale,
-                            },
-                        },
-                        systemdata: {
-                            documentId: publication.systemdata.documentId,
-                        },
-                    };
-                    usedPublications.push(minimizedPublication);
-                }
-            }
-        }
-    }
-
-    crawlMenu(menuForLanguage.nodes, []);
-
-    usedPublicationsStore.set(usedPublications);
-    console.log("usedPublicationsStore set");
-    return usedPublications;
-};
 
 export const setIndexPublication = async (locale: string) => {
     console.log("indexPublicationStore does not exist, setup...");

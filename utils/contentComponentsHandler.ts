@@ -5,7 +5,6 @@ import {
 } from "~/components/Collapsible/utils/collapsibleUtils";
 import type {ContentComponent} from "~/core/types/contentComponents";
 import {randomUUID} from "uncrypto";
-import {handleInfoBox} from "~/components/InfoBox/utils/infoBoxUtils";
 import type {Image} from "~/components/HomeCarousel/types/types";
 
 export const contentComponents = async (content: PublicationContainerComponent[]): Promise<ContentComponent[] | []> => {

@@ -2,7 +2,8 @@
 import type {Publication} from "~/core/types/publications";
 import {getPublicationById} from "~/generate/store/publicationStore";
 import {contentComponents} from "~/utils/contentComponentsHandler";
-
+import routerCollection from "~/plugins/routerCollection";
+// const routerCollectionObj = routerCollection();/**/
 const router = useRouter();
 const startItemId = router.currentRoute.value.meta.id as string;
 const {locale} = useI18n();
@@ -37,6 +38,7 @@ if (publicationData) {
     lead: publicationData.value?.content[0].containers.left[1].content.text,
   };
 }
+
 </script>
 
 <template>
@@ -49,7 +51,7 @@ if (publicationData) {
       :show-fader="false"
   >
     <template #side>
-      <Breadcrumb :breadcrumb="[]" :visible-elements="4"/>
+      <Breadcrumb />
 
       <div>
         <h1 class="text-primary-white text-3xl-fluid">{{ titleLead.title }}</h1>

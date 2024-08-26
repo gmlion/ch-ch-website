@@ -1,7 +1,8 @@
-import { buildUrlFromPublication } from "./utils/url";
-import type { MenuNode, MenuResponse, PathType } from "./generate/types/routing";
-import type { NuxtPage } from "nuxt/schema";
-import { makeKeyedPublications } from "./generate/store/publicationStore";
+import {buildUrlFromPublication} from "./utils/url";
+import type {MenuNode, MenuResponse, PathType} from "./generate/types/routing";
+import type {NuxtPage} from "nuxt/schema";
+import {makeKeyedPublications} from "./generate/store/publicationStore";
+
 type ElectionPathPrefixKey =
     | "wahlen-de"
     | "wahlen-fr"
@@ -26,27 +27,34 @@ export default async (menus: MenuResponse[]) => {
     ): NuxtPage | null => {
         if (!keyedPublications) return null;
         const publication = keyedPublications[documentId];
+        if (!publication || !path) return null;
         const url = buildUrlFromPublication(publication, path);
+        if (!url) return null;
         const route: NuxtPage = {
-            name: `publication-${documentId}`,
+            name: publication.metadata.title,
             path: url,
             file: `${__dirname}/pages/publication.vue`,
-            meta: { id: documentId },
+            meta: {id: documentId},
         };
         return route;
     };
 
-    function crawlMenu(nodes: any, path: any[], language: string) {
-        for (const entry of nodes) {
-            if (entry.nodes && entry.nodes.length > 0) {
-                crawlMenu(entry.nodes, path.concat([entry]), language);
-            } else if (languageMismatch(path, language)) {
-                console.log("language mismatch");
-                continue;
-            } else {
-                const documentId = entry.documentId;
-                const route = addPublicationToRoutes(documentId, path.concat([entry]));
-                routes.unshift(route!);
+    function crawlMenu(nodes: MenuNode[], path: any, language: string) {
+        const stack = [{ nodes, path }];
+
+        while (stack.length > 0) {
+            const { nodes, path } = stack.pop()!;
+
+            for (const entry of nodes) {
+                if (entry.nodes && entry.nodes.length > 0) {
+                    stack.push({ nodes: entry.nodes, path: path.concat([entry]) });
+                } else if (!languageMismatch(path, language)) {
+                    const documentId = entry.documentId;
+                    const route = addPublicationToRoutes(documentId as string, path.concat([entry]));
+                    if (route) {
+                        routes.unshift(route);
+                    }
+                }
             }
         }
     }
@@ -61,11 +69,31 @@ export default async (menus: MenuResponse[]) => {
     }
 
     for (const menu of menus) {
+        // Ensure menu.label is valid and has the expected format
+        if (!menu.label || !menu.label.includes("-")) {
+            console.warn(`Unexpected menu label format: ${menu.label}`);
+            continue;
+        }
+
         const language = menu.label.split("-")[1];
+
+        // Validate language to ensure it's correct
+        if (!electionPathPrefixes[`wahlen-${language}` as ElectionPathPrefixKey]) {
+            console.warn(`Unexpected language detected: ${language}`);
+            continue;
+        }
+
         const key = `wahlen-${menu.label}` as ElectionPathPrefixKey;
-        const prefix = electionPathPrefixes[key] || undefined;
-        const path = prefix ? [{ label: prefix }] : [];
-        crawlMenu(menu.nodes, path, language);
+        const prefix = electionPathPrefixes[key];
+
+        // TODO: here seems to be a memory leak, checking if the language is in the array makes it go away but some routes are missing then
+
+        const path = prefix ? [{ label: prefix, id: '', nodes: [], type: '', document: null }] : [];        // Ensure menu.nodes is valid before calling crawlMenu
+        if (Array.isArray(menu.nodes)) {
+            crawlMenu(menu.nodes, path, language);
+        } else {
+            console.warn(`Invalid nodes structure in menu: ${menu.label}`);
+        }
     }
 
     return routes;

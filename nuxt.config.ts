@@ -3,11 +3,6 @@ import { i18nLocales } from "./utils/locale";
 import { useMenuStore } from "./generate/store/menuStore";
 import getPublicationsRoutes from "./getPublicationsRoutes";
 import crawlMenu from "./crawlMenu";
-
-if (process.env.NO_INCREMENTAL_BUILD && fs.existsSync(".dist_cache")) {
-    fs.rmSync(".dist_cache", { recursive: true });
-}
-
 export default defineNuxtConfig({
     components: [
         {
@@ -34,6 +29,7 @@ export default defineNuxtConfig({
                 crawlMenu(menu.nodes, [], language, menu, isElection, routes);
 
                 publicationRoutes.forEach((route) => {
+                    if (route !== null && route !== undefined)
                     routes.push(route);
                 });
             }

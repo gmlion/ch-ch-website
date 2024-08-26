@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
-import { ConfigProvider } from "radix-vue"
 provideHeadlessUseId(() => useId());
 
 const route = useRoute();

@@ -20,11 +20,9 @@ export const getAltText = (
   const defaultTranslation = imageMetaData.metadata?.title;
   if (locale !== defaultLocale && translations) {
     const translation = translations.find((t) => {
-      console.log(t.locale, "t.locale");
 
       t.locale === locale;
     });
-    console.log(translation, "translation");
     return translation?.metadata?.title ?? "";
   }
   return defaultTranslation ?? "";
