@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Image as ImageType } from "../HomeCarousel/types/types";
-import { useI18n } from "vue-i18n";
+import type {Image as ImageType} from "../HomeCarousel/types/types";
+import {useI18n} from "vue-i18n";
 
 const props = defineProps({
   caption: {
@@ -17,31 +17,33 @@ const props = defineProps({
   },
 });
 
-const { locale, defaultLocale } = useI18n();
+const {locale, defaultLocale} = useI18n();
 
 const altText = getAltText(
-  locale.value,
-  defaultLocale,
-  props.image.additionalData
+    locale.value,
+    defaultLocale,
+    props.image.additionalData || {}
 );
 </script>
 
 <template>
-  <figure class="flex flex-col">
-    <picture>
-      <img
-        ref="image"
-        :class="classes"
-        class="w-full"
-        :src="props.image.url"
-        :alt="altText"
-      />
-    </picture>
+  <div class="image-wrapper">
+    <figure class="flex flex-col">
+      <picture>
+        <img
+            ref="image"
+            :class="classes"
+            class="w-full"
+            :src="props.image.url"
+            :alt="altText"
+        />
+      </picture>
 
-    <figcaption
-      v-if="caption"
-      class="max-w-full mt-5"
-      v-html="caption"
-    ></figcaption>
-  </figure>
+      <figcaption
+          v-if="caption"
+          class="max-w-full mt-5"
+          v-html="caption"
+      ></figcaption>
+    </figure>
+  </div>
 </template>

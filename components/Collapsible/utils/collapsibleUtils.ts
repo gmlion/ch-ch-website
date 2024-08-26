@@ -1,10 +1,11 @@
 import type {PublicationContainerComponent} from "~/core/types/publications";
-import type {CollapsibleContent} from "~/core/types/contentComponents";
+import type {BodyComponent, CollapsibleContent, RichtextContent, YoutubeContent} from "~/core/types/contentComponents";
 import {handleRichtext} from "~/utils/richtext"
 import {getPublicationById} from "~/generate/store/publicationStore";
 import {slugify} from "~/utils/slugifyAnchorElements";
+import {handleYoutube} from "~/utils/youtube";
 
-export const createCollapsibleArray = async (content: PublicationContainerComponent[]): Promise<CollapsibleContent[]> => {
+export const createFAQCollapsibleArray = async (content: PublicationContainerComponent[]): Promise<CollapsibleContent[]> => {
     let collapsibleItems: CollapsibleContent[] = [];
     for (const contentItem of content) {
         let collapsibleItem: CollapsibleContent = {
@@ -17,7 +18,7 @@ export const createCollapsibleArray = async (content: PublicationContainerCompon
         collapsibleItem = {
             id: publication?.systemdata.documentId.toString() || "",
             title: publication?.metadata.title || "",
-            content: { content: handleRichtext(publication?.content[0].containers.body[0]!) || "" },
+            content: {content: collapsibleContentHandler(publication?.content[0].containers.body!) || ""},
             slug: slugify(publication?.metadata.title!)
         }
 
@@ -26,3 +27,34 @@ export const createCollapsibleArray = async (content: PublicationContainerCompon
 
     return collapsibleItems;
 }
+
+export const createAccordionCollapsibleArray = (content: PublicationContainerComponent[]): CollapsibleContent[] => {
+    let collapsibleItems: CollapsibleContent[] = [];
+
+    content.forEach(collapsibleItem => {
+        let collapsibleItemModel: CollapsibleContent
+        collapsibleItemModel = {
+            id: collapsibleItem.id,
+            title: collapsibleItem.content.title || "",
+            content: {content: collapsibleContentHandler(collapsibleItem.containers.body)},
+            slug: slugify(collapsibleItem.content.title || "")
+        }
+
+        collapsibleItems.push(collapsibleItemModel);
+    })
+    return collapsibleItems;
+}
+
+const collapsibleContentHandler = (bodyComponent: BodyComponent<RichtextContent | YoutubeContent>[]): string => {
+    let result = "";
+    bodyComponent.forEach(item => {
+        if (item.component === "youtube") {
+            result += handleYoutube([item as BodyComponent<YoutubeContent>]);
+        }
+
+        if (item.component === "p" || item.component === "subtitle") {
+            result += handleRichtext([item as BodyComponent<RichtextContent>]);
+        }
+    });
+    return result;
+};

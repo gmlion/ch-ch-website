@@ -1,5 +1,5 @@
-import type {Carousel} from "~/components/HomeCarousel/types/types";
-import type {RichtextComponent} from "~/core/types/contentComponents";
+import type {Carousel, Image} from "~/components/HomeCarousel/types/types";
+import type {BodyComponent, RichtextContent} from "~/core/types/contentComponents";
 
 type Design = { name: string; version: string };
 type Language = { label: string; locale: string; groupId: string };
@@ -8,31 +8,21 @@ interface Content extends PublicationComponent {
     containers: {
         left: PublicationContainerComponent[] | [];
         right: PublicationContainerComponent[] | [];
-        body: RichtextComponent[] | [];
+        body: BodyComponent<RichtextContent>[] | [];
     };
 }
 
 export interface PublicationContainerComponent extends PublicationComponent {
     containers: {
         carousel: Carousel[];
-        infobox: InfoBox[]
+        infobox: PublicationComponent[],
+        body: BodyComponent<RichtextContent>[] | [];
     };
 }
 
-export interface InfoBoxComponent {
-    id: string;
-    type: string;
-    content: InfoBox;
-}
 
-export interface InfoBox {
-    id: string;
-    content: {
-        content: {
-            text: string;
-        }
-    }
-}
+
+
 
 export interface Link {
     params: {
@@ -52,8 +42,11 @@ export interface PublicationComponent {
     content: {
         title?: string;
         text?: string;
-        faq: FAQ
+        faq?: FAQ,
+        richtext?: string[];
+        image?: Image;
     };
+
 }
 
 

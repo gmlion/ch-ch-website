@@ -12,6 +12,7 @@ const {data: publicationData} = await useAsyncData(async () => {
   const publication = getPublicationById(startItemId);
   if (publication) return publication;
 });
+
 const {data: contentComponentData} = await useAsyncData(async () => {
   if(publicationData.value) {
     const contentComponentsData = publicationData.value.content[0].containers.right;
@@ -21,8 +22,8 @@ const {data: contentComponentData} = await useAsyncData(async () => {
 
 const {data: contentComponentLeft} = await useAsyncData(async () => {
     if (publicationData.value) {
-      const contentComponentLeft = publicationData.value.content[0].containers.left;
-      return await contentComponents(contentComponentLeft);
+      const contentComponentLeftData = publicationData.value.content[0].containers.left;
+      return await contentComponents(contentComponentLeftData);
     }
 })
 
@@ -39,7 +40,6 @@ if (publicationData) {
 </script>
 
 <template>
-  {{publicationData?.content[0].containers.right}}
   <colored-layout
       class="color-index"
       left-color="layout-blue"
@@ -56,7 +56,13 @@ if (publicationData) {
         <p class="text-xl-fluid mt-8">{{ titleLead.lead }}</p>
       </div>
       <div v-if="contentComponentLeft">
-        <ContentComponents :content-component="contentComponentLeft!"/>  <!-- Update to use the variable -->
+        <div class="px-6 pt-6 border-2 border-secondary-yellow mt-8" data-v-eec3be88="">
+          <p
+              class="mb-8 text-xl font-semibold leading-6">Placeholder</p>
+          <div tabindex="0" class="mb-8 not-italic">
+            <ContentComponents :content-component="contentComponentLeft!"/>
+          </div>
+        </div>
       </div>
       <div class="mt-auto">
         <BackToOverviewLink/>
@@ -64,7 +70,7 @@ if (publicationData) {
     </template>
 
     <template #main>
-      <ContentComponents :content-component="contentComponentData!"/>  <!-- Update to use the variable -->
+      <ContentComponents :content-component="contentComponentData!"/>
     </template>
   </colored-layout>
 </template>

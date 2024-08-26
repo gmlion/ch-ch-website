@@ -53,7 +53,7 @@ export interface Image {
   mimeType: string;
   originalUrl: string;
   imageService: string;
-  additionalData: ImageItem;
+  additionalData?: ImageItem;
 }
 
 export interface ImageMetaData {
@@ -106,7 +106,7 @@ export type ImageItem = {
   mediaType: "image";
   asset: ImageAsset;
   translations: ImageTranslation[];
-  metadata: ImageMetadata;
+  metadata?: ImageMetadata;
   createdAt: string;
   updatedAt: string;
   state: "active" | "inactive";
