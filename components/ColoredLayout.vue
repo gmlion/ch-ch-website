@@ -58,10 +58,10 @@ const isElection = useStore(isElectionStore);
       <slot name="right" />
     </div>
 
-    <!-- <Footer
+     <Footer
       :division-mode="props.divisionMode"
       :color="props.footerColor"
       :is-election="isElection"
-    /> -->
+    />
   </div>
 </template>

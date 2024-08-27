@@ -31,18 +31,8 @@ export const getCarouselItems = async (
       }
       if (content.content.text) {
         if (publications) {
-          const regex = /data-li-document-ref="(\d+)"/g;
-          const matches = content.content.text.matchAll(regex);
-          let replacedHTML = content.content.text;
-          for (const match of matches) {
-            const regexId = match[1];
-            if (regexId) {
-              const url = buildUrlFromPublication(publications[regexId]);
-              const hrefRegex = new RegExp(`href="[^"]*"`);
-              replacedHTML = replacedHTML.replace(hrefRegex, `href="${url}"`);
-            }
-          }
-          carouselObject.text = replacedHTML;
+
+          carouselObject.text = livingDocsIdToUrl(content.content.text);
         }
       }
       if (content.content.image && carouselObject.image === undefined) {

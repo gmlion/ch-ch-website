@@ -10,6 +10,6 @@ export const handleRichtext = (text: BodyComponent<RichtextContent>[]): string =
             richtext += `<h3>${text.content.title}</h3>`
         }
     })
-
+    richtext = livingDocsIdToUrl(richtext)
     return richtext;
 };

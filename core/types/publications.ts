@@ -42,6 +42,7 @@ export interface PublicationComponent {
     content: {
         title?: string;
         text?: string;
+        question: string;
         faq?: FAQ,
         richtext?: string[];
         image?: Image;
