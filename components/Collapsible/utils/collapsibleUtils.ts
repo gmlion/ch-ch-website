@@ -14,12 +14,16 @@ export const createFAQCollapsibleArray = async (content: PublicationContainerCom
             content: {content: ""},
             slug: ""
         }
-        const publication = await getPublicationById(contentItem.content.faq.params.teaser.reference.id)
+        const publication = await getPublicationById(contentItem?.content?.faq?.params.teaser.reference.id || "");
+        if (!publication) {
+            console.error('Failed to fetch publication for id:', contentItem?.content?.faq?.params.teaser.reference.id);
+            continue;
+        }
         collapsibleItem = {
             id: publication?.systemdata.documentId.toString() || "",
-            title: publication?.metadata.title || "",
-            content: {content: collapsibleContentHandler(publication?.content[0].containers.body!) || ""},
-            slug: slugify(publication?.metadata.title!)
+            title: publication?.metadata.title || publication?.content[0].content.question,
+            content: {content: collapsibleContentHandler(publication?.content[0].containers.body) || ""},
+            slug: publication?.metadata.title ?  slugify(publication?.metadata.title) :  slugify(publication?.content[0].content.question)
         }
 
         collapsibleItems.push(collapsibleItem);
@@ -30,7 +34,6 @@ export const createFAQCollapsibleArray = async (content: PublicationContainerCom
 
 export const createAccordionCollapsibleArray = (content: PublicationContainerComponent[]): CollapsibleContent[] => {
     let collapsibleItems: CollapsibleContent[] = [];
-
     content.forEach(collapsibleItem => {
         let collapsibleItemModel: CollapsibleContent
         collapsibleItemModel = {

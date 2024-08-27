@@ -52,7 +52,6 @@ if (publicationData) {
   >
     <template #side>
       <Breadcrumb />
-
       <div>
         <h1 class="text-primary-white text-3xl-fluid">{{ titleLead.title }}</h1>
         <p class="text-xl-fluid mt-8">{{ titleLead.lead }}</p>
