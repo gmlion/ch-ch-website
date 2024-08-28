@@ -27,7 +27,7 @@ collapsibleContent = props.contentComponent.reduce((acc: CollapsibleContent[], c
       <!--      {{handleRichtext(component.content.title)}}-->
     </div>
     <div v-if="component.type ==='image'">
-      <ImageBlock :image="component.content"/>
+      <ImageBlock :image="component.content" :has-light-box="true"/>
     </div>
     <div v-if="component.type ==='p'">
       <div class="richtext" v-html="handleRichtext([{ component:

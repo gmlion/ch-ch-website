@@ -4,6 +4,7 @@ import { currentPaths } from "~/generate/store/menuStore";
 import { computed } from "vue";
 
 const router = useRouter();
+const {locale} = useI18n();
 const startItemId = router.currentRoute.value.meta.id as string;
 const currentPathsStore = useStore(currentPaths);
 
@@ -11,6 +12,15 @@ const isMainNavigationVisible = computed(
   () => currentPathsStore.value.length < 1
 );
 
+useHead({
+  title: router.currentRoute.value.name as string | "ch.ch",
+  meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }],
+  htmlAttrs() {
+    return {
+      lang: locale.value,
+    };
+  },
+});
 
 </script>
 

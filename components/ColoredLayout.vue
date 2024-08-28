@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { isSearchOpen as isSearchOpenStore } from "../store/pageLayout";
 import { isElection as isElectionStore } from "~/store/pageState";
-
-// import LanguagePickerDesktop from './LanguagePickerDesktop.vue' WIP
 import { useStore } from "@nanostores/vue";
 
 const props = defineProps<{
@@ -20,8 +18,8 @@ const isElection = useStore(isElectionStore);
 <template>
   <div>
     <div
-      :class="[{ 'search-is-active': isSearchOpen }, {'division-fifth': props.divisionMode === 'fifth'}]"
-      class="w-full lg:min-h-screen lg:flex main-layout"
+      :class="[{ 'search-is-active': isSearchOpen }, {'division-fifths': props.divisionMode === 'fifths'}, {'bg-primary-blue': props.leftColor === 'layout-blue'}]"
+      class="w-full lg:h-full lg:flex main-layout"
 
     >
       <search-overlay
@@ -29,7 +27,7 @@ const isElection = useStore(isElectionStore);
         :division-mode="props.divisionMode"
       />
       <div
-        class="left-layout relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 pusher min-w-[350px] lg:pb-36"
+        class="left-layout relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 min-w-[350px] lg:pb-36 lg:mb-36"
         :class="leftColor"
       >
         <a href="#content" class="hidden">{{ $t("jumpToContent") }}</a>
@@ -52,7 +50,7 @@ const isElection = useStore(isElectionStore);
           <language-picker class="mr-12" />
           <search-link />
         </div>
-        <a name="content"></a>
+        <slot name="content"></slot>
         <slot name="main" />
       </main>
       <slot name="right" />

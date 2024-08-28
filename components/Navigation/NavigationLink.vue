@@ -5,7 +5,6 @@ import type { MenuItem } from "~/generate/types/menu";
 import { useStore } from "@nanostores/vue";
 
 const URITYPE = "uri";
-const route = useRoute();
 const props = defineProps<{
   entry: MenuItem;
   mode?: string;
@@ -14,8 +13,6 @@ const props = defineProps<{
 const activeMenuItem = useStore(activeNavItem);
 
 const isLink = props.entry.children.length === 0;
-const normalizedPath = route.path.endsWith("/") ? route.path : `${route.path}/`;
-const href = `${normalizedPath}${props.entry.route}`;
 const target = createUrlTarget(props.entry.type, URITYPE, props.entry.target!);
 
 const navigateToMenuNode = (navigationEntry: MenuItem) => {
@@ -35,7 +32,7 @@ const setActiveMenuItem = (navigationEntry: MenuItem) => {
 <template>
   <a
     v-if="isLink"
-    :href="href"
+    :href="props.entry.route"
     class="leading-tight no-underline text-inherit text-navigation-fluid"
     :target="target"
     :class="[

@@ -125,22 +125,20 @@ const findItemById = (nodes: MenuNode[], id: string): MenuNode | undefined => {
 
 const createMenuItems = (
   entry: MenuNode,
-  parentUrl: string | undefined = undefined,
   parentId: string | undefined = undefined
 ) => {
+  const router = useRouter().getRoutes()
+  const route = router.find((route) => route.meta.id === entry.id || route.meta.id === entry.documentId);
   let item: MenuItem = {
     id: entry.id,
     label: entry.label,
     type: entry.type,
     target: entry.target,
     parentId: parentId,
-    parentUrl: parentUrl ? makeSlug(parentUrl) : undefined,
-    route: `${parentUrl ? makeSlug(parentUrl) + "/" : ""}${makeSlug(
-      entry.label
-    )}`,
+    route: route?.path || "",
     children: entry.nodes
       ? entry.nodes.map((child) =>
-          createMenuItems(child, entry.label, entry.id)
+          createMenuItems(child, entry.label)
         )
       : [],
   };

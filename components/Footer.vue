@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ref, computed } from "vue";
-import { useFooterMenuStore } from "~/generate/store/footerMenuStore";
-import { getUriFromNode } from "~/utils/url";
+import {computed, ref} from "vue";
+import {useFooterMenuStore} from "~/generate/store/footerMenuStore";
+import {getUriFromNode} from "~/utils/url";
+
 const { locale } = useI18n();
 
 const props = defineProps<{
@@ -20,8 +21,7 @@ const toggleFooterIsOpen = () => {
 };
 
 const footerData = useAsyncData("footerStore", async () => {
-  const data = await useFooterMenuStore();
-  return data;
+  return await useFooterMenuStore();
 });
 
 const currentMenu = computed(() => {

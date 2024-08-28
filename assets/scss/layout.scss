@@ -2,7 +2,7 @@
   @apply text-primary-claim;
 }
 
-.division-fifth {
+.division-fifths {
   .left-layout {
     @apply lg:w-[40%];
   }
@@ -28,6 +28,7 @@
 
 .left-layout {
   &.layout-blue {
+
     @apply bg-primary-blue text-primary-white;
 
     .logo-color-classes {
@@ -43,9 +44,14 @@
 
 .right-layout {
   @apply bg-primary-red text-primary-white lg:w-1/2;
-
+  .language-select {
+    svg {
+      @apply text-primary-blue;
+    }
+    @apply text-primary-blue;
+  }
   .search-icon {
-    @apply text-primary-white;
+    @apply text-primary-blue lg:text-primary-white;
   }
 
   .swiper-button-next,
@@ -55,7 +61,12 @@
 
   &.layout-white {
     @apply bg-primary-white text-primary-blue;
-
+    .language-select {
+      svg {
+        @apply text-primary-white;
+      }
+      @apply text-primary-white;
+    }
     .search-icon {
       @apply text-primary-blue;
     }
@@ -144,7 +155,6 @@
   }
   .left-layout {
     .image-wrapper {
-      max-width: 240px;
     }
     figure {
     @apply flex  pb-8;

@@ -1,5 +1,6 @@
 import type { Image, ImageItem } from "~/components/HomeCarousel/types/types";
-export const getCompleteImageObject = async (image: Image): Promise<Image> => {
+export const getCompleteImageObject = async (image?: Image ): Promise<Image | null> => {
+  if (!image) return null;
   let setImage = image;
   const imageDataRequest = await makeFetch().request(
     `/mediaLibrary/${image.mediaId}`
@@ -7,15 +8,15 @@ export const getCompleteImageObject = async (image: Image): Promise<Image> => {
   const imageData = await imageDataRequest.json();
 
   setImage.additionalData = imageData;
-
   return setImage;
 };
 
 export const getAltText = (
   locale: string,
   defaultLocale: string,
-  imageMetaData: ImageItem
+  imageMetaData?: ImageItem
 ) => {
+  if(!imageMetaData) return "";
   const translations = imageMetaData?.translations;
   const defaultTranslation = imageMetaData.metadata?.title;
   if (locale !== defaultLocale && translations) {

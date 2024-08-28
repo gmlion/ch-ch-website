@@ -1,20 +1,14 @@
 import { atom } from "nanostores";
 import makeFetch from "../../utils/makeFetch";
 import type {
-    MinimizedPublicationType,
     Publication,
     PublicationOptions,
-} from "../../core/types/publications";
+} from "~/core/types/publications";
 import type { AllPublicationOptions } from "~/generate/types/slug";
-import type {
-    MenuResponse,
-    MenuResponseData,
-    PathType,
-} from "../types/routing";
+
 
 export const publicationStore = atom<Publication[]>([]);
 export const indexPublicationStore = atom<Publication | null>(null);
-export const usedPublicationsStore = atom<MinimizedPublicationType[]>([]);
 export const keyedPublicationsStore = atom<{
     [key: string]: Publication;
 } | null>(null);
@@ -89,11 +83,8 @@ export const makeKeyedPublications = async (): Promise<{
     const publicationMap: { [key: string]: Publication } = {};
 
     publications.forEach((publication: Publication) => {
-        if (publication.systemdata?.documentId === 6187) {
-            console.log("publication without documentId", publication);
-        }
-        const documentId = publication.systemdata?.documentId;
 
+        const documentId = publication.systemdata?.documentId;
         // Only set the first occurrence of a publication with a given documentId
         if (!publicationMap[documentId]) {
             publicationMap[documentId] = publication;

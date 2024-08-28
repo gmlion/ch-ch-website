@@ -1,5 +1,6 @@
-import type { Carousel, CarouselItem } from "../types/types";
-import { makeKeyedPublications } from "~/generate/store/publicationStore";
+import type {Carousel, CarouselItem, Image} from "../types/types";
+import {makeKeyedPublications} from "~/generate/store/publicationStore";
+
 export const getCarouselItems = async (
   carouselItems: Carousel[]
 ): Promise<CarouselItem[]> => {
@@ -21,8 +22,7 @@ export const getCarouselItems = async (
     const id = item.content.link?.params?.link?.reference?.id;
     if (publications && id && publications[id]) {
       if (publications[id]) {
-        const url = buildUrlFromPublication(publications[id]);
-        carouselObject.href = url;
+        carouselObject.href = buildUrlFromPublication(publications[id]);
       }
     }
     for (const content of item.containers["carousel-content"]) {
@@ -38,7 +38,7 @@ export const getCarouselItems = async (
       if (content.content.image && carouselObject.image === undefined) {
         carouselObject.image = await getCompleteImageObject(
           content.content.image
-        );
+        ) as Image;
       }
     }
     carouselItemsArray.push(carouselObject);
@@ -67,7 +67,7 @@ export const onSlideChange = (
   carouselItems: CarouselItem[]
 ) => {
   if (!carouselItems) return;
-  let bgColor: string | undefined = "";
+  let bgColor: string | undefined;
 
   bgColor = carouselItems[slideIndex].backgroundColor;
 

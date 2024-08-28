@@ -1,8 +1,9 @@
 import fs from "node:fs";
-import { i18nLocales } from "./utils/locale";
-import { useMenuStore } from "./generate/store/menuStore";
+import {i18nLocales} from "./utils/locale";
+import {useMenuStore} from "./generate/store/menuStore";
 import getPublicationsRoutes from "./getPublicationsRoutes";
 import crawlMenu from "./crawlMenu";
+
 export default defineNuxtConfig({
     components: [
         {
@@ -10,9 +11,15 @@ export default defineNuxtConfig({
             pathPrefix: false,
         },
     ],
-
+    typescript: {
+        tsConfig: {
+            compilerOptions: {
+                baseUrl: '.'
+            }
+        }
+    },
     routeRules: {
-        "/**": { isr: true },
+        "/**": {isr: true},
     },
 
     hooks: {
@@ -28,11 +35,13 @@ export default defineNuxtConfig({
                 const isElection = name === "wahlen";
                 crawlMenu(menu.nodes, [], language, menu, isElection, routes);
 
-                publicationRoutes.forEach((route) => {
-                    if (route !== null && route !== undefined)
-                    routes.push(route);
-                });
             }
+
+            publicationRoutes.forEach((route) => {
+                if (route !== null && route !== undefined)
+                    routes.push(route);
+            });
+
             languages.forEach((language) => {
                 routes.push({
                     name: `home-${language.toUpperCase()}`,
@@ -84,12 +93,6 @@ export default defineNuxtConfig({
         "@nuxtjs/sitemap",
         '@nuxtjs/tailwindcss',
         [
-            "nuxt-headlessui",
-            {
-                prefix: "Headless",
-            },
-        ],
-        [
             "@nuxtjs/google-fonts",
             {
                 families: {
@@ -106,14 +109,7 @@ export default defineNuxtConfig({
         "@nuxtjs/tailwindcss"
     ],
     shadcn: {
-        /**
-         * Prefix for all the imported component
-         */
         prefix: '',
-        /**
-         * Directory that the component lives in.
-         * @default "./components/ui"
-         */
         componentDir: './components/ui'
     },
     i18n: {
@@ -130,10 +126,10 @@ export default defineNuxtConfig({
     app: {
         head: {
             meta: [
-                { charset: "utf-8" },
-                { name: "viewport", content: "width=device-width, initial-scale=1" },
+                {charset: "utf-8"},
+                {name: "viewport", content: "width=device-width, initial-scale=1"},
             ],
-            link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+            link: [{rel: "icon", type: "image/x-icon", href: "/favicon.ico"}],
         },
     },
 

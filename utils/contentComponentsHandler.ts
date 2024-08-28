@@ -1,16 +1,18 @@
-import type {PublicationContainerComponent} from "~/core/types/publications";
+import type { PublicationContainerComponent } from "~/core/types/publications";
 import {
     createAccordionCollapsibleArray,
     createFAQCollapsibleArray
 } from "~/components/Collapsible/utils/collapsibleUtils";
-import type {ContentComponent} from "~/core/types/contentComponents";
-import {randomUUID} from "uncrypto";
-import type {Image} from "~/components/HomeCarousel/types/types";
+import type { ContentComponent } from "~/core/types/contentComponents";
+import { randomUUID } from "uncrypto";
+import type { Image } from "~/components/HomeCarousel/types/types";
+import { getCompleteImageObject } from '~/utils/image';
 
 export const contentComponents = async (content: PublicationContainerComponent[]): Promise<ContentComponent[] | []> => {
-    const faqItems: PublicationContainerComponent[] = []
-    const accordionItems: PublicationContainerComponent[] = []
-    let contentComponentsArray: ContentComponent[] = []
+    const faqItems: PublicationContainerComponent[] = [];
+    const accordionItems: PublicationContainerComponent[] = [];
+    let contentComponentsArray: ContentComponent[] = [];
+
     for (const contentItem of content) {
         switch (contentItem.component) {
             case "faq-teaser": {
@@ -19,78 +21,63 @@ export const contentComponents = async (content: PublicationContainerComponent[]
             }
             case "infobox": {
                 if (contentItem.containers.infobox.length > 0) {
-                    contentItem.containers.infobox.forEach((component) => {
+                    for (const component of contentItem.containers.infobox) {
                         switch (component.component) {
-                            case "image" : {
+                            case "image": {
                                 contentComponentsArray.push({
                                     id: component.id,
                                     type: component.component,
-                                    content: component.content.image as Image
-                                })
+                                    content: await getCompleteImageObject(component.content.image) as Image
+                                });
+                                break;
                             }
-                            break;
-                            case "p" : {
+                            case "p": {
                                 contentComponentsArray.push({
                                     id: component.id,
                                     type: component.component,
                                     content: component.content.text as string
-                                })
+                                });
+                                break;
                             }
-                            break;
                         }
-                    })
+                    }
                 }
                 break;
             }
             case "accordion": {
                 accordionItems.push(contentItem);
-            }
                 break;
-            case "image" : {
+            }
+            case "image": {
                 contentComponentsArray.push({
                     id: contentItem.id,
                     type: contentItem.component,
-                    content: contentItem.content.image as Image
-                })
-            }
+                    content: await getCompleteImageObject(contentItem.content.image) as Image
+                });
                 break;
-            case "p" : {
+            }
+            case "p": {
                 contentComponentsArray.push({
                     id: contentItem.id,
                     type: contentItem.component,
                     content: contentItem.content.text as string
-                })
-            }
+                });
                 break;
-            default: {
-                console.log(`component ${contentItem.component} not found`)
             }
-            // case "lead": {
-            //     conosle.log(contentItem.content.text)
-            //     contentComponentsArray.push({
-            //         id: randomUUID(),
-            //         type: "lead",
-            //         content: contentItem.content.text
-            //     })
-            //     break;
-            // } case "title": {
-            //     contentComponentsArray.push({
-            //         id: randomUUID(),
-            //         type: "title",
-            //         content: contentItem.content.title
-            //     })
-            // } break;
+            default: {
+                console.log(`component ${contentItem.component} not found`);
+            }
         }
     }
 
     if (faqItems.length > 0) {
-        const faqContent = await createFAQCollapsibleArray(faqItems)
-        if(faqContent) {
+        const faqContent = await createFAQCollapsibleArray(faqItems);
+        if (faqContent) {
             contentComponentsArray.push({
                 id: randomUUID(),
                 type: "faq-teaser",
                 content: faqContent
-            })
+            });
         }
     }
 
@@ -99,7 +86,8 @@ export const contentComponents = async (content: PublicationContainerComponent[]
             id: randomUUID(),
             type: "accordion",
             content: createAccordionCollapsibleArray(accordionItems)
-        })
+        });
     }
+
     return contentComponentsArray;
-}
+};

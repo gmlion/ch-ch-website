@@ -110,4 +110,12 @@ const onSwiper = (swiperInstance: any) => {
 .carousel__pagination-button--active::after {
   background-color: #fff;
 }
+
+.swiper {
+  .image-wrapper {
+    img {
+      width: 100%;
+    }
+  }
+}
 </style>

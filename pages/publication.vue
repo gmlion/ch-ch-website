@@ -2,8 +2,6 @@
 import type {Publication} from "~/core/types/publications";
 import {getPublicationById} from "~/generate/store/publicationStore";
 import {contentComponents} from "~/utils/contentComponentsHandler";
-import routerCollection from "~/plugins/routerCollection";
-// const routerCollectionObj = routerCollection();/**/
 const router = useRouter();
 const startItemId = router.currentRoute.value.meta.id as string;
 const {locale} = useI18n();
@@ -47,7 +45,7 @@ if (publicationData) {
       left-color="layout-blue"
       footer-color="blue"
       right-color="layout-white"
-      division-mode="fifth"
+      division-mode="fifths"
       :show-fader="false"
   >
     <template #side>
@@ -64,9 +62,6 @@ if (publicationData) {
             <ContentComponents :content-component="contentComponentLeft!"/>
           </div>
         </div>
-      </div>
-      <div class="mt-auto">
-        <BackToOverviewLink/>
       </div>
     </template>
 

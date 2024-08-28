@@ -36,7 +36,7 @@ const { data: linkItems } = await useAsyncData(async () => {
   </div>
 </template>
 
-<style lang="postcss">
+<style lang="scss">
 .simplebar-scrollbar {
   @apply bg-primary-red;
 
