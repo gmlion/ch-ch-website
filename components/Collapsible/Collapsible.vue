@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';  // Import the useI18n composable
-import type { CollapsibleContent } from "~/core/types/contentComponents";
+import type { CollapsibleContent } from "~/core/types/contentComponentsTypes";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const { t } = useI18n();

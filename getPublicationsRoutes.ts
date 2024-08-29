@@ -30,6 +30,7 @@ export default async (menus: MenuResponse[]) => {
         if (!publication || !path) return null;
         const url = buildUrlFromPublication(publication, path);
         if (!url) return null;
+
         const route: NuxtPage = {
             name: publication.metadata.title,
             path: url,
@@ -69,25 +70,9 @@ export default async (menus: MenuResponse[]) => {
     }
 
     for (const menu of menus) {
-        // Ensure menu.label is valid and has the expected format
-        if (!menu.label || !menu.label.includes("-")) {
-            console.warn(`Unexpected menu label format: ${menu.label}`);
-            continue;
-        }
-
         const language = menu.label.split("-")[1];
-
-        // Validate language to ensure it's correct
-        if (!electionPathPrefixes[`wahlen-${language}` as ElectionPathPrefixKey]) {
-            console.warn(`Unexpected language detected: ${language}`);
-            continue;
-        }
-
         const key = `wahlen-${menu.label}` as ElectionPathPrefixKey;
         const prefix = electionPathPrefixes[key];
-
-        // TODO: here seems to be a memory leak, checking if the language is in the array makes it go away but some routes are missing then
-
         const path = prefix ? [{ label: prefix, id: '', nodes: [], type: '', document: null }] : [];        // Ensure menu.nodes is valid before calling crawlMenu
         if (Array.isArray(menu.nodes)) {
             crawlMenu(menu.nodes, path, language);

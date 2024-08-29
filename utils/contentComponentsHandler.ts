@@ -1,9 +1,14 @@
-import type { PublicationContainerComponent } from "~/core/types/publications";
+import type { PublicationContainerComponent } from "~/core/types/publicationsTypes";
 import {
     createAccordionCollapsibleArray,
     createFAQCollapsibleArray
 } from "~/components/Collapsible/utils/collapsibleUtils";
-import type { ContentComponent } from "~/core/types/contentComponents";
+import type {
+    ContentComponent,
+    YoutubeContent,
+    InfoboxContent,
+    CollapsibleContent
+} from "~/core/types/contentComponentsTypes";
 import { randomUUID } from "uncrypto";
 import type { Image } from "~/components/HomeCarousel/types/types";
 import { getCompleteImageObject } from '~/utils/image';
@@ -11,7 +16,8 @@ import { getCompleteImageObject } from '~/utils/image';
 export const contentComponents = async (content: PublicationContainerComponent[]): Promise<ContentComponent[] | []> => {
     const faqItems: PublicationContainerComponent[] = [];
     const accordionItems: PublicationContainerComponent[] = [];
-    let contentComponentsArray: ContentComponent[] = [];
+    const accordionComponentsArray: CollapsibleContent[] = [];
+    const contentComponentsArray: ContentComponent[] = [];
 
     for (const contentItem of content) {
         switch (contentItem.component) {
@@ -24,19 +30,25 @@ export const contentComponents = async (content: PublicationContainerComponent[]
                     for (const component of contentItem.containers.infobox) {
                         switch (component.component) {
                             case "image": {
-                                contentComponentsArray.push({
-                                    id: component.id,
-                                    type: component.component,
-                                    content: await getCompleteImageObject(component.content.image) as Image
-                                });
+                                const infoboxContent = component.content as InfoboxContent;
+                                if (infoboxContent.image) {
+                                    contentComponentsArray.push({
+                                        id: component.id,
+                                        type: component.component,
+                                        content: await getCompleteImageObject(infoboxContent.image) as Image
+                                    });
+                                }
                                 break;
                             }
                             case "p": {
-                                contentComponentsArray.push({
-                                    id: component.id,
-                                    type: component.component,
-                                    content: component.content.text as string
-                                });
+                                const infoboxContent = component.content as InfoboxContent;
+                                if (infoboxContent.text) {
+                                    contentComponentsArray.push({
+                                        id: component.id,
+                                        type: component.component,
+                                        content: infoboxContent.text as string
+                                    });
+                                }
                                 break;
                             }
                         }
@@ -49,19 +61,33 @@ export const contentComponents = async (content: PublicationContainerComponent[]
                 break;
             }
             case "image": {
+                const infoboxContent = contentItem.content as InfoboxContent;
+                if (infoboxContent.image) {
+                    contentComponentsArray.push({
+                        id: contentItem.id,
+                        type: contentItem.component,
+                        content: await getCompleteImageObject(infoboxContent.image) as Image
+                    });
+                }
+                break;
+            }
+            case "youtube": {
                 contentComponentsArray.push({
                     id: contentItem.id,
                     type: contentItem.component,
-                    content: await getCompleteImageObject(contentItem.content.image) as Image
+                    content: contentItem.content as YoutubeContent
                 });
                 break;
             }
             case "p": {
-                contentComponentsArray.push({
-                    id: contentItem.id,
-                    type: contentItem.component,
-                    content: contentItem.content.text as string
-                });
+                const infoboxContent = contentItem.content as InfoboxContent;
+                if (infoboxContent.text) {
+                    contentComponentsArray.push({
+                        id: contentItem.id,
+                        type: contentItem.component,
+                        content: infoboxContent.text as string
+                    });
+                }
                 break;
             }
             default: {
@@ -73,19 +99,22 @@ export const contentComponents = async (content: PublicationContainerComponent[]
     if (faqItems.length > 0) {
         const faqContent = await createFAQCollapsibleArray(faqItems);
         if (faqContent) {
-            contentComponentsArray.push({
-                id: randomUUID(),
-                type: "faq-teaser",
-                content: faqContent
-            });
+            accordionComponentsArray.push(...faqContent);
         }
     }
 
     if (accordionItems.length > 0) {
+        const accordionContent = createAccordionCollapsibleArray(accordionItems);
+        if (accordionContent) {
+            accordionComponentsArray.push(...accordionContent);
+        }
+    }
+
+    if (accordionComponentsArray.length > 0) {
         contentComponentsArray.push({
             id: randomUUID(),
-            type: "accordion",
-            content: createAccordionCollapsibleArray(accordionItems)
+            type: "collapsible",
+            content: accordionComponentsArray
         });
     }
 

@@ -3,7 +3,7 @@ import makeFetch from "../../utils/makeFetch";
 import type {
     Publication,
     PublicationOptions,
-} from "~/core/types/publications";
+} from "~/core/types/publicationsTypes";
 import type { AllPublicationOptions } from "~/generate/types/slug";
 
 

@@ -11,6 +11,10 @@ export default defineNuxtConfig({
             pathPrefix: false,
         },
     ],
+    site: {
+        url: 'https://ch.ch',
+        name: 'ch.ch',
+    },
     typescript: {
         tsConfig: {
             compilerOptions: {
@@ -18,9 +22,9 @@ export default defineNuxtConfig({
             }
         }
     },
-    routeRules: {
-        "/**": {isr: true},
-    },
+    // routeRules: {
+    //     "/**": {isr: true},
+    // },
 
     hooks: {
         "pages:extend": async (routes) => {
@@ -55,6 +59,11 @@ export default defineNuxtConfig({
                 path: "/:pathMatch(.*)*",
                 file: `${__dirname}/pages/[slug].vue`,
             });
+        },
+        async "prerender:routes"(ctx) {
+            // Prerender all pages.
+            const test= ctx.routes.entries;
+            console.log(test);
         },
     },
 

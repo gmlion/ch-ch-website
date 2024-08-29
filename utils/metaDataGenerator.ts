@@ -1,4 +1,4 @@
-import type { Publication } from "~/core/types/publications";
+import type { Publication } from "~/core/types/publicationsTypes";
 
 export default function metaDataGenerator(
   publication: Publication,

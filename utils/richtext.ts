@@ -1,4 +1,4 @@
-import type {BodyComponent, RichtextContent} from "~/core/types/contentComponents";
+import type {BodyComponent, RichtextContent} from "~/core/types/contentComponentsTypes";
 
 export const handleRichtext = (text: BodyComponent<RichtextContent>[]): string => {
  let richtext= ""

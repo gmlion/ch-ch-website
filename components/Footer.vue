@@ -21,21 +21,12 @@ const toggleFooterIsOpen = () => {
 };
 
 const footerData = useAsyncData("footerStore", async () => {
-  return await useFooterMenuStore();
+  return await useFooterMenuStore(locale.value);
 });
 
 const currentMenu = computed(() => {
   return footerData.data.value?.find((menu) => {
-    if (menu.label.endsWith(locale.value)) {
-      // if (isElection) {
-      //   if (menu.label.includes("wahlen")) {
-      //     return menu;
-      //   }
-      // } else
-      if (menu.label.includes("chch")) {
         return menu;
-      }
-    }
   });
 });
 
@@ -47,7 +38,7 @@ const links = computed(() => {
   return nodes.map((node) => {
     return {
       name: node.label,
-      link: getUriFromNode(node),
+      link: node.url,
       target: node.target ? node.target : "_self",
     };
   });
@@ -60,7 +51,7 @@ const lastLink = computed(() => {
   const node = menu.nodes[menu.nodes.length - 1];
   return {
     name: node.label,
-    link: getUriFromNode(node),
+    link: node.url,
     target: node.target ? node.target : "_self",
   };
 });

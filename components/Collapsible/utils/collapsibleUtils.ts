@@ -1,5 +1,5 @@
-import type {PublicationContainerComponent} from "~/core/types/publications";
-import type {BodyComponent, CollapsibleContent, RichtextContent, YoutubeContent} from "~/core/types/contentComponents";
+import type {PublicationContainerComponent} from "~/core/types/publicationsTypes";
+import type {BodyComponent, CollapsibleContent, RichtextContent, YoutubeContent} from "~/core/types/contentComponentsTypes";
 import {handleRichtext} from "~/utils/richtext"
 import {getPublicationById} from "~/generate/store/publicationStore";
 import {slugify} from "~/utils/slugifyAnchorElements";

@@ -1,4 +1,4 @@
-import type {PublicationComponent} from "~/core/types/publications";
+import type {FAQ, PublicationComponent} from "~/core/types/publicationsTypes";
 import type {Image} from "~/components/HomeCarousel/types/types";
 
 export interface CollapsibleContent {
@@ -12,11 +12,11 @@ interface CollapsibleRichtext {
     content: string;
 }
 
-export interface ContentComponent {
+export type ContentComponent = {
     id: string;
     type: string;
-    content: CollapsibleContent[] | PublicationComponent[] | Image | string  ;
-}
+    content: string | PublicationComponent[] | Image | CollapsibleContent[] | YoutubeContent | InfoboxContent;
+};
 
 export interface RichtextContent {
     title?: string;
@@ -35,6 +35,18 @@ export interface YoutubeContent {
     }
 
 }
+
+
+export interface InfoboxContent {
+    title?: string;
+    text?: string;
+    question: string;
+    faq?: FAQ;
+    richtext?: string[];
+    image?: Image;
+}
+
+
 
 export interface BodyComponent<content> {
     component: string;

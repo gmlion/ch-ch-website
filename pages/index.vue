@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Publication } from "~/core/types/publications";
+import type { Publication } from "~/core/types/publicationsTypes";
 import { useStore } from "@nanostores/vue";
 import { setIndexPublication } from "~/generate/store/publicationStore";
 import { currentPaths } from "~/generate/store/menuStore";

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type {Publication} from "~/core/types/publications";
+import type {Publication} from "~/core/types/publicationsTypes";
 import {getPublicationById} from "~/generate/store/publicationStore";
 import {contentComponents} from "~/utils/contentComponentsHandler";
+
 const router = useRouter();
 const startItemId = router.currentRoute.value.meta.id as string;
 const {locale} = useI18n();
-let titleLead: { title?: string; lead?: string } = {};
+let hasInfoBox = false;
 
 const {data: publicationData} = await useAsyncData(async () => {
   const publication = getPublicationById(startItemId);
@@ -13,17 +14,17 @@ const {data: publicationData} = await useAsyncData(async () => {
 });
 
 const {data: contentComponentData} = await useAsyncData(async () => {
-  if(publicationData.value) {
+  if (publicationData.value) {
     const contentComponentsData = publicationData.value.content[0].containers.right;
     return await contentComponents(contentComponentsData);
   }
 })
 
 const {data: contentComponentLeft} = await useAsyncData(async () => {
-    if (publicationData.value) {
-      const contentComponentLeftData = publicationData.value.content[0].containers.left;
-      return await contentComponents(contentComponentLeftData);
-    }
+  if (publicationData.value) {
+    const contentComponentLeftData = publicationData.value.content[0].containers.left;
+    return await contentComponents(contentComponentLeftData);
+  }
 })
 
 if (publicationData) {
@@ -31,12 +32,7 @@ if (publicationData) {
       metaDataGenerator(publicationData.value as Publication, locale.value)
   );
 
-  titleLead = {
-    title: publicationData.value?.content[0].containers.left[0].content.title,
-    lead: publicationData.value?.content[0].containers.left[1].content.text,
-  };
 }
-
 </script>
 
 <template>
@@ -49,24 +45,29 @@ if (publicationData) {
       :show-fader="false"
   >
     <template #side>
-      <Breadcrumb />
-      <div>
-        <h1 class="text-primary-white text-3xl-fluid">{{ titleLead.title }}</h1>
-        <p class="text-xl-fluid mt-8">{{ titleLead.lead }}</p>
-      </div>
+      <Breadcrumb/>
       <div v-if="contentComponentLeft">
+        <h1 class="text-primary-white text-3xl-fluid">{{ publicationData?.content[0].containers.left[0].content?.title }}</h1>
+        <p class="text-xl-fluid mt-8">{{ publicationData?.content[0].containers.left[0].content?.text }}</p>
+      </div>
+      <div v-if="hasInfoBox">
         <div class="px-6 pt-6 border-2 border-secondary-yellow mt-8" data-v-eec3be88="">
           <p
               class="mb-8 text-xl font-semibold leading-6">Placeholder</p>
           <div tabindex="0" class="mb-8 not-italic">
-            <ContentComponents :content-component="contentComponentLeft!"/>
+            <div v-if="contentComponentLeft">
+            <ContentComponents :content-component="contentComponentLeft"/>
+            </div>
           </div>
         </div>
       </div>
     </template>
 
     <template #main>
-      <ContentComponents :content-component="contentComponentData!"/>
+      <div v-if="contentComponentData">
+        <ContentComponents :content-component="contentComponentData"/>
+      </div>
+
     </template>
   </colored-layout>
 </template>

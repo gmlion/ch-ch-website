@@ -1,6 +1,6 @@
 import type { MenuNode } from "~/generate/types/routing";
 import { getIsoCodeFromLocale } from "./locale";
-import type { MinimizedPublicationType } from "~/core/types/publications";
+import type { MinimizedPublicationType } from "~/core/types/publicationsTypes";
 import { makeKeyedPublications } from "../generate/store/publicationStore";
 
 export const electionSlugs: Record<string, string> = {
@@ -29,6 +29,7 @@ const safeName = (name: string): string => {
       // Replace . with nothing
       .replace(/\./g, "")
       .replace(/"/g, "")
+      .replace(/:/g, "")
   );
 };
 
@@ -62,9 +63,9 @@ export const getDocumentPath = (
 };
 
 export const buildUrlFromPublication = (
-  publication: MinimizedPublicationType | undefined,
-  path: MenuNode[] = [],
-  isElection: boolean = false
+    publication: MinimizedPublicationType | undefined,
+    path: MenuNode[] = [],
+    isElection: boolean = false
 ): string => {
   if (!publication) {
     return "";
@@ -79,14 +80,17 @@ export const buildUrlFromPublication = (
   }
 
   const slug = makeSlug(publication.metadata.title);
+  let url;
   if (path && path.length > 0) {
     const navigationPath = makeNavigationPath(path);
-    return `/${isoCode}/${electionPath}${navigationPath}`;
+    url = `/${isoCode}/${electionPath}${navigationPath}`;
   } else {
-    return `/${isoCode}/${electionPath}${slug}`;
+    url = `/${isoCode}/${electionPath}${slug}`;
   }
-};
 
+  // Remove any colons from the URL
+  return url.replace(/:/g, "");
+};
 export const buildUrlFromPath = (
   locale: string,
   path: { label: string }[],
@@ -106,33 +110,6 @@ export const buildUrlFromTitle = (
   const isoCode = getIsoCodeFromLocale(locale);
   const electionPath = isElection ? electionSlugs[locale] + "/" : "";
   return `/${isoCode}/${electionPath}${slug}`;
-};
-
-export const getFooterMenus = async (menus: any[]): Promise<any[] | null> => {
-  if (!menus) {
-    return null;
-  }
-  const keyPublications = await makeKeyedPublications();
-
-  const crawlMenu = (nodes: any[]): void => {
-    for (const node of nodes) {
-      if (node.nodes && node.nodes.length > 0) {
-        crawlMenu(node.nodes);
-      } else if (node.documentId) {
-        if (keyPublications) node.document = keyPublications[node.documentId];
-      }
-    }
-  };
-
-  const footerMenus = menus.filter((menu) => {
-    if (menu.handle && menu.handle.includes("footer")) return menu;
-  });
-
-  footerMenus.forEach((menu) => {
-    crawlMenu(menu.nodes);
-  });
-
-  return footerMenus;
 };
 
 export const getBaseUrl = (): string | undefined => {

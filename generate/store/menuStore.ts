@@ -1,13 +1,10 @@
 import { atom } from "nanostores";
 import { type MenuNode, type MenuResponse } from "../types/routing";
 import makeFetch from "../../utils/makeFetch";
-import { type Breadcrumb, type MenuItem } from "../types/menu";
+import {  type MenuItem } from "../types/menu";
 
 export const menuStore = atom<MenuResponse[]>([]);
 export const currentPaths = atom<MenuItem[]>([]);
-export const indexMenuStore = atom<MenuResponse | null>(null);
-export const menuPush = atom<MenuResponse | null>(null);
-export const homeMenuItems = atom<MenuItem[] | null>(null);
 export const activeNavItem = atom<string | null>(null);
 export const useMenuStore = async () => {
   if (menuStore.get().length === 0) {
@@ -25,7 +22,6 @@ export const useMenuStore = async () => {
 export const indexMenuByLanguages = async (
   locale: string
 ): Promise<MenuResponse | null> => {
-  console.log("indexMenuStore does not exist, setup...");
   const menus = await useMenuStore();
   let menuForLanguage: MenuResponse | null = null;
 
@@ -93,12 +89,10 @@ export const getMainMenuItems = async (
       if (startItem) {
         nodesToProcess = startItem.nodes;
       } else {
-        // If start item is not found, return an empty list
         return navLinkItems;
       }
     }
 
-    // Process the nodes
     nodesToProcess.forEach((entry) => {
       let item: MenuItem = createMenuItems(entry);
       navLinkItems.push(item);

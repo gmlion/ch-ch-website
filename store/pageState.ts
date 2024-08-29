@@ -1,6 +1,7 @@
 import { atom } from "nanostores";
-import type { LinkItem } from "./types/page";
-
+import {footerMenuStore} from "~/generate/store/footerMenuStore";
 export const isElection = atom<boolean>(false);
 
-export const footerLinks = atom<LinkItem[]>([]);
+export const resetStores = () => {
+    footerMenuStore.set([]);
+}
