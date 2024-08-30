@@ -5,151 +5,156 @@ import getPublicationsRoutes from "./getPublicationsRoutes";
 import crawlMenu from "./crawlMenu";
 
 export default defineNuxtConfig({
-    components: [
-        {
-            path: "~/components",
-            pathPrefix: false,
-        },
-    ],
-    site: {
-        url: 'https://ch.ch',
-        name: 'ch.ch',
-    },
-    typescript: {
-        tsConfig: {
-            compilerOptions: {
-                baseUrl: '.'
-            }
-        }
-    },
-    // routeRules: {
-    //     "/**": {isr: true},
-    // },
+  components: [
+      {
+          path: "~/components",
+          pathPrefix: false,
+      },
+  ],
 
-    hooks: {
-        "pages:extend": async (routes) => {
-            const menus = await useMenuStore();
-            const publicationRoutes = await getPublicationsRoutes(menus);
-            let languages: string[] = [];
-            for (const menu of menus) {
-                const [name, language] = menu.label.split("-");
-                if (!languages.includes(language)) {
-                    languages.push(language);
-                }
-                const isElection = name === "wahlen";
-                crawlMenu(menu.nodes, [], language, menu, isElection, routes);
+  site: {
+      url: 'https://ch.ch',
+      name: 'ch.ch',
+  },
 
-            }
+  typescript: {
+      tsConfig: {
+          compilerOptions: {
+              baseUrl: '.'
+          }
+      }
+  },
 
-            publicationRoutes.forEach((route) => {
-                if (route !== null && route !== undefined)
-                    routes.push(route);
-            });
+  routeRules: {
+      "/**": {isr: true},
+  },
 
-            languages.forEach((language) => {
-                routes.push({
-                    name: `home-${language.toUpperCase()}`,
-                    path: encodeURI(`/${language}/`),
-                    file: `${__dirname}/pages/index.vue`,
-                });
-            });
+  hooks: {
+      "pages:extend": async (routes) => {
+          const menus = await useMenuStore();
+          const publicationRoutes = await getPublicationsRoutes(menus);
+          let languages: string[] = [];
+          for (const menu of menus) {
+              const [name, language] = menu.label.split("-");
+              if (!languages.includes(language)) {
+                  languages.push(language);
+              }
+              const isElection = name === "wahlen";
+              crawlMenu(menu.nodes, [], language, menu, isElection, routes);
 
-            routes.push({
-                name: "catch-all",
-                path: "/:pathMatch(.*)*",
-                file: `${__dirname}/pages/[slug].vue`,
-            });
-        },
-        async "prerender:routes"(ctx) {
-            // Prerender all pages.
-            const test= ctx.routes.entries;
-            console.log(test);
-        },
-    },
+          }
 
-    vite: {
-        vue: {
-            config: {
-                prettify: false,
-                productionTip: process.env.NODE_ENV !== "production",
-                devtools: process.env.NODE_ENV !== "production",
-                performance: process.env.NODE_ENV !== "production",
-            },
-        },
-    },
+          publicationRoutes.forEach((route) => {
+              if (route !== null && route !== undefined)
+                  routes.push(route);
+          });
 
-    devtools: {
-        enabled: true,
+          languages.forEach((language) => {
+              routes.push({
+                  name: `home-${language.toUpperCase()}`,
+                  path: encodeURI(`/${language}/`),
+                  file: `${__dirname}/pages/index.vue`,
+              });
+          });
 
-        timeline: {
-            enabled: true,
-        },
-    },
+          routes.push({
+              name: "catch-all",
+              path: "/:pathMatch(.*)*",
+              file: `${__dirname}/pages/[slug].vue`,
+          });
+      },
+      async "prerender:routes"(ctx) {
+          // Prerender all pages.
+          const test= ctx.routes.entries;
+          console.log(test);
+      },
+  },
 
-    runtimeConfig: {
-        API_TOKEN: process.env.API_TOKEN,
-        BASE_URL: process.env.BASE_URL,
-        public: {
-            searchUrl: process.env.API_URL_SEARCH,
-        },
-    },
+  vite: {
+      vue: {
+          config: {
+              prettify: false,
+              productionTip: process.env.NODE_ENV !== "production",
+              devtools: process.env.NODE_ENV !== "production",
+              performance: process.env.NODE_ENV !== "production",
+          },
+      },
+  },
 
-    modules: [
-        "@nuxtjs/svg-sprite",
-        "@nuxtjs/i18n",
-        "nuxt-swiper",
-        "@nuxtjs/robots",
-        "@nuxtjs/sitemap",
-        '@nuxtjs/tailwindcss',
-        [
-            "@nuxtjs/google-fonts",
-            {
-                families: {
-                    "Source Sans Pro": {
-                        wght: [400, 600, 700],
-                        ital: [100],
-                    },
-                },
-                display: "swap",
-            },
-        ],
-        "vue3-carousel-nuxt",
-        "shadcn-nuxt",
-        "@nuxtjs/tailwindcss"
-    ],
-    shadcn: {
-        prefix: '',
-        componentDir: './components/ui'
-    },
-    i18n: {
-        strategy: "no_prefix",
-        detectBrowserLanguage: {
-            useCookie: true,
-            cookieKey: "i18n_redirected",
-        },
-        defaultLocale: "de",
-        langDir: "lang/",
-        locales: i18nLocales,
-    },
+  devtools: {
+      enabled: true,
 
-    app: {
-        head: {
-            meta: [
-                {charset: "utf-8"},
-                {name: "viewport", content: "width=device-width, initial-scale=1"},
-            ],
-            link: [{rel: "icon", type: "image/x-icon", href: "/favicon.ico"}],
-        },
-    },
+      timeline: {
+          enabled: true,
+      },
+  },
 
-    css: ["./assets/scss/main.scss"],
+  runtimeConfig: {
+      API_TOKEN: process.env.API_TOKEN,
+      BASE_URL: process.env.BASE_URL,
+      public: {
+          searchUrl: process.env.API_URL_SEARCH,
+      },
+  },
 
-    postcss: {
-        plugins: {
-            tailwindcss: {},
-            autoprefixer: {},
-        },
-    },
+  modules: [
+      "@nuxtjs/svg-sprite",
+      "@nuxtjs/i18n",
+      "nuxt-swiper",
+      "@nuxtjs/robots",
+      "@nuxtjs/sitemap",
+      '@nuxtjs/tailwindcss',
+      [
+          "@nuxtjs/google-fonts",
+          {
+              families: {
+                  "Source Sans Pro": {
+                      wght: [400, 600, 700],
+                      ital: [100],
+                  },
+              },
+              display: "swap",
+          },
+      ],
+      "vue3-carousel-nuxt",
+      "shadcn-nuxt",
+      "@nuxtjs/tailwindcss"
+  ],
 
-    compatibilityDate: "2024-08-09",
-});
+  shadcn: {
+      prefix: '',
+      componentDir: './components/ui'
+  },
+
+  i18n: {
+      strategy: "no_prefix",
+      detectBrowserLanguage: {
+          useCookie: true,
+          cookieKey: "i18n_redirected",
+      },
+      defaultLocale: "de",
+      langDir: "lang/",
+      locales: i18nLocales,
+  },
+
+  app: {
+      head: {
+          meta: [
+              {charset: "utf-8"},
+              {name: "viewport", content: "width=device-width, initial-scale=1"},
+          ],
+          link: [{rel: "icon", type: "image/x-icon", href: "/favicon.ico"}],
+      },
+  },
+
+  css: ["./assets/scss/main.scss"],
+
+  postcss: {
+      plugins: {
+          tailwindcss: {},
+          autoprefixer: {},
+      },
+  },
+
+  compatibilityDate: "2024-08-30",
+})

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createUrlTarget } from "./utils/utils";
 import { activeNavItem, setPaths } from "~/generate/store/menuStore";
-import type { MenuItem } from "~/generate/types/menu";
+import type { MenuItem } from "~/generate/types/menuTypes";
 import { useStore } from "@nanostores/vue";
 
 const URITYPE = "uri";

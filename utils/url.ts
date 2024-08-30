@@ -1,4 +1,4 @@
-import type { MenuNode } from "~/generate/types/routing";
+import type { MenuNode } from "~/generate/types/routingTypes";
 import { getIsoCodeFromLocale } from "./locale";
 import type { MinimizedPublicationType } from "~/core/types/publicationsTypes";
 import { makeKeyedPublications } from "../generate/store/publicationStore";

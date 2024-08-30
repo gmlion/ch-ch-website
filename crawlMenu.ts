@@ -3,7 +3,7 @@ import type {
   PathType,
   Menu,
   isElection,
-} from "./generate/types/routing";
+} from "./generate/types/routingTypes";
 import type { NuxtPage } from "nuxt/schema";
 import { electionSlugs, makeNavigationPath } from "./utils/url";
 

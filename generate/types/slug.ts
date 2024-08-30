@@ -1,4 +1,4 @@
-import type { PathType } from "./routing";
+import type { PathType } from "./routingTypes";
 
 export interface AllPublicationOptions {
   handle: string;

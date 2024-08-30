@@ -1,5 +1,5 @@
 import {atom} from "nanostores";
-import type {MenuResponse} from "../types/routing";
+import type {MenuResponse} from "../types/routingTypes";
 import {useMenuStore} from "./menuStore";
 
 export const footerMenuStore = atom<MenuResponse[]>([]);

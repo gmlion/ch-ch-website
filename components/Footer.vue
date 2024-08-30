@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import {useFooterMenuStore} from "~/generate/store/footerMenuStore";
-import {getUriFromNode} from "~/utils/url";
+import type {MenuResponse} from "~/generate/types/routingTypes";
 
 const { locale } = useI18n();
 
@@ -24,17 +24,16 @@ const footerData = useAsyncData("footerStore", async () => {
   return await useFooterMenuStore(locale.value);
 });
 
-const currentMenu = computed(() => {
+const currentMenu = (): MenuResponse | undefined => {
   return footerData.data.value?.find((menu) => {
-        return menu;
+    return menu;
   });
-});
+};
 
-const links = computed(() => {
-  const menu = currentMenu.value;
+const links = () => {
+  const menu = currentMenu();
   if (!menu) return [];
-
-  const nodes = menu.nodes.slice(0, menu.nodes.length - 1);
+  const nodes = menu?.nodes.slice(0, menu.nodes.length - 1);
   return nodes.map((node) => {
     return {
       name: node.label,
@@ -42,10 +41,10 @@ const links = computed(() => {
       target: node.target ? node.target : "_self",
     };
   });
-});
+};
 
-const lastLink = computed(() => {
-  const menu = currentMenu.value;
+const lastLink = () => {
+  const menu = currentMenu();
   if (!menu || !menu.nodes.length) return null;
 
   const node = menu.nodes[menu.nodes.length - 1];
@@ -54,7 +53,7 @@ const lastLink = computed(() => {
     link: node.url,
     target: node.target ? node.target : "_self",
   };
-});
+};
 </script>
 <template>
   <footer
@@ -108,7 +107,7 @@ const lastLink = computed(() => {
         "
       >
         <a
-          v-for="link in links"
+          v-for="link in links()"
           :key="link.name"
           class="footer-link"
           :target="link.target"
@@ -121,12 +120,12 @@ const lastLink = computed(() => {
         </div>
 
         <a
-          v-if="lastLink"
+          v-if="lastLink()"
           class="footer-link"
-          :target="lastLink.target"
-          :href="lastLink.link"
+          :target="lastLink()?.target"
+          :href="lastLink()?.link"
         >
-          {{ lastLink.name }}
+          {{ lastLink()?.name }}
         </a>
       </div>
     </div>

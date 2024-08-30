@@ -1,5 +1,5 @@
 import {buildUrlFromPublication} from "./utils/url";
-import type {MenuNode, MenuResponse, PathType} from "./generate/types/routing";
+import type {MenuNode, MenuResponse, PathType} from "./generate/types/routingTypes";
 import type {NuxtPage} from "nuxt/schema";
 import {makeKeyedPublications} from "./generate/store/publicationStore";
 

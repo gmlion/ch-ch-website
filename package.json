@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "node --max-old-space-size=4096 ./node_modules/.bin/nuxt dev",
-    "generate": "node --max-old-space-size=4096 node_modules/.bin/nuxt generate",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },

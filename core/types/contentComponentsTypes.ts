@@ -15,8 +15,14 @@ interface CollapsibleRichtext {
 export type ContentComponent = {
     id: string;
     type: string;
-    content: string | PublicationComponent[] | Image | CollapsibleContent[] | YoutubeContent | InfoboxContent;
+    refTitle?: string;
+    content: string | PublicationComponent[] | Image | CollapsibleContent[] | YoutubeContent | ContentComponent[] | TitleLead;
 };
+
+export interface TitleLead {
+    title?: string;
+    lead?: string;
+}
 
 export interface RichtextContent {
     title?: string;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStore } from "@nanostores/vue";
 import { currentPaths } from "~/generate/store/menuStore";
-import type { MenuItem } from "~/generate/types/menu";
+import type { MenuItem } from "~/generate/types/menuTypes";
 
 const currentPathsStore = useStore(currentPaths);
 

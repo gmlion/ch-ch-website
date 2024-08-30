@@ -1,7 +1,7 @@
 import { atom } from "nanostores";
-import { type MenuNode, type MenuResponse } from "../types/routing";
+import { type MenuNode, type MenuResponse } from "../types/routingTypes";
 import makeFetch from "../../utils/makeFetch";
-import {  type MenuItem } from "../types/menu";
+import {  type MenuItem } from "../types/menuTypes";
 
 export const menuStore = atom<MenuResponse[]>([]);
 export const currentPaths = atom<MenuItem[]>([]);

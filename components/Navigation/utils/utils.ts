@@ -1,5 +1,5 @@
 import type { MinimizedPublicationType } from "~/core/types/publicationsTypes";
-import type { MenuNode } from "~/generate/types/routing";
+import type { MenuNode } from "~/generate/types/routingTypes";
 
 export const createRoute = (
   entry: MenuNode,

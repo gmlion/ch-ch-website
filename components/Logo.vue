@@ -1,5 +1,4 @@
 <script setup>
-//TODO: Create Color Classe Global CSS
 import { ref, onMounted } from "vue";
 import SkipLink from "@/components/SkipLink.vue";
 

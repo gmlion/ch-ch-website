@@ -6,31 +6,32 @@ import {contentComponents} from "~/utils/contentComponentsHandler";
 const router = useRouter();
 const startItemId = router.currentRoute.value.meta.id as string;
 const {locale} = useI18n();
-let hasInfoBox = false;
 
 const {data: publicationData} = await useAsyncData(async () => {
   const publication = getPublicationById(startItemId);
   if (publication) return publication;
 });
 
+
 const {data: contentComponentData} = await useAsyncData(async () => {
-  if (publicationData.value) {
+  if (publicationData.value?.content) {
     const contentComponentsData = publicationData.value.content[0].containers.right;
-    return await contentComponents(contentComponentsData);
+    return contentComponents(contentComponentsData, locale.value);
   }
 })
 
 const {data: contentComponentLeft} = await useAsyncData(async () => {
-  if (publicationData.value) {
+  if (publicationData.value?.content) {
     const contentComponentLeftData = publicationData.value.content[0].containers.left;
-    return await contentComponents(contentComponentLeftData);
+    return contentComponents(contentComponentLeftData, locale.value);
   }
 })
 
-if (publicationData) {
+if (publicationData.value) {
   useHead(
       metaDataGenerator(publicationData.value as Publication, locale.value)
   );
+
 
 }
 </script>
@@ -46,20 +47,9 @@ if (publicationData) {
   >
     <template #side>
       <Breadcrumb/>
+
       <div v-if="contentComponentLeft">
-        <h1 class="text-primary-white text-3xl-fluid">{{ publicationData?.content[0].containers.left[0].content?.title }}</h1>
-        <p class="text-xl-fluid mt-8">{{ publicationData?.content[0].containers.left[0].content?.text }}</p>
-      </div>
-      <div v-if="hasInfoBox">
-        <div class="px-6 pt-6 border-2 border-secondary-yellow mt-8" data-v-eec3be88="">
-          <p
-              class="mb-8 text-xl font-semibold leading-6">Placeholder</p>
-          <div tabindex="0" class="mb-8 not-italic">
-            <div v-if="contentComponentLeft">
-            <ContentComponents :content-component="contentComponentLeft"/>
-            </div>
-          </div>
-        </div>
+        <ContentComponents :content-component="contentComponentLeft"/>
       </div>
     </template>
 

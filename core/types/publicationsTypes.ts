@@ -21,9 +21,6 @@ export interface PublicationContainerComponent extends PublicationComponent {
 }
 
 
-
-
-
 export interface Link {
     params: {
         link: {
@@ -40,7 +37,7 @@ export interface ContentComponents {
 
 export interface PublicationComponent {
     component: string;
-    indentifier: string;
+    identifier: string;
     id: string;
     position?: string;
     content: {
@@ -50,10 +47,23 @@ export interface PublicationComponent {
         faq?: FAQ,
         richtext?: string[];
         image?: Image;
-    }  | YoutubeContent;
+        category: TypeCategory;
+    } | YoutubeContent;
 
 }
 
+export interface TypeCategory {
+    service: string;
+    params: {
+        category: {
+            $ref: string;
+            reference: {
+                id: string;
+            };
+        };
+    }
+
+}
 
 export interface FAQ {
     service: "faq-teaser";
@@ -90,6 +100,11 @@ export interface Metadata {
     twitterImage: any;
     openGraphImage: any;
     title: string;
+    label_de?: string;
+    label_en?: string;
+    label_fr?: string;
+    label_it?: string;
+    label_rm?: string;
     language: Language;
     description: string;
     canonical: string;

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type {Breadcrumb} from "~/generate/types/menu";
+import type {Breadcrumb} from "~/generate/types/menuTypes";
 
 const router = useRouter();
 const {locale} = useI18n();
