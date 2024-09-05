@@ -3,10 +3,13 @@ import type {Breadcrumb} from "~/generate/types/menuTypes";
 
 const router = useRouter();
 const {locale} = useI18n();
-
+const props = defineProps<{
+  targetUrl?: string;
+}>();
 const breadcrumb = computed(() => {
-  const route = router.currentRoute.value;
-  const routePath = route.path.split("/").filter((path) => path !== "" && path !== locale.value);
+
+  const route = props.targetUrl ? props.targetUrl : router.currentRoute.value.path;
+  const routePath = route.split("/").filter((path) => path !== "" && path !== locale.value);
   const breadcrumb: Breadcrumb[] = [];
 
   let routeString = "";

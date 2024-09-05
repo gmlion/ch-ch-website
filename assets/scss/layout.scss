@@ -40,6 +40,27 @@
       @apply text-primary-white;
     }
   }
+  &.layout-yellow {
+    @apply bg-primary-yellow;
+
+    .search-icon {
+      @apply text-primary-blue;
+    }
+
+    .logo-color-classes {
+      @apply text-primary-blue;
+    }
+    .logo-claim {
+      background-color: transparent;
+      @apply text-primary-blue;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      @apply text-primary-blue;
+    }
+  }
+
 }
 
 .right-layout {

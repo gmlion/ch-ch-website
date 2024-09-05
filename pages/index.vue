@@ -33,6 +33,7 @@ const galleryData =
         <h1>{{ $t("homeTitle") }}</h1>
       </div>
       <main-navigation id="navigation" />
+
     </template>
     <template #main>
       <div v-if="currentPathsStore.length > 0">

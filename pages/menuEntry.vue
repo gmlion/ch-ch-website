@@ -37,6 +37,9 @@ useHead({
         <h1 class="mt-6 text-3xl-fluid font-semibold">
           {{ router.currentRoute.value.meta.title }}
         </h1>
+        <div class="lg:hidden">
+          <main-navigation id="navigation" :start-item-id="startItemId" />
+        </div>
         <div class="mt-auto">
           <BackToOverviewLink />
         </div>
@@ -44,7 +47,7 @@ useHead({
     </template>
 
     <template #main>
-      <div v-show="isMainNavigationVisible">
+      <div v-show="isMainNavigationVisible" class="hidden lg:block">
         <main-navigation id="navigation" :start-item-id="startItemId" />
       </div>
       <sub-navigation-desktop />

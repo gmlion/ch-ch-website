@@ -100,6 +100,12 @@ export interface Metadata {
     twitterImage: any;
     openGraphImage: any;
     title: string;
+    name: string;
+    name_de?: string;
+    name_en?: string;
+    name_fr?: string;
+    name_it?: string;
+    name_rm?: string;
     label_de?: string;
     label_en?: string;
     label_fr?: string;
@@ -122,9 +128,9 @@ export interface Metadata {
     teaserImage: teaserImage;
     "tag-category"?: {
         $ref: string;
-        reference: {
+        references: [{
             id: string;
-        };
+        }];
     };
 }
 

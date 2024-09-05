@@ -15,6 +15,7 @@ export default defineNuxtConfig({
   site: {
       url: 'https://ch.ch',
       name: 'ch.ch',
+      trailingSlash: false
   },
 
   typescript: {
@@ -55,6 +56,11 @@ export default defineNuxtConfig({
                   path: encodeURI(`/${language}/`),
                   file: `${__dirname}/pages/index.vue`,
               });
+              routes.push({
+                  name: `search-${language.toUpperCase()}`,
+                  path: encodeURI(`/${language}/search`),
+                    file: `${__dirname}/pages/search.vue`,
+              })
           });
 
           routes.push({

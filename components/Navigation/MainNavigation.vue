@@ -18,7 +18,7 @@ const { data: linkItems } = await useAsyncData(async () => {
   <div class="relative h-full overflow-auto">
     <simplebar class="relative h-full" data-simplebar-auto-hide="false">
       <nav
-        class="flex-1 overflow-y-auto px-11 lg:px-0"
+        class="flex-1 overflow-y-auto lg:px-11"
         role="navigation"
         :aria-label="$t('navAriaDesktop')"
       >
@@ -26,7 +26,7 @@ const { data: linkItems } = await useAsyncData(async () => {
           <li
             v-for="item in linkItems"
             :key="item.label"
-            class="mt-4 text-primary-blue hover:text-tertiary-yellow first:mt-0 w-[fit-content]"
+            class="lg:mt-4 text-primary-blue lg:hover:text-tertiary-yellow first:mt-0 w-full border-gray-600-translucent border-b lg:border-none lg:w-[fit-content] py-2.5 lg:py-0"
           >
             <navigation-link :entry="item" mode="main" :first-level="true" />
           </li>

@@ -1,87 +1,45 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import type {SearchResult} from "~/core/types/searchTypes";
+import SearchResultItem from "~/components/SearchResultItem.vue";
+
+const props = defineProps<{
+  searchQuery: string;
+}>();
+
+const runtimeConfig = useRuntimeConfig();
+const { locale } = useI18n();
+
+
+// Async function to fetch search results
+//todo: this will only work local, this needs to do client side fetching as soon as it hits the stage environment
+const fetchSearchResults = async (): Promise<SearchResult[]> => {
+    const searchUrl = `${runtimeConfig.public.searchUrl}/ne/search?lang=${locale.value}&q=${props.searchQuery}`;
+    const response = await fetch(searchUrl);
+    return await response.json();
+};
+
+const {data: searchResults} = await useAsyncData(async () => {
+  if (!props.searchQuery) return [];
+  return await fetchSearchResults();
+});
+
+</script>
+
 <template>
-  <div>
+  <div class="richtext">
     <h2>{{ $t('searchResults') }}</h2>
-    <div
-      v-for="searchResult in searchResults"
-      :key="searchResult.id"
-      class="py-8 border-b border-primary-blue"
-    >
-      <search-breadcrumb
-        v-if="searchResult.path"
-        :path="searchResult.path"
-        class="!lg:hidden"
-        :is-election="searchResult.isElection"
-      />
-      <search-breadcrumb-mobile
-        v-if="searchResult.path"
-        :path="searchResult.path"
-        class="lg:hidden"
-        :is-election="searchResult.isElection"
-      />
-      <a
-        :href="searchResult.url"
-        class="inline-block mt-3 mb-2 text-2xl font-semibold no-underline cursor-pointer text-tertiary-yellow hover:text-gray-600"
-      >
-        {{ searchResult.title }}
-      </a>
-      <picture v-if="searchResult.image" class="block mt-2">
-        <img class="w-64" :src="searchResult.image" alt="" />
-      </picture>
-      <!-- Used v-html here because otherwise we need to build an component which splits the text into chunks and renders them -->
-      <!-- eslint-disable vue/no-v-html -->
-      <p
-        class="mt-4 lg:w-3/4 search-result-text"
-        v-html="getText(searchResult)"
-      ></p>
-      <!-- eslint-enable vue/no-v-html -->
+    <div v-if="searchResults?.length">
+      <ul class="py-8 border-b border-primary-blue" v-for="result in searchResults" :key="result.id">
+        <SearchResultItem :search-result-item="result"/>
+      </ul>
     </div>
-    <p
-      v-if="
-        searchResults !== null && searchResults.length === 0 && !isSearching
-      "
-      class="mt-8"
-    >
-      {{ $t('noSearchResults') }}
-    </p>
+    <div v-else>
+      <p class="mt-8">{{ $t('noSearchResults') }}</p>
+    </div>
   </div>
 </template>
 
-<script>
-import SearchBreadcrumb from '@/components/SearchBreadcrumb.vue'
-import SearchBreadcrumbMobile from '@/components/SearchBreadcrumbMobile.vue'
-export default {
-  components: {
-    SearchBreadcrumb,
-    SearchBreadcrumbMobile,
-  },
-  props: {
-    searchResults: {
-      type: Array,
-      required: true,
-    },
-    query: {
-      type: String,
-      required: true,
-    },
-    isSearching: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  methods: {
-    getText(searchResult) {
-      const regEx = new RegExp(this.query, 'ig')
-      return searchResult.text.replaceAll(
-        regEx,
-        (match) => `<span>${match}</span>`
-      )
-    },
-  },
-}
-</script>
-
-<style lang="postcss" scoped>
-:deep(.search-result-text span) {
-  @apply font-bold;
-}
+<style scoped lang="postcss">
+/* Your styles here */
 </style>

@@ -23,7 +23,8 @@ export default async (menus: MenuResponse[]) => {
 
     const addPublicationToRoutes = (
         documentId: string,
-        path: MenuNode[]
+        path: MenuNode[],
+        language?: string
     ): NuxtPage | null => {
         if (!keyedPublications) return null;
         const publication = keyedPublications[documentId];
@@ -35,23 +36,29 @@ export default async (menus: MenuResponse[]) => {
             name: publication.metadata.title,
             path: url,
             file: `${__dirname}/pages/publication.vue`,
-            meta: {id: documentId},
+            meta: {
+                id: documentId,
+                groupId: {
+                    id: publication.metadata.language.groupId as string,
+                    language: language as string,
+                }
+            },
         };
         return route;
     };
 
     function crawlMenu(nodes: MenuNode[], path: any, language: string) {
-        const stack = [{ nodes, path }];
+        const stack = [{nodes, path}];
 
         while (stack.length > 0) {
-            const { nodes, path } = stack.pop()!;
+            const {nodes, path} = stack.pop()!;
 
             for (const entry of nodes) {
                 if (entry.nodes && entry.nodes.length > 0) {
-                    stack.push({ nodes: entry.nodes, path: path.concat([entry]) });
+                    stack.push({nodes: entry.nodes, path: path.concat([entry])});
                 } else if (!languageMismatch(path, language)) {
                     const documentId = entry.documentId;
-                    const route = addPublicationToRoutes(documentId as string, path.concat([entry]));
+                    const route = addPublicationToRoutes(documentId as string, path.concat([entry]), language);
                     if (route) {
                         routes.unshift(route);
                     }
@@ -73,7 +80,7 @@ export default async (menus: MenuResponse[]) => {
         const language = menu.label.split("-")[1];
         const key = `wahlen-${menu.label}` as ElectionPathPrefixKey;
         const prefix = electionPathPrefixes[key];
-        const path = prefix ? [{ label: prefix, id: '', nodes: [], type: '', document: null }] : [];        // Ensure menu.nodes is valid before calling crawlMenu
+        const path = prefix ? [{label: prefix, id: '', nodes: [], type: '', document: null}] : [];        // Ensure menu.nodes is valid before calling crawlMenu
         if (Array.isArray(menu.nodes)) {
             crawlMenu(menu.nodes, path, language);
         } else {

@@ -1,4 +1,5 @@
 import type { Publication } from "~/core/types/publicationsTypes";
+import {getBaseUrl} from "~/utils/url";
 
 export default function metaDataGenerator(
   publication: Publication,

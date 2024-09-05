@@ -6,8 +6,9 @@ import { useStore } from "@nanostores/vue";
 const props = defineProps<{
   footerColor?: string;
   rightColor?: "layout-blue" | "layout-yellow" | "layout-white";
-  leftColor?: "layout-blue";
+  leftColor?: "layout-blue" | "layout-yellow";
   divisionMode?: string;
+  hideSearch?: boolean;
   showFader?: boolean;
 }>();
 
@@ -18,7 +19,7 @@ const isElection = useStore(isElectionStore);
 <template>
   <div>
     <div
-      :class="[{ 'search-is-active': isSearchOpen }, {'division-fifths': props.divisionMode === 'fifths'}, {'bg-primary-blue': props.leftColor === 'layout-blue'}]"
+      :class="[{ 'search-is-active': isSearchOpen }, {'division-fifths': props.divisionMode === 'fifths'}, {'bg-primary-blue': props.leftColor === 'layout-blue'}, {'bg-primary-yellow': props.leftColor === 'layout-yellow'}]"
       class="w-full lg:h-full lg:flex main-layout"
 
     >
@@ -48,7 +49,10 @@ const isElection = useStore(isElectionStore);
           class="flex lg:relative z-40 justify-end mb-20 h-[40px]"
         >
           <language-picker class="mr-12" />
+          <div v-if="!hideSearch">
+
           <search-link />
+          </div>
         </div>
         <slot name="content"></slot>
         <slot name="main" />
