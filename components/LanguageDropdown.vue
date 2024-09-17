@@ -13,12 +13,11 @@ import {useRoute} from "#vue-router";
 
 const route = useRoute();
 const currentUrl = route.path
-const pageId: string | undefined = route.meta.groupId?.id as string | undefined;console.log(pageId)
+const pageId: string | undefined = route.meta.groupId?.id as string | undefined;
 const languageUrlMap = languageHelper(pageId, currentUrl);
 const selectedLanguage = ref("");
 const {locale} = useI18n();
 watch(selectedLanguage, (newLocale) => {
-  console.log("NEW LOCALE", newLocale)
   const baseUrl = window.location.origin;
   const url = new URL(baseUrl + newLocale);
 

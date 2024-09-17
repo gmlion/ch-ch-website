@@ -20,6 +20,32 @@ const toggleAll = () => {
     openItems.value = props.content.map(item => item.id);
   }
 };
+
+const scrollToElement = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+const onAccordionItemClick = (id: string, hash: string) => {
+  scrollToElement(id);
+  setHash(hash);
+}
+
+const setHash = (hash: string) => {
+  history.pushState(null, '', `#${hash}`);
+}
+
+onMounted(() => {
+  const hash = window.location.hash;
+  if (hash) {
+    const id = hash.replace('#', '');
+    console.log(id);
+    scrollToElement(id);
+    openItems.value = [id];
+  }
+});
 </script>
 
 <template>
@@ -32,9 +58,10 @@ const toggleAll = () => {
           v-for="item in props.content"
           :value="item.id"
           :key="item.id"
+          :id="item.id"
       >
         <AccordionTrigger
-            class="text-left font-semibold text-primary-blue hover:text-primary-gold text-2xl-fluid">
+            class="text-left font-semibold text-primary-blue hover:text-primary-gold text-2xl-fluid" @click="onAccordionItemClick(item.id, item.slug)">
           {{ item.title }}
         </AccordionTrigger>
         <AccordionContent>

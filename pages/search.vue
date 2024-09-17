@@ -25,7 +25,7 @@ route.query.q ? searchValue.value = route.query.q as string : searchValue.value 
 
     <template #main>
       <div>
-        <search-results :search-query="searchValue"/>
+<!--        <search-results :search-query="searchValue"/>-->
       </div>
 
     </template>

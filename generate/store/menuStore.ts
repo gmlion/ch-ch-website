@@ -44,6 +44,30 @@ export const indexMenuByLanguages = async (
   return menuForLanguage;
 };
 
+export const electionMenuByLanguages = async (
+    locale: string
+): Promise<MenuResponse | null> => {
+  const menus = await useMenuStore();
+  let menuForLanguage: MenuResponse | null = null;
+
+  menus.forEach((menu) => {
+    if (menu.label === "wahlen-" + locale) {
+      menuForLanguage = menu;
+    }
+  });
+
+  if (!menuForLanguage) {
+    menuForLanguage = menus[0];
+  }
+
+  menuForLanguage.nodes = menuForLanguage.nodes.map((node) => {
+    node.isExpanded = false;
+    return node;
+  });
+
+  return menuForLanguage;
+};
+
 export const setPaths = (
   navigationEntry: MenuItem,
   isFirstLevel: boolean = false
@@ -75,10 +99,17 @@ export const removeFirstLevelItem = () => {
 
 export const getMainMenuItems = async (
   locale: string,
-  startItemId?: string
+  startItemId?: string,
+  isElection?: boolean
 ) => {
   const navLinkItems: MenuItem[] = [];
-  const menuData = await indexMenuByLanguages(locale);
+  let menuData = null;
+  if( isElection) {
+    menuData = await electionMenuByLanguages(locale);
+  } else {
+
+  menuData = await indexMenuByLanguages(locale);
+  }
 
   if (menuData) {
     let nodesToProcess = menuData.nodes;

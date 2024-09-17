@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import type { Publication } from "~/core/types/publicationsTypes";
 import { useStore } from "@nanostores/vue";
-import { setIndexPublication } from "~/generate/store/publicationStore";
+import {setElectionPublication, setIndexPublication} from "~/generate/store/publicationStore";
 import { currentPaths } from "~/generate/store/menuStore";
 
 const currentPathsStore = useStore(currentPaths);
-const router = useRouter();
-const startItemId = router.currentRoute.value.meta.id as string;
 
 const { data: homePageData } = await useAsyncData(async () => {
   const { locale } = useI18n();
-  const homePageData = await setIndexPublication(locale.value);
+  const homePageData = await setElectionPublication(locale.value);
 
   useHead(metaDataGenerator(homePageData as Publication, locale.value));
 
@@ -31,7 +29,7 @@ const galleryData =
       <div role="complementary" class="sr-only">
         <h1>{{ $t("homeTitle") }}</h1>
       </div>
-      <main-navigation id="navigation" />
+      <main-navigation :is-election="true" id="navigation" />
     </template>
     <template #main>
       <div v-if="currentPathsStore.length > 0">

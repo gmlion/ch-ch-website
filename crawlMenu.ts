@@ -21,9 +21,10 @@ const crawlMenu = (
       const route = makeNavigationPath(path.concat([entry]));
         if (route) {
           const electionPart = isElection ? electionSlugs[language] + "/" : "";
+          const electionDirectory = isElection ? "election/" : "";
           let pathString = "";
           if (isElection) {
-            pathString = `/` + electionPart + route;
+            pathString = `/${language}/` + electionPart + route;
           } else {
             pathString = `/${language}/` + route;
           }
@@ -33,7 +34,7 @@ const crawlMenu = (
             meta: {
               id: entry.id,
             },
-            file: `${__dirname}/pages/${electionPart}menuEntry.vue`,
+            file: `${__dirname}/pages/${electionDirectory}menuEntry.vue`,
           });
         }
 

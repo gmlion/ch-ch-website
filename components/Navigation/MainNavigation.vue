@@ -3,14 +3,16 @@ import Simplebar from "simplebar-vue";
 import "../../../node_modules/simplebar-vue/dist/simplebar.min.css";
 import { useI18n } from "vue-i18n";
 import { getMainMenuItems } from "~/generate/store/menuStore";
+
 const props = defineProps<{
   startItemId?: string;
+  isElection?: boolean;
 }>();
 
 const { data: linkItems } = await useAsyncData(async () => {
   const { locale } = useI18n();
 
-  return await getMainMenuItems(locale.value, props.startItemId);
+  return await getMainMenuItems(locale.value, props.startItemId, props.isElection);
 });
 </script>
 
