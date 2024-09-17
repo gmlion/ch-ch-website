@@ -8,6 +8,7 @@ import type {
 import Collapsible from "~/components/Collapsible/Collapsible.vue";
 import type {Image} from "~/components/HomeCarousel/types/types";
 import List from "~/components/List/List.vue";
+import type {TypeList} from "~/core/types/publicationsTypes";
 
 const props = defineProps<{
   contentComponent: ContentComponent[]
@@ -36,8 +37,11 @@ const props = defineProps<{
       'subtitle', identifier: '', id: component.id, content: { title: component.content as string } }])">
       </div>
     </div>
+    <div v-if="component.type ==='gallery-teaser'">
+      <ContentCarousel/>
+    </div>
     <div v-if="component.type === 'faqCollapsible'">
-      {{ component.content }}
+      <NestedCollapsible :content="component.content as CollapsibleContent[]"/>
     </div>
     <div v-if="component.type ==='p'">
       <div class="richtext" v-html="handleRichtext([{ component:

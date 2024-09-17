@@ -1,4 +1,4 @@
-import type {FAQ, PublicationComponent} from "~/core/types/publicationsTypes";
+import type {ContentGallery, FAQ, PublicationComponent, TypeList} from "~/core/types/publicationsTypes";
 import type {Image} from "~/components/HomeCarousel/types/types";
 
 // Union type of valid components
@@ -25,7 +25,7 @@ export type ContentComponent = {
     id: string;
     type: string;
     refTitle?: string;
-    content: string | PublicationComponent[] | Image | CollapsibleContent[] | YoutubeContent | ContentComponent[] | TitleLead;
+    content: string | PublicationComponent[] | Image | CollapsibleContent[] | YoutubeContent | ContentComponent[] | TitleLead | TypeList[] | ContentGallery[];
 };
 
 // Title and lead content structure
@@ -61,7 +61,7 @@ export interface InfoboxContent {
     faq?: FAQ;
     richtext?: string[];
     image?: Image;
-    ['text-alignment']?: string;
+    ['text-alignment']?: "left" | "right";
 }
 
 // List component content structure

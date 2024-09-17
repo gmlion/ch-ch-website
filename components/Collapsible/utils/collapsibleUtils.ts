@@ -18,7 +18,6 @@ export const createFAQCollapsibleArray = async (content: PublicationContainerCom
             slug: ""
         };
 
-        // Check if content exists and is not YoutubeContent
         if (!contentItem.content || isYoutubeContent(contentItem.content)) {
             continue;
         }
@@ -28,7 +27,6 @@ export const createFAQCollapsibleArray = async (content: PublicationContainerCom
             console.error('Failed to fetch publication for id:', contentItem.content.faq?.params?.teaser?.reference?.id);
             continue;
         }
-        console.log(publication.content[0].containers, "publication");
         collapsibleItem = {
             id: publication.systemdata.documentId.toString() || "",
             title: publication.metadata.title || (publication.content[0]?.content as {
@@ -56,7 +54,6 @@ export const createAccordionCollapsibleArray = async (content: PublicationContai
                 try {
                     const contentArray = collapsibleItem.containers.body;
 
-                    // Ensure containers.body is an array before processing it
                     if (Array.isArray(contentArray)) {
                         let collapsibleItemModel: CollapsibleContent = {
                             id: collapsibleItem.id,

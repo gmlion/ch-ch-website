@@ -4,7 +4,6 @@ export const getCompleteImageObject = async (image?: Image, text?: string, align
     if (!image) return null;
     let setImage = image;
 
-    console.log(text, "text", alignment, "alignment");
 
     if (text) setImage.text = text;
     if (alignment) setImage.textAlign = alignment;
@@ -18,7 +17,6 @@ export const getCompleteImageObject = async (image?: Image, text?: string, align
         );
         return setImage;
     }
-    console.log(setImage.mediaId, "setImage");
     return setImage;
 };
 

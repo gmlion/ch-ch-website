@@ -1,5 +1,5 @@
 import type {Carousel, Image} from "~/components/HomeCarousel/types/types";
-import type {BodyComponent, RichtextContent, YoutubeContent} from "~/core/types/contentComponentsTypes";
+import type {YoutubeContent} from "~/core/types/contentComponentsTypes";
 
 type Design = { name: string; version: string };
 type Language = { label: string; locale: string; groupId: string };
@@ -8,15 +8,18 @@ interface Content extends PublicationComponent {
     containers: {
         left: PublicationContainerComponent[] | [];
         right: PublicationContainerComponent[] | [];
-        body: BodyComponent<RichtextContent>[] | [];
+        body: PublicationContainerComponent[];
     };
 }
 
 export interface PublicationContainerComponent extends PublicationComponent {
+    styles?: { ['text-alignment']?: string; }
     containers: {
         carousel: Carousel[];
         infobox: PublicationComponent[],
         body: PublicationContainerComponent[],
+        list: TypeList[],
+        gallery: ContentGallery[],
     };
 }
 
@@ -31,8 +34,15 @@ export interface Link {
     service: string;
 }
 
-export interface ContentComponents {
-
+export interface ContentGallery {
+    id: string;
+    component: string;
+    identifier: string;
+    content: {
+        image: Image;
+        source: string;
+        caption: string;
+    };
 }
 
 export interface PublicationComponent {
@@ -44,6 +54,7 @@ export interface PublicationComponent {
         title?: string;
         text?: string;
         question: string;
+        gallery?: ContentGallery[];
         list: TypeList[];
         faq?: FAQ,
         richtext?: string[];

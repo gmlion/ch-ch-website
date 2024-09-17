@@ -1,4 +1,10 @@
-import type {Metadata, PublicationContainerComponent, TypeCategory, TypeList} from "~/core/types/publicationsTypes";
+import type {
+    ContentGallery,
+    Metadata,
+    PublicationContainerComponent,
+    TypeCategory,
+    TypeList
+} from "~/core/types/publicationsTypes";
 import {
     createAccordionCollapsibleArray,
     createFAQCollapsibleArray
@@ -14,6 +20,7 @@ import {randomUUID} from "uncrypto";
 import type {Image} from "~/components/HomeCarousel/types/types";
 import {getCompleteImageObject} from '~/utils/image';
 import {getTitleByTag} from "~/utils/tags";
+import {processCarouselData} from "~/components/ContentCarousel/contentCarouselUtils";
 
 export const contentComponents = async (content: PublicationContainerComponent[], locale: string, isNestedInCollapsible?: boolean): Promise<ContentComponent[] | []> => {
     const faqItems: PublicationContainerComponent[] = [];
@@ -80,7 +87,7 @@ export const contentComponents = async (content: PublicationContainerComponent[]
                     contentComponentsArray.push({
                         id: contentItem.id,
                         type: contentItem.component,
-                        content: await getCompleteImageObject(infoboxContent.image, infoboxContent?.text, contentItem?.styles?.["text-alignment"]) as Image
+                        content: await getCompleteImageObject(infoboxContent.image, infoboxContent?.text, contentItem?.styles?.["text-alignment"] as "left" | "right") as Image
                     });
                 }
                 break;
@@ -91,6 +98,16 @@ export const contentComponents = async (content: PublicationContainerComponent[]
                     type: contentItem.component,
                     content: contentItem.content as YoutubeContent
                 });
+                break;
+            }
+            case "gallery-teaser": {
+                // @ts-ignore - gallery is not defined in the types
+                const galleryContent = await processCarouselData((contentItem.content?.gallery).params.teaser.reference.id);
+                contentComponentsArray.push({
+                    id: contentItem.id,
+                    type: contentItem.component,
+                    content: galleryContent as ContentGallery[]
+                })
                 break;
             }
             case "p": {
@@ -140,6 +157,7 @@ export const contentComponents = async (content: PublicationContainerComponent[]
                 }
                 break;
             }
+
             default: {
                 console.log(`component ${contentItem.component} not found`);
             }
@@ -159,7 +177,6 @@ export const contentComponents = async (content: PublicationContainerComponent[]
         if (faqContent && !isNestedInCollapsible) {
             accordionComponentsArray.push(...faqContent);
         } else if (faqContent) {
-            console.log("fat wiener")
             contentComponentsArray.push({
                 id: randomUUID(),
                 type: "faqCollapsible",
