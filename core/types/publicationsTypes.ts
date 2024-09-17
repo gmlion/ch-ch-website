@@ -16,7 +16,7 @@ export interface PublicationContainerComponent extends PublicationComponent {
     containers: {
         carousel: Carousel[];
         infobox: PublicationComponent[],
-        body: BodyComponent<RichtextContent>[] | [];
+        body: PublicationContainerComponent[],
     };
 }
 
@@ -44,12 +44,22 @@ export interface PublicationComponent {
         title?: string;
         text?: string;
         question: string;
+        list: TypeList[];
         faq?: FAQ,
         richtext?: string[];
         image?: Image;
         category: TypeCategory;
     } | YoutubeContent;
 
+}
+
+export interface TypeList {
+    component: string;
+    identifier: string;
+    id: string;
+    content: {
+        text: string
+    }
 }
 
 export interface TypeCategory {

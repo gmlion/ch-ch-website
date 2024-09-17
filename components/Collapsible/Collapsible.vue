@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';  // Import the useI18n composable
-import type { CollapsibleContent } from "~/core/types/contentComponentsTypes";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {ref, watch} from 'vue';
+import {useI18n} from 'vue-i18n'; // Import the useI18n composable
+import type {CollapsibleContent} from "~/core/types/contentComponentsTypes";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
 
-const { t } = useI18n();
+const {t} = useI18n();
 const props = defineProps<{ content: CollapsibleContent[] }>();
 const openItems = ref<string[]>([]);
 const toggleButtonText = ref(t('openAll'));
@@ -24,7 +24,7 @@ const toggleAll = () => {
 const scrollToElement = (id: string) => {
   const element = document.getElementById(id);
   if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
+    element.scrollIntoView({behavior: 'smooth'});
   }
 };
 
@@ -41,7 +41,6 @@ onMounted(() => {
   const hash = window.location.hash;
   if (hash) {
     const id = hash.replace('#', '');
-    console.log(id);
     scrollToElement(id);
     openItems.value = [id];
   }
@@ -50,7 +49,7 @@ onMounted(() => {
 
 <template>
   <div class="w-full flex justify-end mb-7">
-  <button class="relative text-lg font-semibold toggle" @click="toggleAll">{{ toggleButtonText }}</button>
+    <button class="relative text-lg font-semibold toggle" @click="toggleAll">{{ toggleButtonText }}</button>
   </div>
   <div>
     <Accordion type="multiple" v-model="openItems">
@@ -61,11 +60,12 @@ onMounted(() => {
           :id="item.id"
       >
         <AccordionTrigger
-            class="text-left font-semibold text-primary-blue hover:text-primary-gold text-2xl-fluid" @click="onAccordionItemClick(item.id, item.slug)">
+            class="text-left font-semibold text-primary-blue hover:text-primary-gold text-2xl-fluid"
+            @click="onAccordionItemClick(item.id, item.slug)">
           {{ item.title }}
         </AccordionTrigger>
         <AccordionContent>
-          <div class="richtext" v-html="item.content.content"></div>
+          <ContentComponents :content-component="item.content!"/>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

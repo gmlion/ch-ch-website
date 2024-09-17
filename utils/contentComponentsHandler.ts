@@ -1,20 +1,21 @@
-import type {Metadata, PublicationContainerComponent, TypeCategory} from "~/core/types/publicationsTypes";
+import type {Metadata, PublicationContainerComponent, TypeCategory, TypeList} from "~/core/types/publicationsTypes";
 import {
     createAccordionCollapsibleArray,
     createFAQCollapsibleArray
 } from "~/components/Collapsible/utils/collapsibleUtils";
 import type {
+    CollapsibleContent,
     ContentComponent,
-    YoutubeContent,
     InfoboxContent,
-    CollapsibleContent, TitleLead
+    TitleLead,
+    YoutubeContent
 } from "~/core/types/contentComponentsTypes";
-import { randomUUID } from "uncrypto";
-import type { Image } from "~/components/HomeCarousel/types/types";
-import { getCompleteImageObject } from '~/utils/image';
+import {randomUUID} from "uncrypto";
+import type {Image} from "~/components/HomeCarousel/types/types";
+import {getCompleteImageObject} from '~/utils/image';
 import {getTitleByTag} from "~/utils/tags";
 
-export const contentComponents = async (content: PublicationContainerComponent[], locale: string): Promise<ContentComponent[] | []> => {
+export const contentComponents = async (content: PublicationContainerComponent[], locale: string, isNestedInCollapsible?: boolean): Promise<ContentComponent[] | []> => {
     const faqItems: PublicationContainerComponent[] = [];
     const accordionItems: PublicationContainerComponent[] = [];
     const accordionComponentsArray: CollapsibleContent[] = [];
@@ -30,16 +31,21 @@ export const contentComponents = async (content: PublicationContainerComponent[]
                 break;
             }
             case "infobox": {
-                if (contentItem.containers.infobox.length > 0) {
-                    const infoBoxRefMetadata = await getTitleByTag( (contentItem.content as { category: TypeCategory }).category.params.category.reference.id) ;
-                    if (infoBoxRefMetadata) {
-                        infoBoxTitle = infoBoxRefMetadata[`label_${locale}` as keyof Metadata];                        console.log(infoBoxTitle);
+                if (contentItem.containers?.infobox?.length > 0) {
+                    const category = (contentItem.content as {
+                        category: TypeCategory
+                    })?.category?.params?.category?.reference?.id;
+                    if (category) {
+                        const infoBoxRefMetadata = await getTitleByTag(category);
+                        if (infoBoxRefMetadata) {
+                            infoBoxTitle = infoBoxRefMetadata[`label_${locale}` as keyof Metadata];
+                        }
                     }
                     for (const component of contentItem.containers.infobox) {
                         switch (component.component) {
                             case "image": {
                                 const infoboxContent = component.content as InfoboxContent;
-                                if (infoboxContent.image) {
+                                if (infoboxContent?.image) {
                                     infoboxComponentsArray.push({
                                         id: component.id,
                                         type: component.component,
@@ -50,7 +56,7 @@ export const contentComponents = async (content: PublicationContainerComponent[]
                             }
                             case "p": {
                                 const infoboxContent = component.content as InfoboxContent;
-                                if (infoboxContent.text) {
+                                if (infoboxContent?.text) {
                                     infoboxComponentsArray.push({
                                         id: component.id,
                                         type: component.component,
@@ -70,11 +76,11 @@ export const contentComponents = async (content: PublicationContainerComponent[]
             }
             case "image": {
                 const infoboxContent = contentItem.content as InfoboxContent;
-                if (infoboxContent.image) {
+                if (infoboxContent?.image) {
                     contentComponentsArray.push({
                         id: contentItem.id,
                         type: contentItem.component,
-                        content: await getCompleteImageObject(infoboxContent.image) as Image
+                        content: await getCompleteImageObject(infoboxContent.image, infoboxContent?.text, contentItem?.styles?.["text-alignment"]) as Image
                     });
                 }
                 break;
@@ -89,7 +95,7 @@ export const contentComponents = async (content: PublicationContainerComponent[]
             }
             case "p": {
                 const infoboxContent = contentItem.content as InfoboxContent;
-                if (infoboxContent.text) {
+                if (infoboxContent?.text) {
                     contentComponentsArray.push({
                         id: contentItem.id,
                         type: contentItem.component,
@@ -98,13 +104,41 @@ export const contentComponents = async (content: PublicationContainerComponent[]
                 }
                 break;
             }
+            case "subtitle": {
+                const infoboxContent = contentItem.content as InfoboxContent;
+                if (infoboxContent?.title) {
+                    contentComponentsArray.push({
+                        id: contentItem.id,
+                        type: contentItem.component,
+                        content: infoboxContent.title as string
+                    });
+                }
+                break;
+            }
             case "title": {
-                titleLeadComponentsArray.title = (contentItem.content as { title: string }).title;
+                const title = (contentItem.content as { title: string })?.title;
+                if (title) {
+                    titleLeadComponentsArray.title = title;
+                }
                 break;
             }
             case "lead": {
-                titleLeadComponentsArray.lead = (contentItem.content as { text: string }).text;
-            break;
+                const lead = (contentItem.content as { text: string })?.text;
+                if (lead) {
+                    titleLeadComponentsArray.lead = lead;
+                }
+                break;
+            }
+            case "list": {
+                const listContent = contentItem.containers?.list;
+                if (listContent) {
+                    contentComponentsArray.push({
+                        id: contentItem.id,
+                        type: contentItem.component,
+                        content: listContent as TypeList[]
+                    });
+                }
+                break;
             }
             default: {
                 console.log(`component ${contentItem.component} not found`);
@@ -122,13 +156,21 @@ export const contentComponents = async (content: PublicationContainerComponent[]
 
     if (faqItems.length > 0) {
         const faqContent = await createFAQCollapsibleArray(faqItems);
-        if (faqContent) {
+        if (faqContent && !isNestedInCollapsible) {
             accordionComponentsArray.push(...faqContent);
+        } else if (faqContent) {
+            console.log("fat wiener")
+            contentComponentsArray.push({
+                id: randomUUID(),
+                type: "faqCollapsible",
+                content: faqContent
+            });
         }
+
     }
 
     if (accordionItems.length > 0) {
-        const accordionContent = createAccordionCollapsibleArray(accordionItems);
+        const accordionContent = await createAccordionCollapsibleArray(accordionItems);
         if (accordionContent) {
             accordionComponentsArray.push(...accordionContent);
         }
@@ -140,7 +182,7 @@ export const contentComponents = async (content: PublicationContainerComponent[]
             refTitle: infoBoxTitle,
             type: "infobox",
             content: infoboxComponentsArray
-        })
+        });
     }
 
     if (accordionComponentsArray.length > 0) {
