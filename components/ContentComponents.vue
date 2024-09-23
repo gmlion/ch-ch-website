@@ -38,7 +38,11 @@ const props = defineProps<{
       </div>
     </div>
     <div v-if="component.type ==='gallery-teaser'">
-      <ContentCarousel/>
+      <ContentCarousel :gallery-content="component.content"/>
+    </div>
+    <div v-if="component.type === 'howto-teaser'">
+      <HowToTeaser :contentComponent="component.content"/>
+
     </div>
     <div v-if="component.type === 'faqCollapsible'">
       <NestedCollapsible :content="component.content as CollapsibleContent[]"/>

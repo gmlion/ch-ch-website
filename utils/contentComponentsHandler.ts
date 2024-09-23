@@ -21,6 +21,7 @@ import type {Image} from "~/components/HomeCarousel/types/types";
 import {getCompleteImageObject} from '~/utils/image';
 import {getTitleByTag} from "~/utils/tags";
 import {processCarouselData} from "~/components/ContentCarousel/contentCarouselUtils";
+import {processHowToData} from "~/components/HowTo/utils/howToUtils";
 
 export const contentComponents = async (content: PublicationContainerComponent[], locale: string, isNestedInCollapsible?: boolean): Promise<ContentComponent[] | []> => {
     const faqItems: PublicationContainerComponent[] = [];
@@ -79,6 +80,16 @@ export const contentComponents = async (content: PublicationContainerComponent[]
             }
             case "accordion": {
                 accordionItems.push(contentItem);
+                break;
+            }
+            case "howto-teaser": {
+                // log it so that i see the whole content in the terminal
+                const howToData = await processHowToData((contentItem.content?.howto).params.teaser.reference.id);
+                contentComponentsArray.push({
+                    id: contentItem.id,
+                    type: contentItem.component,
+                    content: howToData
+                });
                 break;
             }
             case "image": {

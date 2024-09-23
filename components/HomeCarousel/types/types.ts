@@ -51,6 +51,12 @@ export interface Image {
     height: number;
     mediaId: string;
     mimeType: string;
+    crop: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    }
     originalUrl: string;
     imageService: string;
     additionalData?: ImageItem;
