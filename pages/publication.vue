@@ -12,7 +12,6 @@ const {data: publicationData} = await useAsyncData(async () => {
   if (publication) return publication;
 });
 
-
 const {data: contentComponentData} = await useAsyncData(async () => {
   if (publicationData.value?.content) {
     const contentComponentsData = publicationData.value.content[0].containers.right;
@@ -31,22 +30,23 @@ if (publicationData.value) {
   useHead(
       metaDataGenerator(publicationData.value as Publication, locale.value)
   );
-
-
 }
 </script>
 
 <template>
   <colored-layout
       class="color-index"
-      left-color="layout-blue"
-      footer-color="blue"
+      :left-color="router.currentRoute.value.meta.contentType === 'about' ? 'layout-red' : 'layout-blue'"
+      :footer-color="router.currentRoute.value.meta.contentType === 'about' ? 'red' : 'blue'"
       right-color="layout-white"
       division-mode="fifths"
+      :isElection="router.currentRoute.value.meta.isElection as boolean"
       :show-fader="false"
   >
     <template #side>
-      <Breadcrumb/>
+      <div v-if="router.currentRoute.value.meta.contentType !== 'about'">
+      <Breadcrumb :is-election="router.currentRoute.value.meta.isElection as boolean" />
+    </div>
 
       <div v-if="contentComponentLeft">
         <ContentComponents :content-component="contentComponentLeft"/>

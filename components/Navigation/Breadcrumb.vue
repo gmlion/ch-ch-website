@@ -5,7 +5,16 @@ const router = useRouter();
 const {locale} = useI18n();
 const props = defineProps<{
   targetUrl?: string;
+  isElection? : boolean;
 }>();
+
+const homeUrl = () => {
+  if (props.isElection) {
+    return `/${locale.value}/${getElectionLabel(locale.value)}`;
+  }
+  return `/${locale.value}`;
+}
+
 const breadcrumb = computed(() => {
 
   const route = props.targetUrl ? props.targetUrl : router.currentRoute.value.path;
@@ -15,7 +24,7 @@ const breadcrumb = computed(() => {
   let routeString = "";
 
   routePath.forEach((path) => {
-    routeString += "/" + path;
+     routeString += "/" + path;
     const resolvedRoute = router.resolve(`/${locale.value}${routeString}`);
 
     const label = resolvedRoute.name || path;
@@ -25,7 +34,10 @@ const breadcrumb = computed(() => {
       route: routeString,
     });
   });
-
+  // if isElection, remove the first element of the breadcrumb since it is the election label
+  if (props.isElection) {
+    breadcrumb.shift();
+  }
   return breadcrumb;
 });
 </script>
@@ -35,7 +47,7 @@ const breadcrumb = computed(() => {
     <li>
       <a
           class="nav-breadcrumb font-semibold no-underline text-tertiary-yellow hover:text-secondary-yellow"
-          :href="'/' + locale"
+          :href="homeUrl()"
       >{{ $t("allTopics") }}</a
       >
     </li>

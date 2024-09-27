@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import {ref} from "vue";
-import {useFooterMenuStore} from "~/generate/store/footerMenuStore";
-import type {MenuResponse} from "~/generate/types/routingTypes";
+import { ref } from "vue";
+import { getFooterMenuStoreByLanguage } from "~/generate/store/menuStore";
+import type { MenuResponse } from "~/generate/types/routingTypes";
+import { useI18n } from "vue-i18n";
 
 const { locale } = useI18n();
-
+const router = useRouter().getRoutes();
 const props = defineProps<{
   color?: string;
   divisionMode?: string;
@@ -20,44 +21,53 @@ const toggleFooterIsOpen = () => {
   isOpen.value = !isOpen.value;
 };
 
-const footerData = useAsyncData("footerStore", async () => {
-  return await useFooterMenuStore(locale.value);
+const footerData = await useAsyncData("footerStore", async () => {
+  let footerDataStore = await getFooterMenuStoreByLanguage( locale.value, props.isElection);
+  if (!footerDataStore) {
+    return []
+  }
+
+  footerDataStore.nodes = footerDataStore.nodes.map((node) => {
+  const route = router.find((route) => route.meta.id === node.documentId);
+      if (route) {
+        node.url = route.path;
+      } else {
+        node.url = "";
+      }
+      return node;
+    });
+    return footerDataStore;
 });
 
-const currentMenu = (): MenuResponse | undefined => {
-  return footerData.data.value?.find((menu) => {
-    return menu;
-  });
-};
-
 const links = () => {
-  const menu = currentMenu();
+  if (!footerData.data.value) return [];
+  const menu = footerData.data.value as MenuResponse;
   if (!menu) return [];
-  const nodes = menu?.nodes.slice(0, menu.nodes.length - 1);
+  const nodes = menu.nodes.slice(0, menu.nodes.length - 1);
   return nodes.map((node) => {
     return {
       name: node.label,
-      link: node.url,
+      link: node.uri ? node.uri : node.url,
       target: node.target ? node.target : "_self",
     };
   });
 };
 
 const lastLink = () => {
-  const menu = currentMenu();
+  const menu: MenuResponse = footerData.data.value as MenuResponse;
   if (!menu || !menu.nodes.length) return null;
 
   const node = menu.nodes[menu.nodes.length - 1];
   return {
     name: node.label,
-    link: node.url,
+    link: node.url ? node.url : node.uri,
     target: node.target ? node.target : "_self",
   };
 };
 </script>
 <template>
   <footer
-    :class="[
+  :class="[
       isOpen ? 'w-full border-gray-600' : 'border-transparent',
       !isOpen ? 'pb-[10.75rem]' : '',
       props.divisionMode === 'fifths' && !isOpen ? 'lg:w-2/5' : '',
@@ -67,6 +77,7 @@ const lastLink = () => {
         ? 'text-primary-white'
         : '',
       props.color === 'yellow' && !isOpen ? 'text-gray-900' : '',
+      props.color === 'red' && !isOpen ? ' text-primary-white' : '',
       props.color === 'white' || isOpen
         ? 'bg-primary-white text-primary-blue'
         : '',
@@ -106,6 +117,8 @@ const lastLink = () => {
             : 'flex lg:justify-between w-full lg:hidden mt-8 lg:mt-0 flex-wrap gap-4 lg:flex-nowrap'
         "
       >
+      <div>
+  </div>
         <a
           v-for="link in links()"
           :key="link.name"

@@ -7,7 +7,7 @@ import type {
 import type { AllPublicationOptions } from "~/generate/types/slug";
 
 export const publicationStore = atom<Publication[]>([]);
-export const indexPublicationStore = atom<Publication | null>(null);
+export const homePagesStore = atom<Publication[]>([]);
 export const keyedPublicationsStore = atom<{
   [key: string]: Publication;
 } | null>(null);
@@ -64,10 +64,23 @@ export const getAllPublications = async (options?: AllPublicationOptions[]) => {
   return publications;
 };
 
+export const getHomePages = async () => {
+  console.log("getting homePages");
+  if (homePagesStore.get().length === 0) {
+    const publications = await usePublicationStore();
+    const homePages = publications.filter(
+      (publication) => publication.systemdata.contentType === "homepage"
+    );
+    homePagesStore.set(homePages);
+    return homePages;
+  }
+  return homePagesStore.get();
+};
+
 /**
  * Turn the array of publications into an object using the documentId as key
  */
-export const makeKeyedPublications = async (): Promise<{
+export const getKeyedPublications = async (): Promise<{
   [key: string]: Publication;
 } | null> => {
   if (keyedPublicationsStore.get()) {
@@ -93,36 +106,10 @@ export const makeKeyedPublications = async (): Promise<{
   return publicationMap;
 };
 
-export const setIndexPublication = async (locale: string) => {
-  const publications = await usePublicationStore();
-  for (const publication of publications) {
-    const contentType = publication.systemdata.contentType;
-    if (contentType !== "homepage") {
-      continue;
-    }
-    indexPublicationStore.set(publication);
-    return indexPublicationStore.get();
-  }
-};
-
-export const setElectionPublication = async (locale: string) => {
-  const publications = await usePublicationStore();
-  for (const publication of publications) {
-    const contentType = publication.systemdata.contentType;
-    if (contentType !== "homepage") {
-      continue;
-    }
-    console.log("setting index publication", contentType);
-
-    indexPublicationStore.set(publication);
-    return indexPublicationStore.get();
-  }
-};
-
 export const getPublicationById = async (
   id: string
 ): Promise<Publication | undefined> => {
-  const keyedPublications = await makeKeyedPublications();
+  const keyedPublications = await getKeyedPublications();
   if (keyedPublications) return keyedPublications[id];
   return undefined;
 };
@@ -142,6 +129,7 @@ async function getPage(
       else throw new Error(`Too many trials`);
     });
 }
+
 const getNext10Pages = async (options: PublicationOptions) => {
   const promises = [];
   for (let i = 1; i <= 10; i++) {
@@ -152,6 +140,7 @@ const getNext10Pages = async (options: PublicationOptions) => {
   }
   return Promise.all(promises);
 };
+
 async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

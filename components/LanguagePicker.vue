@@ -1,14 +1,18 @@
 <script lang="ts" setup>
-
 import LanguageDropdown from "~/components/LanguageDropdown.vue";
-import {languageHelper} from "~/utils/languageHelper";
-import {useRoute} from "#vue-router";
+import { languageHelper } from "~/utils/languageHelper";
+import { useRoute } from "#vue-router";
+
+interface GroupId {
+  id: string;
+}
 
 const route = useRoute();
-const currentUrl = route.path
-const pageId: string | undefined = route.meta.groupId?.id as string | undefined;
-const languageUrlMap = languageHelper(pageId, currentUrl);
+const groupId = route.meta.groupId as GroupId | undefined;
+const pageId: string | undefined = groupId?.id;
+const languageUrlMap = languageHelper(pageId);
 </script>
+
 <template>
   <nav id="language" :aria-label="$t('navAriaLanguagePickerDesktop')"
        class="absolute top-4 right-4 lg:static flex items-center">

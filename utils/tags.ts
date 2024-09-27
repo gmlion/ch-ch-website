@@ -1,11 +1,10 @@
-import { makeKeyedPublications } from "~/generate/store/publicationStore";
-import { useI18n } from "vue-i18n";
+import {getKeyedPublications} from "~/generate/store/publicationStore";
 
 export const getTitleByTag = async (documentId: string) => {
-  const keyedPublications = await makeKeyedPublications();
+    const keyedPublications = await getKeyedPublications();
 
-  if (!keyedPublications) {
-    return null;
-  }
-  return keyedPublications[documentId].metadata;
+    if (!keyedPublications) {
+        return null;
+    }
+    return keyedPublications[documentId].metadata;
 };
