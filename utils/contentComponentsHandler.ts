@@ -16,6 +16,8 @@ import type {
   TitleLead,
   YoutubeContent,
 } from "~/core/types/contentComponentsTypes";
+import { getCommunePages } from "~/generate/store/publicationStore";
+
 import { randomUUID } from "uncrypto";
 import type { Image } from "~/components/HomeCarousel/types/types";
 import { getCompleteImageObject } from "~/utils/image";
@@ -158,6 +160,15 @@ export const contentComponents = async (
             content: infoboxContent.title as string,
           });
         }
+        break;
+      }
+      case "commune-agency-picker": {
+        console.log("commune-agency-picker", contentItem.component);
+        contentComponentsArray.push({
+          id: contentItem.id,
+          type: contentItem.component,
+          content: await getCommunePages(),
+        });
         break;
       }
       case "title": {

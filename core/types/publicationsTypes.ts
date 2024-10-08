@@ -117,7 +117,7 @@ export interface SystemData {
   layout: string;
 }
 
-export interface Metadata {
+export interface Metadata extends CommuneMetadata {
   twitterImage: any;
   openGraphImage: any;
   title: string;
@@ -155,6 +155,17 @@ export interface Metadata {
       }
     ];
   };
+}
+
+export interface CommuneMetadata  {
+  agency: string;
+  streetAddress: string;
+  streetNumber: string;
+  postalcode: string;
+  commune: string;
+  email: string;
+  phoneNumber: string;
+  website: string;  
 }
 
 export interface Publication {

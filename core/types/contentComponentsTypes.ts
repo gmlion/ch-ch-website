@@ -1,4 +1,5 @@
 import type {
+  CommuneMetadata,
   ContentGallery,
   FAQ,
   PublicationComponent,
@@ -42,6 +43,7 @@ export type ContentComponent = {
     | ContentGallery[]
     | text
     | howTo
+    | CommuneMetadata[]
 };
 
 type howTo = Array<ContentComponent[]>;

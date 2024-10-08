@@ -1,25 +1,26 @@
 <script setup lang="ts">
-import type {Publication} from "~/core/types/publicationsTypes";
-import {getPublicationById} from "~/generate/store/publicationStore";
-import {contentComponents} from "~/utils/contentComponentsHandler";
+import type { Publication } from "~/core/types/publicationsTypes";
+import { getCommunePages, getPublicationById } from "~/generate/store/publicationStore";
+import { contentComponents } from "~/utils/contentComponentsHandler";
 
 const router = useRouter();
 const startItemId = router.currentRoute.value.meta.id as string;
-const {locale} = useI18n();
+const { locale } = useI18n();
 
-const {data: publicationData} = await useAsyncData(async () => {
+const { data: publicationData } = await useAsyncData(async () => {
   const publication = getPublicationById(startItemId);
   if (publication) return publication;
 });
 
-const {data: contentComponentData} = await useAsyncData(async () => {
+const { data: contentComponentData } = await useAsyncData(async () => {
   if (publicationData.value?.content) {
     const contentComponentsData = publicationData.value.content[0].containers.right;
     return contentComponents(contentComponentsData, locale.value);
   }
 })
 
-const {data: contentComponentLeft} = await useAsyncData(async () => {
+
+const { data: contentComponentLeft } = await useAsyncData(async () => {
   if (publicationData.value?.content) {
     const contentComponentLeftData = publicationData.value.content[0].containers.left;
     return contentComponents(contentComponentLeftData, locale.value);
@@ -28,34 +29,29 @@ const {data: contentComponentLeft} = await useAsyncData(async () => {
 
 if (publicationData.value) {
   useHead(
-      metaDataGenerator(publicationData.value as Publication, locale.value)
+    metaDataGenerator(publicationData.value as Publication, locale.value)
   );
 }
 </script>
 
 <template>
-  <colored-layout
-      class="color-index"
-      :left-color="router.currentRoute.value.meta.contentType === 'about' ? 'layout-red' : 'layout-blue'"
-      :footer-color="router.currentRoute.value.meta.contentType === 'about' ? 'red' : 'blue'"
-      right-color="layout-white"
-      division-mode="fifths"
-      :isElection="router.currentRoute.value.meta.isElection as boolean"
-      :show-fader="false"
-  >
+  <colored-layout class="color-index"
+    :left-color="router.currentRoute.value.meta.contentType === 'about' ? 'layout-red' : 'layout-blue'"
+    :footer-color="router.currentRoute.value.meta.contentType === 'about' ? 'red' : 'blue'" right-color="layout-white"
+    division-mode="fifths" :isElection="router.currentRoute.value.meta.isElection as boolean" :show-fader="false">
     <template #side>
       <div v-if="router.currentRoute.value.meta.contentType !== 'about'">
-      <Breadcrumb :is-election="router.currentRoute.value.meta.isElection as boolean" />
-    </div>
+        <Breadcrumb :is-election="router.currentRoute.value.meta.isElection as boolean" />
+      </div>
 
       <div v-if="contentComponentLeft">
-        <ContentComponents :content-component="contentComponentLeft"/>
+        <ContentComponents :content-component="contentComponentLeft" />
       </div>
     </template>
 
     <template #main>
       <div v-if="contentComponentData">
-        <ContentComponents :content-component="contentComponentData"/>
+        <ContentComponents :content-component="contentComponentData" />
       </div>
 
     </template>

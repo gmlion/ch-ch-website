@@ -167,6 +167,9 @@
   p {
     @apply text-lg mb-8;
   }
+  span {
+    @apply text-lg;
+  }
   a {
     text-decoration: underline;
     text-decoration-color: rgb(154, 139, 20);

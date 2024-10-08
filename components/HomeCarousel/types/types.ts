@@ -61,7 +61,7 @@ export interface Image {
     imageService: string;
     additionalData?: ImageItem;
     text?: string;
-    textAlign?: string;
+    textAlign?: "left" | "right";
 }
 
 export interface ImageMetaData {

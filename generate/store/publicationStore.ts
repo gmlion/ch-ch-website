@@ -1,6 +1,7 @@
 import { atom } from "nanostores";
 import makeFetch from "../../utils/makeFetch";
 import type {
+  CommuneMetadata,
   Publication,
   PublicationOptions,
 } from "~/core/types/publicationsTypes";
@@ -8,6 +9,7 @@ import type { AllPublicationOptions } from "~/generate/types/slug";
 
 export const publicationStore = atom<Publication[]>([]);
 export const homePagesStore = atom<Publication[]>([]);
+export const communePagesStore = atom<CommuneMetadata[]>([]);
 export const keyedPublicationsStore = atom<{
   [key: string]: Publication;
 } | null>(null);
@@ -64,6 +66,27 @@ export const getAllPublications = async (options?: AllPublicationOptions[]) => {
   return publications;
 };
 
+export const getCommunePages = async () => {
+  console.log("getting communePages");
+  if (communePagesStore.get().length === 0) {
+    const publications = await usePublicationStore();
+    const communePagesMetadata = publications
+      .filter((publication) => publication.systemdata.contentType === "commune")
+      .map((publication) => ({
+        agency: publication.metadata.agency,
+        streetAddress: publication.metadata.streetAddress,
+        streetNumber: publication.metadata.streetNumber,
+        postalcode: publication.metadata.postalcode,
+        commune: publication.metadata.commune,
+        email: publication.metadata.email,
+        phoneNumber: publication.metadata.phoneNumber,
+        website: publication.metadata.website,
+      }));
+    communePagesStore.set(communePagesMetadata);
+    return communePagesMetadata;
+  }
+  return communePagesStore.get();
+}
 export const getHomePages = async () => {
   console.log("getting homePages");
   if (homePagesStore.get().length === 0) {

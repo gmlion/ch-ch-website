@@ -38,7 +38,7 @@ const altText = getAltText(
   <div class="image-wrapper mb-8">
     <div v-if="props.hasLightBox">
       <Dialog>
-        <DialogTrigger as-child>
+        <DialogTrigger>
           <ImageElement :width="props.image?.width" :height="props.image?.height" :alt-text="altText"
                         :src="props.image.url" :caption="caption" :text="props.image.text"
                         :alignment="props.image?.textAlign" :classes="classes"/>

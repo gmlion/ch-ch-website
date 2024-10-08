@@ -8,7 +8,8 @@ import type {
 import Collapsible from "~/components/Collapsible/Collapsible.vue";
 import type {Image} from "~/components/HomeCarousel/types/types";
 import List from "~/components/List/List.vue";
-import type {ContentGallery, TypeList} from "~/core/types/publicationsTypes";
+import {getCommunePages} from "~/generate/store/publicationStore";
+import type {CommuneMetadata, ContentGallery, TypeList} from "~/core/types/publicationsTypes";
 
 const props = defineProps<{
   contentComponent: ContentComponent[];
@@ -20,6 +21,9 @@ const props = defineProps<{
   <div v-for="component in props.contentComponent" :key="component.id" class="content-component" :class="props.classes">
     <div v-if="component.type === 'titleLead'">
       <TitleLead :titleLead="component.content as TitleLead"/>
+    </div>
+    <div v-if="component.type === 'commune-agency-picker'">
+      <CommuneSearch :communesArray="component.content as CommuneMetadata[]"/>
     </div>
     <div v-if="component.type ==='image'">
       <ImageBlock :image="component.content as Image" :has-light-box="true" :text="(component.content as Image).text"/>
