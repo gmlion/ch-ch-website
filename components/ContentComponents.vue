@@ -6,10 +6,10 @@ import type {
   YoutubeContent
 } from "~/core/types/contentComponentsTypes";
 import Collapsible from "~/components/Collapsible/Collapsible.vue";
-import type {Image} from "~/components/HomeCarousel/types/types";
+import type { Image } from "~/components/HomeCarousel/types/types";
 import List from "~/components/List/List.vue";
-import {getCommunePages} from "~/generate/store/publicationStore";
-import type {CommuneMetadata, ContentGallery, TypeList} from "~/core/types/publicationsTypes";
+import { getCommunePages } from "~/generate/store/publicationStore";
+import type { CommuneMetadata, ContentGallery, FreeHTML, Tables, TypeList } from "~/core/types/publicationsTypes";
 
 const props = defineProps<{
   contentComponent: ContentComponent[];
@@ -20,56 +20,63 @@ const props = defineProps<{
 <template>
   <div v-for="component in props.contentComponent" :key="component.id" class="content-component" :class="props.classes">
     <div v-if="component.type === 'titleLead'">
-      <TitleLead :titleLead="component.content as TitleLead"/>
+      <TitleLead :titleLead="component.content as TitleLead" />
     </div>
     <div v-if="component.type === 'commune-agency-picker'">
-      <CommuneSearch :communesArray="component.content as CommuneMetadata[]"/>
+      <CommuneSearch :communesArray="component.content as CommuneMetadata[]" />
     </div>
-    <div v-if="component.type ==='image'">
-      <ImageBlock :image="component.content as Image" :has-light-box="true" :text="(component.content as Image).text"/>
+    <div v-if="component.type === 'image'">
+      <ImageBlock :image="component.content as Image" :has-light-box="true" :text="(component.content as Image).text" />
     </div>
-    <div v-if="component.type ==='youtube'">
-      <Youtube :youtube="component.content as YoutubeContent"/>
+    <div v-if="component.type === 'youtube'">
+      <Youtube :youtube="component.content as YoutubeContent" />
     </div>
-    <div v-if="component.type ==='collapsible'">
-      <Collapsible :content="component.content as CollapsibleContent[]"/>
+    <div v-if="component.type === 'collapsible'">
+      <Collapsible :content="component.content as CollapsibleContent[]" />
     </div>
     <div v-if="component.type === 'infobox'">
-      <InfoBox :title="component.refTitle" :content="component.content as ContentComponent[]"/>
+      <InfoBox :title="component.refTitle" :content="component.content as ContentComponent[]" />
     </div>
     <div v-if="component.type === 'subtitle'">
-      <div class="richtext" v-html="handleRichtext([{ component:
-      'subtitle', identifier: '', id: component.id, content: { title: component.content as string } }])">
+      <div class="richtext" v-html="handleRichtext([{
+        component:
+          'subtitle', identifier: '', id: component.id, content: { title: component.content as string }
+      }])">
       </div>
     </div>
-    <div v-if="component.type ==='gallery-teaser'">
-      <ContentCarousel :gallery-content="component.content as ContentGallery[]"/>
+    <div v-if="component.type === 'gallery-teaser'">
+      <ContentCarousel :gallery-content="component.content as ContentGallery[]" />
     </div>
     <div v-if="component.type === 'howto-teaser'">
-      <HowToTeaser :contentComponent="component.content as Array<ContentComponent[]>"/>
+      <HowToTeaser :contentComponent="component.content as Array<ContentComponent[]>" />
 
     </div>
     <div v-if="component.type === 'faqCollapsible'">
-      <NestedCollapsible :content="component.content as CollapsibleContent[]"/>
+      <NestedCollapsible :content="component.content as CollapsibleContent[]" />
     </div>
-    <div v-if="component.type ==='p'">
-      <div class="richtext" v-html="handleRichtext([{ component:
-      'p', identifier: '', id: component.id, content: { text: component.content as string } }])">
+    <div v-if="component.type === 'p'">
+      <div class="richtext" v-html="handleRichtext([{
+        component:
+          'p', identifier: '', id: component.id, content: { text: component.content as string }
+      }])">
       </div>
     </div>
-    <div v-if="component.type === 'list'">
-      <List :list="component.content as TypeList[]"/>
+    <div v-if="component.type === 'table'">
+      <Tables :tables="component.content as Tables" />
+    </div>
+    <div v-if="component.type === 'free-html'">
+     <div v-html="(component.content as FreeHTML)['free-html'].params.freehtml"></div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-  .content-component {
-    &.how-to {
-      .title-element {
-        @apply font-semibold;
-        line-height: 120%;
-      }
+.content-component {
+  &.how-to {
+    .title-element {
+      @apply font-semibold;
+      line-height: 120%;
     }
   }
+}
 </style>

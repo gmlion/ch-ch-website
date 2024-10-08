@@ -6,5 +6,5 @@ const props = defineProps<{ titleLead: TitleLead }>();
 
 <template>
   <h1 class="title-element text-3xl-fluid mb-8" v-if="titleLead.title" v-html="titleLead.title"></h1>
-  <p class="text-xl-fluid mt-8" v-if="titleLead.lead">{{ titleLead.lead }}</p>
+  <p class="text-xl-fluid mt-8" v-if="titleLead.lead" v-html="titleLead.lead"></p>
 </template>

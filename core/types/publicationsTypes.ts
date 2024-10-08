@@ -1,5 +1,8 @@
 import type { Carousel, Image } from "~/components/HomeCarousel/types/types";
-import type { ContentComponent, YoutubeContent } from "~/core/types/contentComponentsTypes";
+import type {
+  ContentComponent,
+  YoutubeContent,
+} from "~/core/types/contentComponentsTypes";
 
 type Design = { name: string; version: string };
 type Language = { label: string; locale: string; groupId: string };
@@ -17,12 +20,44 @@ export interface PublicationContainerComponent extends PublicationComponent {
   containers: {
     carousel: Carousel[];
     infobox: PublicationComponent[];
-    body: PublicationContainerComponent[];
+    body: PublicationContainerComponent[] | TableRow[];
     list: TypeList[];
     gallery: ContentGallery[];
+    header: TableRow[];
   };
 }
 
+export interface Tables {
+  header: TableRow[];
+  body: TableRow[];
+}
+
+export interface TableRow {
+  component: string;
+  identifier: string;
+  id: string;
+  containers: {
+    [key: string]: TableCell[];
+  };
+}
+
+export interface TableCell {
+  component: string;
+  identifier: string;
+  id: string;
+  containers: {
+    [key: string]: TableContent[];
+  };
+}
+
+export interface TableContent {
+  component: string;
+  identifier: string;
+  id: string;
+  content?: {
+    text?: string;
+  };
+}
 export interface Link {
   params: {
     link: {
@@ -62,9 +97,18 @@ export interface PublicationComponent {
         howTo?: any;
         category: TypeCategory;
       }
-    | YoutubeContent;
+    | YoutubeContent
+    | FreeHTML;
 }
 
+export interface FreeHTML {
+  ["free-html"]: {
+    service: string;
+    params: {
+      freehtml: string;
+    };
+  };
+}
 export interface TypeList {
   component: string;
   identifier: string;
@@ -157,7 +201,7 @@ export interface Metadata extends CommuneMetadata {
   };
 }
 
-export interface CommuneMetadata  {
+export interface CommuneMetadata {
   agency: string;
   streetAddress: string;
   streetNumber: string;
@@ -165,7 +209,7 @@ export interface CommuneMetadata  {
   commune: string;
   email: string;
   phoneNumber: string;
-  website: string;  
+  website: string;
 }
 
 export interface Publication {

@@ -1,7 +1,9 @@
 import type {
   ContentGallery,
+  FreeHTML,
   Metadata,
   PublicationContainerComponent,
+  Tables,
   TypeCategory,
   TypeList,
 } from "~/core/types/publicationsTypes";
@@ -183,6 +185,23 @@ export const contentComponents = async (
         if (lead) {
           titleLeadComponentsArray.lead = lead;
         }
+        break;
+      }
+      case "table": {
+          contentComponentsArray.push({
+            id: contentItem.id,
+            type: contentItem.component,
+            content: contentItem.containers as Tables
+          });
+        break;
+      }
+      case "free-html": {
+        contentComponentsArray.push({
+          id: contentItem.id,
+          type: contentItem.component,
+          content: contentItem.content as FreeHTML
+
+        });
         break;
       }
       case "list": {

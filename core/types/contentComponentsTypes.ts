@@ -2,7 +2,9 @@ import type {
   CommuneMetadata,
   ContentGallery,
   FAQ,
+  FreeHTML,
   PublicationComponent,
+  Tables,
   TypeList,
 } from "~/core/types/publicationsTypes";
 import type { Image } from "~/components/HomeCarousel/types/types";
@@ -43,7 +45,8 @@ export type ContentComponent = {
     | ContentGallery[]
     | text
     | howTo
-    | CommuneMetadata[]
+    | CommuneMetadata[] | Tables | FreeHTML
+    
 };
 
 type howTo = Array<ContentComponent[]>;
