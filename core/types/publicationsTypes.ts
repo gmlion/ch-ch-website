@@ -1,5 +1,5 @@
 import type { Carousel, Image } from "~/components/HomeCarousel/types/types";
-import type { YoutubeContent } from "~/core/types/contentComponentsTypes";
+import type { ContentComponent, YoutubeContent } from "~/core/types/contentComponentsTypes";
 
 type Design = { name: string; version: string };
 type Language = { label: string; locale: string; groupId: string };
@@ -59,6 +59,7 @@ export interface PublicationComponent {
         faq?: FAQ;
         richtext?: string[];
         image?: Image;
+        howTo?: any;
         category: TypeCategory;
       }
     | YoutubeContent;

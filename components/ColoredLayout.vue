@@ -27,7 +27,7 @@ let isSearchOpen = useStore(isSearchOpenStore);
           :division-mode="props.divisionMode"
       />
       <div
-          class="left-layout relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 min-w-[350px] lg:pb-36 lg:mb-36"
+          class="left-layout relative flex flex-col w-full px-4 py-4 outline-none lg:px-14 lg:py-14 lg:pr-16 min-w-[350px]"
           :class="leftColor"
       >
         <a href="#content" class="hidden">{{ $t("jumpToContent") }}</a>

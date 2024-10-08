@@ -80,7 +80,7 @@ const onSwiper = (swiperInstance: any) => {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .swiper {
   max-height: 810px;
 }
@@ -114,6 +114,7 @@ const onSwiper = (swiperInstance: any) => {
   .image-wrapper {
     img {
       width: 100%;
+      max-height: 20vh;
     }
   }
 }

@@ -67,11 +67,6 @@ export default defineNuxtConfig({
         file: `${__dirname}/pages/[slug].vue`,
       });
     },
-    async "prerender:routes"(ctx) {
-      // Prerender all pages.
-      const test = ctx.routes.entries;
-      console.log(test);
-    },
   },
 
   vite: {
@@ -81,6 +76,13 @@ export default defineNuxtConfig({
         productionTip: process.env.NODE_ENV !== "production",
         devtools: process.env.NODE_ENV !== "production",
         performance: process.env.NODE_ENV !== "production",
+      },
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: "modern-compiler", // or "modern"
+        },
       },
     },
   },
@@ -97,6 +99,7 @@ export default defineNuxtConfig({
     API_TOKEN: process.env.API_TOKEN,
     BASE_URL: process.env.BASE_URL,
     public: {
+      recentElectionYear: process.env.RECENT_ELECTION_YEAR,
       searchUrl: process.env.API_URL_SEARCH,
     },
   },
@@ -152,7 +155,6 @@ export default defineNuxtConfig({
   },
 
   css: ["./assets/scss/main.scss"],
-
   postcss: {
     plugins: {
       tailwindcss: {},

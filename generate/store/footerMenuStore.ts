@@ -10,7 +10,6 @@ export const useFooterMenuStore = async (locale: string) => {
     const menus = await useMenuStore();
     const router = useRouter().getRoutes();
     let footerItems = menus.filter((menu) => {
-      console.log(menu.handle);
       if (menu.handle?.includes(`chch-footer-${locale}`)) return menu;
     });
     footerItems[0].nodes = footerItems[0].nodes.map((node) => {
