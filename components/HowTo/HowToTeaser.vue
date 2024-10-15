@@ -36,8 +36,8 @@ const goNext = () => {
 </script>
 
 <template>
-  <div class="flex lg:items-center lg:justify-between lg:flex-row flex-col relative">
-    <div class="flex gap-6">
+  <div class="flex lg:justify-between lg:flex-row flex-col relative">
+    <div class="flex gap-6  lg:mt-96">
       <div class="text-2xl font-semibold">{{ currentSlide }} / {{ totalSlides }}</div>
     </div>
     <Swiper :modules="[SwiperNavigation, SwiperEffectCreative]" :slides-per-view="1" :loop="true" :auto-height="true"
@@ -48,7 +48,7 @@ const goNext = () => {
         </div>
       </SwiperSlide>
     </Swiper>
-    <div class="absolute right-0 lg:static flex order-1 lg:order-3 gap-8 items-center h-8 ">
+    <div class="absolute right-0 lg:static flex order-1 lg:order-3 lg:mt-96 gap-8 items-center h-8 ">
       <div class="swiper-button-prev cursor-pointer text-primary-blue w-8 h-8" @click="goPrev"></div>
       <div class="swiper-button-next cursor-pointer text-primary-blue w-8 h-8" @click="goNext"></div>
     </div>

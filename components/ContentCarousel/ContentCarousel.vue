@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {ref} from 'vue';
-import type {ContentGallery} from '~/core/types/publicationsTypes';
-import {Swiper, SwiperSlide} from 'swiper/vue';
+import { ref } from 'vue';
+import type { ContentGallery } from '~/core/types/publicationsTypes';
+import { Swiper, SwiperSlide } from 'swiper/vue';
 
 // Props from the parent component
 const props = defineProps<{
@@ -37,31 +37,22 @@ const onSlideChange = (swiperInstance: any) => {
 </script>
 
 <template class="">
-  <Swiper
-      :modules="[SwiperNavigation, SwiperEffectCreative]"
-      :slides-per-view="1"
-      :loop="true"
-      @swiper="onSwiperInit"
-      @slideChange="onSlideChange"
-      class="w-full lg:w-[85%] relative !m-[unset]"
-  >
+  <Swiper :modules="[SwiperNavigation, SwiperEffectCreative]" :slides-per-view="1" :loop="true" :auto-height="true"
+    @swiper="onSwiperInit" @slideChange="onSlideChange" class="w-full lg:w-[85%] relative !m-[unset]">
     <!-- Create Swiper slides dynamically from galleryContent -->
     <SwiperSlide v-for="galleryItem in galleryContent" :key="galleryItem.id">
       <div class="text-left carousel-entry aspect">
-        <figure>
-          <picture>
-            <img :src="galleryItem.content.image.url" :alt="galleryItem.content.caption"
-                 :width="galleryItem.content.image.crop ? galleryItem.content.image.crop.width : galleryItem.content.image.width"
-                 :height="galleryItem.content.image.crop ? galleryItem.content.image.crop.height : galleryItem.content.image.height">
-          </picture>
-          <figcaption class="mt-5">
-            <p>{{ galleryItem.content.caption }}</p>
-          </figcaption>
-        </figure>
+        <ImageBlock :caption="galleryItem.content.caption" :image="{
+          url: galleryItem.content.image.url,
+          width: galleryItem.content.image.crop ? galleryItem.content.image.crop.width : galleryItem.content.image.width,
+          height: galleryItem.content.image.crop ? galleryItem.content.image.crop.height : galleryItem.content.image.height,
+          originalUrl: galleryItem.content.image.url,
+        }" :hasLightBox="true" />
       </div>
     </SwiperSlide>
-    <div class="flex items-center justify-between py-6 ">
-      <div class="text-2xl font-semibold">{{ currentSlide }} / {{ totalSlides }}</div>
+    <div class=" flex items-center justify-between py-6 ">
+      <div class=" text-2xl font-semibold">{{ currentSlide }} / {{ totalSlides }}
+      </div>
       <div class="flex gap-8 items-center h-8 ">
         <div class="swiper-button-prev cursor-pointer text-primary-blue w-8 h-8" @click="goPrev"></div>
         <div class="swiper-button-next cursor-pointer text-primary-blue w-8 h-8" @click="goNext"></div>

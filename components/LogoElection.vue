@@ -7,27 +7,28 @@ const {locale} = useI18n();
 let chchTitle = "";
 let electionTitle = "";
 let electionUrl = "";
+const electionYear = useRuntimeConfig().public.electionYear
 
 if (locale.value === "de") {
   chchTitle = "ch.ch";
-  electionTitle = "Wahlen 2023";
-  electionUrl = `${locale.value}/wahlen2023`;
+  electionTitle = `Wahlen ${electionYear}`;
+  electionUrl = `${locale.value}/wahlen${electionYear}`;
 } else if (locale.value === "fr") {
   chchTitle = "ch.ch";
-  electionTitle = "Elections 2023";
-  electionUrl = `${locale.value}/elections2023`;
+  electionTitle = `Elections ${electionYear}`;
+  electionUrl = `${locale.value}/elections${electionYear}`;
 } else if (locale.value === "it") {
   chchTitle = "ch.ch";
-  electionTitle = "Elezioni 2023";
-  electionUrl = `${locale.value}/elezioni2023`;
+  electionTitle = `Elezioni ${electionYear}`;
+  electionUrl = `${locale.value}/elezioni${electionYear}`;
 } else if (locale.value === "rm") {
   chchTitle = "ch.ch";
-  electionTitle = "Elecziuns 2023";
-  electionUrl = `${locale.value}/elecziuns2023`;
+  electionTitle = `Elecziuns ${electionYear}`;
+  electionUrl = `${locale.value}/elecziuns${electionYear}`;
 } else {
   chchTitle = "ch.ch";
-  electionTitle = "Elections 2023";
-  electionUrl = `${locale.value}/elections2023`;
+  electionTitle = `Elections ${electionYear}`;
+  electionUrl = `${locale.value}/elections${electionYear}`;
 }
 onMounted(() => {
   windowUrl.value = window.location.origin;

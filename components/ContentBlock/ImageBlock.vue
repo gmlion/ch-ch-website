@@ -43,7 +43,7 @@ const altText = getAltText(
                         :src="props.image.url" :caption="caption" :text="props.image.text"
                         :alignment="props.image?.textAlign" :classes="classes"/>
         </DialogTrigger>
-        <DialogContent class="p-0 w-fit bg-transparent border-0">
+        <DialogContent class="p-0 max-w-none w-fit bg-transparent border-0">
           <ImageElement :width="props.image?.width" :height="props.image?.height" :alt-text="altText"
                         :src="props.image.url" :caption="caption"
                         :classes="classes"/>
@@ -53,7 +53,7 @@ const altText = getAltText(
     </div>
     <div v-else>
       <ImageElement :width="props.image?.width" :height="props.image?.height" :alt-text="altText" :src="props.image.url"
-                    :caption="caption" :classes="classes"/>
+                    :caption="caption" :classes="classes" :alignment="props.image?.textAlign"/>
 
 
     </div>

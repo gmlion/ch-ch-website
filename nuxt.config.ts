@@ -99,7 +99,7 @@ export default defineNuxtConfig({
     API_TOKEN: process.env.API_TOKEN,
     BASE_URL: process.env.BASE_URL,
     public: {
-      recentElectionYear: process.env.RECENT_ELECTION_YEAR,
+      electionYear: process.env.ELECTION_YEAR,
       searchUrl: process.env.API_URL_SEARCH,
     },
   },

@@ -13,12 +13,13 @@ const routes: NuxtPage[] = [];
 
 export default async (menus: MenuResponse[]) => {
   const keyedPublications = await getKeyedPublications();
+
   const electionPathPrefixes = {
-    "wahlen-de": "wahlen2023",
-    "wahlen-fr": "elections2023",
-    "wahlen-it": "elezioni2023",
-    "wahlen-rm": "elecziuns2023",
-    "wahlen-en": "elections2023",
+    "wahlen-de": `wahlen${process.env.ELECTION_YEAR}`,
+    "wahlen-fr": `elections${process.env.ELECTION_YEAR}`,
+    "wahlen-it": `elezioni${process.env.ELECTION_YEAR}`,
+    "wahlen-rm": `elecziuns${process.env.ELECTION_YEAR}`,
+    "wahlen-en": `elections${process.env.ELECTION_YEAR}`,
   };
 
   const addPublicationToRoutes = (

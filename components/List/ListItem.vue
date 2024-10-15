@@ -7,7 +7,7 @@ const props = defineProps<{
 
 <template>
   <li class="relative  pl-9 before:bg-[rgba(1,46,90,var(--tw-bg-opacity))] before:absolute before:left-0 before:top-[13px] before:h-[2px] before:w-[18px] before:content-[''] before:tw-bg-opacity-100 text-lg">
-    <div class="richtext" v-html="handleRichtext([{ component:
+    <div class="text-lg" v-html="handleRichtext([{ component:
       'p', identifier: '', id: '', content: { text: listItem as string } }])">
     </div>
   </li>

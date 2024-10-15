@@ -4,25 +4,25 @@ import path from "path";
 const checkIsElection = (title: string): boolean => {
   // Logic to determine if the publication is an election. Unfortunatly Livingdocs does not provide a flag for this.
   return [
-    "Wahlen 2023",
-    "Elections 2023",
-    "Elezioni federali 2023",
-    "Elecziuns 2023",
+    `Wahlen ${process.env.ELECTION_YEAR}`,
+    `Elections ${process.env.ELECTION_YEAR}`,
+    `Elezioni ${process.env.ELECTION_YEAR}`,
+    `Elecziuns ${process.env.ELECTION_YEAR}`,
   ].some((election) => title.includes(election));
 };
 
 export const getElectionLabel = (locale: string) => {
   switch (locale) {
     case "de":
-      return "wahlen2023";
+      return `wahlen${process.env.ELECTION_YEAR}`;
     case "fr":
-      return "elections2023";
+      return `elections${process.env.ELECTION_YEAR}`;
     case "it":
-      return "elezioni2023";
+      return `elezioni${process.env.ELECTION_YEAR}`;
     case "rm":
-      return "elecziuns2023";
+      return `elecziuns${process.env.ELECTION_YEAR}`;
     default:
-      return "wahlen2023";
+      return `wahlen${process.env.ELECTION_YEAR}`;
   }
 };
 

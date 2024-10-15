@@ -43,10 +43,10 @@ const breadcrumb = computed(() => {
 </script>
 
 <template>
-  <ul class="flex gap-4 text-lg mb-6 flex-wrap">
+  <ul class="flex gap-4 text-lg mb-6 lg:mb-10 flex-wrap">
     <li>
       <a
-          class="nav-breadcrumb font-semibold no-underline text-tertiary-yellow hover:text-secondary-yellow"
+          class="nav-breadcrumb font-semibold no-underline text-secondary-yellow hover:text-tertiary-yellow"
           :href="homeUrl()"
       >{{ $t("allTopics") }}</a
       >
@@ -58,17 +58,17 @@ const breadcrumb = computed(() => {
     >
       <svg-icon
           name="arrow-right"
-          class="w-4 h-4 text-inherit text-tertiary-yellow"
+          class="w-4 h-4 text-inherit text-secondary-yellow"
           aria-hidden="true"
       />
       <a
           v-if="index < breadcrumb.length - 1"
-          class="nav-breadcrumb font-semibold no-underline text-tertiary-yellow hover:text-secondary-yellow"
+          class="nav-breadcrumb font-semibold no-underline text-secondary-yellow hover:text-tertiary-yellow"
           :href="'/' + locale + '/' + item.route.slice(1)"
       >
         {{ item.label }}
       </a>
-      <span v-else class="text-gray-600">{{ item.label }}</span>
+      <span v-else class="text-gray-300 font-semibold">{{ item.label }}</span>
     </li>
   </ul>
 </template>

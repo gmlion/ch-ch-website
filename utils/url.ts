@@ -3,11 +3,11 @@ import {getIsoCodeFromLocale} from "./locale";
 import type {MinimizedPublicationType} from "~/core/types/publicationsTypes";
 
 export const electionSlugs: Record<string, string> = {
-    de: "wahlen2023",
-    it: "elezioni2023",
-    fr: "elections2023",
-    rm: "elecziuns2023",
-    en: "elections2023",
+    de: `wahlen${process.env.ELECTION_YEAR}`,
+    it: `elezioni${process.env.ELECTION_YEAR}`,
+    fr: `elections${process.env.ELECTION_YEAR}`,
+    rm: `elecziuns${process.env.ELECTION_YEAR}`,
+    en: `elections${process.env.ELECTION_YEAR}`,
 };
 
 const safeName = (name: string): string => {

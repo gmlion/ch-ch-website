@@ -3,7 +3,7 @@ const animate = require("tailwindcss-animate")
 import colors from "tailwindcss/colors";
 export default {
   files: ["./safelist.txt"],
-  safelist: ["bg-primary-red", "stroke-white", "stroke-blue", "dark"],
+  safelist: ["bg-primary-red", "stroke-white", "stroke-blue", "dark", "grid grid-cols-1", "md:grid-cols-2", "md:grid-cols-reverse"],
   prefix: "",
   darkMode: ["class"],
   content: [

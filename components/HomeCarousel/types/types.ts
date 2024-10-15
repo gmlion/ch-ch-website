@@ -49,16 +49,16 @@ export interface Image {
     url: string;
     width: number;
     height: number;
-    mediaId: string;
-    mimeType: string;
-    crop: {
+    mediaId?: string;
+    mimeType?: string;
+    crop?: {
         x: number;
         y: number;
         width: number;
         height: number;
     }
     originalUrl: string;
-    imageService: string;
+    imageService?: string;
     additionalData?: ImageItem;
     text?: string;
     textAlign?: "left" | "right";
