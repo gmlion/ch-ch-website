@@ -1,3 +1,5 @@
+import type { RouteMeta } from "vue-router";
+
 export interface MenuNode {
   id: string;
   label: string;
@@ -47,4 +49,14 @@ export interface MenuResponseData {
   documentId?: string;
   type: "document" | "uri";
   isExpanded?: boolean;
+}
+
+export interface ExtendedRouteMeta extends RouteMeta {
+  id: string,
+  isElection: boolean;
+  contentType: string
+  groupId: {
+    id: string,
+    language: string
+  }
 }

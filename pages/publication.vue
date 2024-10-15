@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Publication } from "~/core/types/publicationsTypes";
-import { getCommunePages, getPublicationById } from "~/generate/store/publicationStore";
+import {  getPublicationById } from "~/generate/store/publicationStore";
 import { contentComponents } from "~/utils/contentComponentsHandler";
 
 const router = useRouter();
 const startItemId = router.currentRoute.value.meta.id as string;
-const { locale } = useI18n();
+
 
 const { data: publicationData } = await useAsyncData(async () => {
   const publication = getPublicationById(startItemId);
@@ -15,7 +15,7 @@ const { data: publicationData } = await useAsyncData(async () => {
 const { data: contentComponentData } = await useAsyncData(async () => {
   if (publicationData.value?.content) {
     const contentComponentsData = publicationData.value.content[0].containers.right;
-    return contentComponents(contentComponentsData, locale.value);
+    return contentComponents(contentComponentsData, publicationData.value.metadata?.language?.locale);
   }
 })
 
@@ -23,13 +23,13 @@ const { data: contentComponentData } = await useAsyncData(async () => {
 const { data: contentComponentLeft } = await useAsyncData(async () => {
   if (publicationData.value?.content) {
     const contentComponentLeftData = publicationData.value.content[0].containers.left;
-    return contentComponents(contentComponentLeftData, locale.value);
+    return contentComponents(contentComponentLeftData, publicationData.value.metadata?.language?.locale);
   }
 })
 
 if (publicationData.value) {
   useHead(
-    metaDataGenerator(publicationData.value as Publication, locale.value)
+    metaDataGenerator(publicationData.value as Publication, publicationData.value.metadata?.language?.locale)
   );
 }
 </script>

@@ -1,16 +1,12 @@
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
-import type { Carousel } from "./types/types";
-import { getCarouselItems, onSlideChange } from "./utils/homeCarouselUtils";
+import type { CarouselItem } from "./types/types";
+import { onSlideChange } from "./utils/homeCarouselUtils";
 import { Swiper, SwiperSlide } from "swiper/vue";
 
 const props = defineProps<{
-    carouselContent: Carousel[];
+    carouselItems: CarouselItem[];
 }>();
-
-const { data: carouselItems } = await useAsyncData(async () => {
-    return await getCarouselItems(props.carouselContent);
-});
 
 const swiperRef = ref<any>(null);
 const showSwiper = ref(false);
@@ -27,14 +23,14 @@ const onSwiper = (swiperInstance: any) => {
     prevButton.style.display = "none";
     const updateNavigationButtons = () => {
         const index = swiperInstance.realIndex;
-        const totalSlides = carouselItems.value?.length || 0;
+        const totalSlides = props.carouselItems?.length || 0;
         const isFirstSlide = index === 0;
         const isLastSlide = index === totalSlides - 1;
 
         if (prevButton) prevButton.style.display = isFirstSlide ? "none" : "";
         if (nextButton) nextButton.style.display = isLastSlide ? "none" : "";
 
-        onSlideChange(index, carouselItems.value!);
+        onSlideChange(index, props.carouselItems!);
     };
 
     updateNavigationButtons();
@@ -52,13 +48,13 @@ const onSwiper = (swiperInstance: any) => {
             SwiperNavigation,
             SwiperPagination,
         ]" :slides-per-view="1" :loop="true" :autoplay="{
-    delay: 8000,
-    disableOnInteraction: true,
-}" navigation :pagination="{
-    clickable: true,
-    bulletClass: 'carousel__pagination-button',
-    bulletActiveClass: 'carousel__pagination-button--active',
-}" @swiper="onSwiper">
+                delay: 8000,
+                disableOnInteraction: true,
+            }" navigation :pagination="{
+            clickable: true,
+            bulletClass: 'carousel__pagination-button',
+            bulletActiveClass: 'carousel__pagination-button--active',
+        }" @swiper="onSwiper">
             <SwiperSlide v-for="carouselItem in carouselItems" :key="carouselItem.id">
                 <div class="pb-4 text-left lg:h-[65vh] px-4 md:px-24 md:pb-14 carousel-entry">
                     <CarouselContent :carousel-content="carouselItem" />

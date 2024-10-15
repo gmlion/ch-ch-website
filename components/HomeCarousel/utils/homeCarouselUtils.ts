@@ -36,6 +36,7 @@ export const getCarouselItems = async (
           // Safely access text
           if (content?.content?.text) {
             if (publications) {
+              // TODO: BUILD FAIL
               carouselObject.text = livingDocsIdToUrl(content.content.text);
             }
           }

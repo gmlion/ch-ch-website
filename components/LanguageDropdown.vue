@@ -10,11 +10,11 @@ import {
 } from '@/components/ui/select'
 import {watch, ref} from "vue";
 import {useRoute} from "#vue-router";
+import type { ExtendedRouteMeta } from "~/generate/types/routingTypes";
 
 const route = useRoute();
-const currentUrl = route.path
-const pageId: string | undefined = route.meta.groupId?.id as string | undefined;
-const languageUrlMap = languageHelper(pageId, currentUrl);
+const pageId: string | undefined = (route.meta as ExtendedRouteMeta).groupId?.id as string | undefined;
+const languageUrlMap = languageHelper(pageId);
 const selectedLanguage = ref("");
 const {locale} = useI18n();
 watch(selectedLanguage, (newLocale) => {

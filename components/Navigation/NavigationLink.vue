@@ -3,7 +3,7 @@ import { createUrlTarget } from "./utils/utils";
 import { activeNavItem, setPaths } from "~/generate/store/menuStore";
 import type { MenuItem } from "~/generate/types/menuTypes";
 import { useStore } from "@nanostores/vue";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useMediaQuery } from '@vueuse/core'; // Import from vueuse
 const URITYPE = "uri";
 const props = defineProps<{
@@ -15,7 +15,6 @@ const props = defineProps<{
 const activeMenuItem = useStore(activeNavItem);
 const openMenuLabel = ref<string | null>(null);
 
-// Use `useMediaQuery` to handle mobile detection reactivity
 const isMobile = useMediaQuery('(max-width: 768px)');
 
 const isLink = props.entry.children.length === 0;
