@@ -1,14 +1,14 @@
-import type {PublicationContainerComponent} from "~/core/types/publicationsTypes";
-import type {CollapsibleContent, YoutubeContent} from "~/core/types/contentComponentsTypes";
-import {getPublicationById} from "~/generate/store/publicationStore";
-import {slugify} from "~/utils/slugifyAnchorElements";
-import {contentComponents} from "~/utils/contentComponentsHandler";
+import type { PublicationContainerComponent } from "~/core/types/publicationsTypes";
+import type { CollapsibleContent, YoutubeContent } from "~/core/types/contentComponentsTypes";
+import { getPublicationById } from "~/generate/store/publicationStore";
+import { slugify } from "~/utils/slugifyAnchorElements";
+import { contentComponents } from "~/utils/contentComponentsHandler";
 
 function isYoutubeContent(content: any): content is YoutubeContent {
     return (content as YoutubeContent).youtubeInclude !== undefined;
 }
 
-export const createFAQCollapsibleArray = async (content: PublicationContainerComponent[]): Promise<CollapsibleContent[]> => {
+export const createFAQCollapsibleArray = async (content: PublicationContainerComponent[], locale: string): Promise<CollapsibleContent[]> => {
     let collapsibleItems: CollapsibleContent[] = [];
     for (const contentItem of content) {
         let collapsibleItem: CollapsibleContent = {
@@ -33,8 +33,8 @@ export const createFAQCollapsibleArray = async (content: PublicationContainerCom
                 question: string
             })?.question || "",
             content: Array.isArray(publication.content[0]?.containers?.right)
-                ? await contentComponents(publication.content[0].containers.right, "de")
-                : await contentComponents(publication.content[0].containers.body, "de") || [],
+                ? await contentComponents(publication.content[0].containers.right, locale)
+                : await contentComponents(publication.content[0].containers.body, locale) || [],
             slug: publication.metadata.title
                 ? slugify(publication.metadata.title)
                 : slugify((publication.content[0]?.content as { question: string })?.question || "")
@@ -46,7 +46,7 @@ export const createFAQCollapsibleArray = async (content: PublicationContainerCom
     return collapsibleItems;
 };
 
-export const createAccordionCollapsibleArray = async (content: PublicationContainerComponent[]): Promise<CollapsibleContent[]> => {
+export const createAccordionCollapsibleArray = async (content: PublicationContainerComponent[], culture: string): Promise<CollapsibleContent[]> => {
     let collapsibleItems: CollapsibleContent[] = [];
     try {
         for (const collapsibleItem of content) {
@@ -58,7 +58,7 @@ export const createAccordionCollapsibleArray = async (content: PublicationContai
                         let collapsibleItemModel: CollapsibleContent = {
                             id: collapsibleItem.id,
                             title: (collapsibleItem.content as { title: string })?.title || "",
-                            content: await contentComponents(contentArray, "de", true),
+                            content: await contentComponents(contentArray as PublicationContainerComponent[], culture, true),
                             slug: slugify((collapsibleItem.content as { title: string })?.title || "")
                         };
 

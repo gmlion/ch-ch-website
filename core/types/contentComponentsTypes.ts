@@ -40,7 +40,6 @@ export type ContentComponent = {
     | CollapsibleContent[]
     | YoutubeContent
     | ContentComponent[]
-    | TitleLead
     | TypeList[]
     | ContentGallery[]
     | text
@@ -51,12 +50,6 @@ export type ContentComponent = {
 
 type howTo = Array<ContentComponent[]>;
 type text = string;
-
-// Title and lead content structure
-export interface TitleLead {
-  title?: string;
-  lead?: string;
-}
 
 // Richtext content structure
 export interface RichtextContent {

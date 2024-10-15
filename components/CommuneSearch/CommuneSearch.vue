@@ -20,37 +20,39 @@ let valueSet = ref(false);
 let isOpen = ref(false);
 let currentCommune = ref<CommuneMetadata | undefined>(undefined);
 
+// Set the search value and close the dropdown
 const setValue = (value: string) => {
     searchValue.value = value;
     searchTerm.value = value;
-    valueSet.value = true; 
+    valueSet.value = true;
     isOpen.value = false; 
-}
+};
 
+// Watch searchValue to update currentCommune and handle when input is cleared
 watch(searchValue, (newValue) => {
-    if(newValue.length === 0) {
+    if (newValue.length === 0) {
         valueSet.value = false;
     }
     currentCommune.value = props.communesArray.find((commune) => commune.commune === newValue);
 });
 
-
+// Watch searchTerm to control dropdown visibility
 watch(searchTerm, (newValue) => {
-    if(!valueSet.value) {
-        isOpen.value = newValue.length > 0;
+    if (!valueSet.value) {
+        isOpen.value = true; // Show dropdown even when input is empty
     }
 });
 
 </script>
 
-
 <template>
-    <Command v-bind:model-value="searchValue" v-model:search-term="searchTerm" :open="isOpen" class="max-w-md border-primary-blue border" >
+    <Command v-bind:model-value="searchValue" v-model:search-term="searchTerm" :open="isOpen" class="max-w-md border-primary-blue border">
         <CommandInput 
             :placeholder="$t('communePlaceholder')" 
-            :aria-label="$t('communeSearchAria')" 
+            :aria-label="$t('communeSearchAria')"
             v-on:click="isOpen = true"
             v-on:focus="isOpen = true"
+            :autoFocus="false"
             class="text-lg"
         />
         <CommandList>
@@ -68,6 +70,7 @@ watch(searchTerm, (newValue) => {
             </CommandGroup>
         </CommandList>
     </Command>
+    
     <div v-if="currentCommune" class="mt-8 richtext">
         <span class="block">{{ currentCommune.agency }}</span>
         <span v-if="currentCommune.streetAddress" class="block">
@@ -94,13 +97,12 @@ watch(searchTerm, (newValue) => {
       >
         {{ currentCommune.website }}
       </a>
-
     </div>
 </template>
 
 <style lang="scss">
 .data-\[highlighted\]\:text-accent-foreground[data-highlighted] {
-    @apply text-primary-white
+    @apply text-primary-white;
 }
 
 .data-\[highlighted\]\:bg-accent-background[data-highlighted] {

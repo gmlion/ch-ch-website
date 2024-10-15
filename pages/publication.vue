@@ -43,14 +43,14 @@ if (publicationData.value) {
       <div v-if="router.currentRoute.value.meta.contentType !== 'about'">
         <Breadcrumb :is-election="router.currentRoute.value.meta.isElection as boolean" />
       </div>
-
       <div v-if="contentComponentLeft">
         <ContentComponents :content-component="contentComponentLeft" />
       </div>
     </template>
 
     <template #main>
-      <div v-if="contentComponentData">
+      <div v-if="contentComponentData"
+        :class="router.currentRoute.value.meta.contentType === 'about' ? 'about-content' : ''">
         <ContentComponents :content-component="contentComponentData" />
       </div>
 

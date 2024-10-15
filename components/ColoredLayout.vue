@@ -18,9 +18,8 @@ let isSearchOpen = useStore(isSearchOpenStore);
 <template>
   <div>
     <div
-        :class="[{ 'search-is-active': isSearchOpen }, {'division-fifths': props.divisionMode === 'fifths'}, {'bg-primary-blue': props.leftColor === 'layout-blue'}, {'bg-primary-yellow': props.leftColor === 'layout-yellow'}]"
+        :class="[{ 'search-is-active': isSearchOpen }, {'division-fifths': props.divisionMode === 'fifths'}, {'bg-primary-blue': props.leftColor === 'layout-blue'}, {'bg-primary-yellow': props.leftColor === 'layout-yellow'}, {'bg-primary-red': props.leftColor === 'layout-red'}]"
         class="w-full lg:h-full lg:flex main-layout"
-
     >
       <search-overlay
           v-show="isSearchOpen"

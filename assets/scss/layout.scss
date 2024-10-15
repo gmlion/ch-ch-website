@@ -58,6 +58,7 @@
       @apply text-primary-white;
     }
   }
+  
   &.layout-yellow {
     @apply bg-primary-yellow;
 
@@ -201,5 +202,11 @@
     }
     figure {
     @apply flex  pb-8;
+    }
+  }
+
+  .about-content {
+    .title-element {
+      @apply text-2xl-fluid font-semibold
     }
   }

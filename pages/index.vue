@@ -42,7 +42,7 @@ const galleryData = homePageData.value?.content?.[0]?.containers?.right?.[0]?.co
 
     </template>
     <template #main>
-      <div v-if="currentPathsStore.length > 0">
+      <div v-if="currentPathsStore.length > 0" class="hidden lg:block">
         <sub-navigation-desktop/>
       </div>
       <div
