@@ -17,7 +17,7 @@ const props = defineProps<{
             </h2>
         </div>
         <div v-if="props.carouselContent.text">
-            <p class="text-left richtext" v-html="props.carouselContent.text"></p>
+            <p class="text-left richtext" v-html="livingDocsIdToUrl(props.carouselContent.text)"></p>
         </div>
     </div>
 </template>

@@ -175,17 +175,14 @@ const createMenuItems = (
   entry: MenuNode,
   parentId: string | undefined = undefined
 ) => {
-  const router = useRouter().getRoutes();
-  const route = router.find(
-    (route) => route.meta.id === entry.id || route.meta.id === entry.documentId
-  );
+
   let item: MenuItem = {
     id: entry.id,
     label: entry.label,
     type: entry.type,
     target: entry.target,
+    documentId: entry.documentId,
     parentId: parentId,
-    route: route?.path || "",
     children: entry.nodes
       ? entry.nodes.map((child) => createMenuItems(child, entry.label))
       : [],

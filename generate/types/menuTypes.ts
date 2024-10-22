@@ -11,6 +11,7 @@ export interface MenuItem {
   type: string;
   route?: string;
   target?: string;
+  documentId?: string;
   parentId?: string;
   parentUrl?: string;
   children: MenuItem[];

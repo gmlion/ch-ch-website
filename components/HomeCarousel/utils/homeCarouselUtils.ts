@@ -37,7 +37,7 @@ export const getCarouselItems = async (
           if (content?.content?.text) {
             if (publications) {
               // TODO: BUILD FAIL
-              carouselObject.text = livingDocsIdToUrl(content.content.text);
+              carouselObject.text = content.content.text;
             }
           }
 
