@@ -2,7 +2,7 @@
 import type { Publication } from "~/core/types/publicationsTypes";
 import { useStore } from "@nanostores/vue";
 import { currentPaths } from "~/generate/store/menuStore";
-import { getKeyedPublications, getOtherPages, getPublicationById } from "~/generate/store/publicationStore";
+import { getKeyedPublications, getOtherPages } from "~/generate/store/publicationStore";
 import { getCarouselItems } from "~/components/HomeCarousel/utils/homeCarouselUtils";
 
 
@@ -33,16 +33,9 @@ const { data: carouselItems } = await useAsyncData(async () => {
   }
 })
 
-const {data: publis} = await useAsyncData(async () => {
-  const publis = await getPublicationById("4824")
-  return publis
-})
 
 </script>
 <template>
-  <div>
-    {{ publis }}
-  </div>
   <colored-layout class="color-index" footer-color="white" division-mode="halves" :show-fader="true">
     <template #side>
       <div role="complementary" class="sr-only">

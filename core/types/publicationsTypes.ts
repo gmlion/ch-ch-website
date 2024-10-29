@@ -85,20 +85,20 @@ export interface PublicationComponent {
   id: string;
   position?: string;
   content:
-    | {
-        title?: string;
-        text?: string;
-        question: string;
-        gallery?: ContentGallery[];
-        list: TypeList[];
-        faq?: FAQ;
-        richtext?: string[];
-        image?: Image;
-        howTo?: any;
-        category: TypeCategory;
-      }
-    | YoutubeContent
-    | FreeHTML;
+  | {
+    title?: string;
+    text?: string;
+    question: string;
+    gallery?: ContentGallery[];
+    list: TypeList[];
+    faq?: FAQ;
+    richtext?: string[];
+    image?: Image;
+    howTo?: any;
+    category: TypeCategory;
+  }
+  | YoutubeContent
+  | FreeHTML;
 }
 
 export interface FreeHTML {
@@ -201,7 +201,7 @@ export interface Metadata extends CommuneMetadata {
   };
 }
 
-export interface CommuneMetadata {
+export interface CommuneMetadata extends CantonListMetadata {
   agency: string;
   streetAddress: string;
   streetNumber: string;
@@ -210,6 +210,35 @@ export interface CommuneMetadata {
   email: string;
   phoneNumber: string;
   website: string;
+}
+
+export interface CantonListMetadata {
+  ["BE-data"]: string,
+  ["ZH-data"]: string,
+  ["LU-data"]: string,
+  ["UR-data"]: string,
+  ["SZ-data"]: string,
+  ["OW-data"]: string,
+  ["NW-data"]: string,
+  ["GL-data"]: string,
+  ["ZG-data"]: string,
+  ["FR-data"]: string,
+  ["SO-data"]: string,
+  ["BS-data"]: string,
+  ["BL-data"]: string,
+  ["SH-data"]: string,
+  ["AR-data"]: string,
+  ["AI-data"]: string,
+  ["SG-data"]: string,
+  ["GR-data"]: string,
+  ["AG-data"]: string,
+  ["TG-data"]: string,
+  ["TI-data"]: string,
+  ["VD-data"]: string,
+  ["VS-data"]: string,
+  ["NE-data"]: string,
+  ["GE-data"]: string,
+  ["JU-data"]: string
 }
 
 export interface Publication {

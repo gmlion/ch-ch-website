@@ -75,12 +75,17 @@ export const contentComponents = async (
                                 break;
                             }
                             case "p": {
-                                const infoboxContent = component.content as InfoboxContent;
+                                const infoboxContent = contentItem.content as InfoboxContent;
+                                const preparedText = infoboxContent?.text ? livingDocsIdToUrl(infoboxContent?.text) : infoboxContent?.title ? livingDocsIdToUrl(infoboxContent?.title) : infoboxContent?.text as string
+                                const cantonLinkData = preparedText ? await checkCantonLink(preparedText) : undefined
                                 if (infoboxContent?.text) {
-                                    infoboxComponentsArray.push({
-                                        id: component.id,
-                                        type: component.component,
-                                        content: infoboxContent.text as string,
+                                    contentComponentsArray.push({
+                                        id: contentItem.id,
+                                        type: contentItem.component,
+                                        content: {
+                                            text: preparedText,
+                                            cantonLinkData: cantonLinkData
+                                        } as RichtextIncludingPublicationLink
                                     });
                                 }
                                 break;
@@ -142,8 +147,8 @@ export const contentComponents = async (
             }
             case "p": {
                 const infoboxContent = contentItem.content as InfoboxContent;
-                const preparedText = infoboxContent.text ? livingDocsIdToUrl(infoboxContent.text! || infoboxContent.title!) : infoboxContent?.text as string
-                const cantonLinkData = await checkCantonLink(preparedText)
+                const preparedText = infoboxContent?.text ? livingDocsIdToUrl(infoboxContent?.text) : infoboxContent?.title ? livingDocsIdToUrl(infoboxContent?.title) : infoboxContent?.text as string
+                const cantonLinkData = preparedText ? await checkCantonLink(preparedText) : undefined
                 if (infoboxContent?.text) {
                     contentComponentsArray.push({
                         id: contentItem.id,
@@ -171,6 +176,7 @@ export const contentComponents = async (
                 contentComponentsArray.push({
                     id: contentItem.id,
                     type: contentItem.component,
+                    // @ts-ignore - getCommunePages() is not defined in the types
                     content: await getCommunePages(),
                 });
                 break;

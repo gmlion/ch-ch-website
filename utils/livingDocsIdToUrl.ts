@@ -12,18 +12,15 @@ export const livingDocsIdToUrl = (text: string): string => {
             if (regexId) {
                 const route = allRoutes.find((route) => route.meta.id === regexId);
 
-                // If no matching route is found, skip this match without modifying replacedHTML
                 if (!route) {
                     continue;
                 }
 
-                // Perform the replacement if the route is found
                 const hrefRegex = new RegExp(`href="[^"]*"`);
                 replacedHTML = replacedHTML.replace(hrefRegex, `href="${route.path}"`);
             }
         }
     }
 
-    // Return the modified HTML, or the original input if no replacements were made
     return replacedHTML;
 }
