@@ -12,11 +12,11 @@ export default defineNuxtConfig({
     },
   ],
 
-  /*site: {
+  site: {
         url: "https://ch.ch",
         name: "ch.ch",
         trailingSlash: false,
-    },*/
+    },
 
   typescript: {
     tsConfig: {
@@ -109,7 +109,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "nuxt-swiper",
     "@nuxtjs/robots",
-    // "@nuxtjs/sitemap",
+    "@nuxtjs/sitemap",
     "@nuxtjs/tailwindcss",
     [
       "@nuxtjs/google-fonts",

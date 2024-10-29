@@ -1,24 +1,29 @@
 export const livingDocsIdToUrl = (text: string): string => {
     const router = useRouter();
-
     const regex = /data-li-document-ref="(\d+)"/g;
     const matches = text.matchAll(regex);
 
     let replacedHTML = text;
-    const allRoutes = router.getRoutes()
+    const allRoutes = router.getRoutes();
+
     if (matches) {
         for (const match of matches) {
             const regexId = match[1];
             if (regexId) {
                 const route = allRoutes.find((route) => route.meta.id === regexId);
+
+                // If no matching route is found, skip this match without modifying replacedHTML
                 if (!route) {
-                    return "";
+                    continue;
                 }
+
+                // Perform the replacement if the route is found
                 const hrefRegex = new RegExp(`href="[^"]*"`);
                 replacedHTML = replacedHTML.replace(hrefRegex, `href="${route.path}"`);
             }
         }
     }
 
+    // Return the modified HTML, or the original input if no replacements were made
     return replacedHTML;
 }

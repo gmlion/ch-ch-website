@@ -3,6 +3,7 @@ import type {
   ContentGallery,
   FAQ,
   FreeHTML,
+  Publication,
   PublicationComponent,
   Tables,
   TypeList,
@@ -34,20 +35,20 @@ export type ContentComponent = {
   type: string;
   refTitle?: string;
   content:
-    | string
-    | PublicationComponent[]
-    | Image
-    | CollapsibleContent[]
-    | YoutubeContent
-    | ContentComponent[]
-    | TypeList[]
-    | ContentGallery[]
-    | text
-    | howTo
-    | CommuneMetadata[] | Tables | FreeHTML
-    
+  | string
+  | PublicationComponent[]
+  | Image
+  | CollapsibleContent[]
+  | YoutubeContent
+  | ContentComponent[]
+  | TypeList[]
+  | ContentGallery[]
+  | text
+  | howTo
+  | CommuneMetadata[] | Tables | FreeHTML | RichtextIncludingPublicationLink
 };
 
+export type RichtextIncludingPublicationLink = { text: string, cantonLinkData: Publication }
 type howTo = Array<ContentComponent[]>;
 type text = string;
 

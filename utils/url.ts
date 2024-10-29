@@ -1,6 +1,6 @@
-import type {MenuNode} from "~/generate/types/routingTypes";
-import {getIsoCodeFromLocale} from "./locale";
-import type {MinimizedPublicationType} from "~/core/types/publicationsTypes";
+import type { MenuNode } from "~/generate/types/routingTypes";
+import { getIsoCodeFromLocale } from "./locale";
+import type { MinimizedPublicationType } from "~/core/types/publicationsTypes";
 
 export const electionSlugs: Record<string, string> = {
     de: `wahlen${process.env.ELECTION_YEAR}`,
@@ -10,7 +10,7 @@ export const electionSlugs: Record<string, string> = {
     en: `elections${process.env.ELECTION_YEAR}`,
 };
 
-const safeName = (name: string): string => {
+export const safeName = (name: string): string => {
     // Remove all CDM chars (https://en.wikipedia.org/wiki/Combining_Diacritical_Marks)
     name = name.normalize("NFD").replace(/[\u0300-\u036F]/g, "");
 
@@ -69,26 +69,28 @@ export const buildUrlFromPublication = (
     if (!publication) {
         return "";
     }
+    if (publication.metadata.language.locale) {
+        const language = publication.metadata.language.locale;
+        const isoCode = getIsoCodeFromLocale(language);
 
-    const language = publication.metadata.language.locale;
-    const isoCode = getIsoCodeFromLocale(language);
+        const electionPath = isElection ? electionSlugs[isoCode] + "/" : "";
+        if (!publication.metadata.title) {
+            publication.metadata.title = "No-Title";
+        }
 
-    const electionPath = isElection ? electionSlugs[isoCode] + "/" : "";
-    if (!publication.metadata.title) {
-        publication.metadata.title = "No-Title";
+        const slug = makeSlug(publication.metadata.title);
+        let url;
+        if (path && path.length > 0) {
+            const navigationPath = makeNavigationPath(path);
+            url = `/${isoCode}/${electionPath}${navigationPath}`;
+        } else {
+            url = `/${isoCode}/${electionPath}${slug}`;
+        }
+
+        // Remove any colons from the URL
+        return url.replace(/:/g, "");
     }
-
-    const slug = makeSlug(publication.metadata.title);
-    let url;
-    if (path && path.length > 0) {
-        const navigationPath = makeNavigationPath(path);
-        url = `/${isoCode}/${electionPath}${navigationPath}`;
-    } else {
-        url = `/${isoCode}/${electionPath}${slug}`;
-    }
-
-    // Remove any colons from the URL
-    return url.replace(/:/g, "");
+    return "/asödf"
 };
 export const buildUrlFromPath = (
     locale: string,
@@ -98,17 +100,6 @@ export const buildUrlFromPath = (
     const pathSlug = makeNavigationPath(path);
     const electionPath = isElection ? electionSlugs[locale] + "/" : "";
     return `/${locale}/${electionPath}${pathSlug}`;
-};
-
-export const buildUrlFromTitle = (
-    locale: string,
-    title: string,
-    isElection: boolean
-): string => {
-    const slug = makeSlug(title);
-    const isoCode = getIsoCodeFromLocale(locale);
-    const electionPath = isElection ? electionSlugs[locale] + "/" : "";
-    return `/${isoCode}/${electionPath}${slug}`;
 };
 
 export const getBaseUrl = (): string | undefined => {

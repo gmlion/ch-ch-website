@@ -1,15 +1,17 @@
-import type {BodyComponent, RichtextContent} from "~/core/types/contentComponentsTypes";
+import type { BodyComponent, RichtextContent } from "~/core/types/contentComponentsTypes";
 
 export const handleRichtext = (text: BodyComponent<RichtextContent>[]): string => {
     let richtext = ""
-    text.forEach(text => {
-        if (text.component === "p") {
-            richtext += `<${text.component}>${text.content.text}</${text.component}>`
+
+    text.forEach(textItem => {
+        if (textItem.component === "p") {
+            richtext += `<${textItem.component}>${textItem.content.title || textItem.content.text}</${textItem.component}>`
         }
-        if (text.component === "subtitle") {
-            richtext += `<h3>${text.content.title}</h3>`
+        if (textItem.component === "subtitle") {
+            richtext += `<h3>${textItem.content.title}</h3>`
         }
     })
-    if (livingDocsIdToUrl(richtext)) richtext = livingDocsIdToUrl(richtext)
+    if (livingDocsIdToUrl(richtext)) { richtext = livingDocsIdToUrl(richtext) }
+
     return richtext;
 };

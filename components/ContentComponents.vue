@@ -2,6 +2,7 @@
 import type {
     CollapsibleContent,
     ContentComponent,
+    RichtextIncludingPublicationLink,
     YoutubeContent
 } from "~/core/types/contentComponentsTypes";
 import Collapsible from "~/components/Collapsible/Collapsible.vue";
@@ -41,8 +42,8 @@ const props = defineProps<{
         </div>
         <div v-if="component.type === 'subtitle'">
             <div class="richtext" v-html="handleRichtext([{
-                component:
-                    'subtitle', identifier: '', id: component.id, content: { title: component.content as string }
+                    component:
+                        'subtitle', identifier: '', id: component.id, content: { title: component.content as string }
             }])">
             </div>
         </div>
@@ -56,11 +57,7 @@ const props = defineProps<{
             <NestedCollapsible :content="component.content as CollapsibleContent[]" />
         </div>
         <div v-if="component.type === 'p'">
-            <div class="richtext" v-html="handleRichtext([{
-                component:
-                    'p', identifier: '', id: component.id, content: { text: component.content as string }
-            }])">
-            </div>
+            <Richtext :richtext-component="component.content as RichtextIncludingPublicationLink" />
         </div>
         <div v-if="component.type === 'table'">
             <Tables :tables="component.content as Tables" />

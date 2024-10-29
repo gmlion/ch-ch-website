@@ -9,6 +9,7 @@ import type { AllPublicationOptions } from "~/generate/types/slug";
 
 export const publicationStore = atom<Publication[]>([]);
 export const homePagesStore = atom<Publication[]>([]);
+export const otherPagesStore = atom<Publication[]>([]);
 export const communePagesStore = atom<CommuneMetadata[]>([]);
 export const keyedPublicationsStore = atom<{
   [key: string]: Publication;
@@ -100,6 +101,26 @@ export const getHomePages = async () => {
   return homePagesStore.get();
 };
 
+export const getOtherPages = async () => {
+  console.log("getting other pages");
+
+  if (otherPagesStore.get().length === 0) {
+    const publications = await usePublicationStore();
+
+    const homePages = publications.filter((publication) => {
+      return (
+        publication.systemdata.contentType === "cantonal-service" 
+      );
+    });
+
+    otherPagesStore.set(homePages);
+    return homePages;
+  }
+
+  return otherPagesStore.get();
+};
+
+
 /**
  * Turn the array of publications into an object using the documentId as key
  */
@@ -156,9 +177,8 @@ async function getPage(
 const getNext10Pages = async (options: PublicationOptions) => {
   const promises = [];
   for (let i = 1; i <= 10; i++) {
-    const url = `documents/latestPublications?offset=${
-      options.offset + (i - 1) * 100
-    }${options.contentTypes ? `&contentTypes=${options.contentTypes}` : ""}`;
+    const url = `documents/latestPublications?offset=${options.offset + (i - 1) * 100
+      }${options.contentTypes ? `&contentTypes=${options.contentTypes}` : ""}`;
     promises.push(getPage(url));
   }
   return Promise.all(promises);

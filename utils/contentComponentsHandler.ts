@@ -15,6 +15,7 @@ import type {
     CollapsibleContent,
     ContentComponent,
     InfoboxContent,
+    RichtextIncludingPublicationLink,
     YoutubeContent,
 } from "~/core/types/contentComponentsTypes";
 import { getCommunePages } from "~/generate/store/publicationStore";
@@ -141,11 +142,16 @@ export const contentComponents = async (
             }
             case "p": {
                 const infoboxContent = contentItem.content as InfoboxContent;
+                const preparedText = infoboxContent.text ? livingDocsIdToUrl(infoboxContent.text! || infoboxContent.title!) : infoboxContent?.text as string
+                const cantonLinkData = await checkCantonLink(preparedText)
                 if (infoboxContent?.text) {
                     contentComponentsArray.push({
                         id: contentItem.id,
                         type: contentItem.component,
-                        content: infoboxContent.text as string,
+                        content: {
+                            text: preparedText,
+                            cantonLinkData: cantonLinkData
+                        } as RichtextIncludingPublicationLink
                     });
                 }
                 break;
