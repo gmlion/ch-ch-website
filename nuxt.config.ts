@@ -13,10 +13,10 @@ export default defineNuxtConfig({
   ],
 
   site: {
-        url: "https://ch.ch",
-        name: "ch.ch",
-        trailingSlash: false,
-    },
+    url: "https://ch.ch",
+    name: "ch.ch",
+    trailingSlash: false,
+  },
 
   typescript: {
     tsConfig: {
@@ -51,20 +51,6 @@ export default defineNuxtConfig({
 
       publicationRoutes.forEach((route) => {
         routes.push(route);
-      });
-
-      routes.push({
-        name: "test-components",
-        path: "/rm/test-components",
-        file: `${__dirname}/pages/publication.vue`,
-        meta: {
-          id: 10286,
-        },
-      });
-      routes.push({
-        name: "catch-all",
-        path: "/:pathMatch(.*)*",
-        file: `${__dirname}/pages/[slug].vue`,
       });
     },
   },
@@ -135,13 +121,43 @@ export default defineNuxtConfig({
 
   i18n: {
     strategy: "no_prefix",
+    lazy: true,
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: "i18n_redirected",
     },
     defaultLocale: "de",
     langDir: "lang/",
-    locales: i18nLocales,
+    locales: [{
+      code: "de",
+      name: "German",
+      file: "de.json",
+      cms: "de-CH",
+    },
+    {
+      code: "fr",
+      name: "French",
+      file: "fr.json",
+      cms: "fr-CH",
+    },
+    {
+      code: "it",
+      name: "Italian",
+      file: "it.json",
+      cms: "it-CH",
+    },
+    {
+      code: "rm",
+      name: "Romansh",
+      file: "rm.json",
+      cms: "rm-CH",
+    },
+    {
+      code: "en",
+      name: "English",
+      file: "en.json",
+      cms: "en",
+    }],
   },
 
   app: {

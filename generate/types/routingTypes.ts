@@ -5,7 +5,7 @@ export interface MenuNode {
   label: string;
   nodes: MenuNode[];
   documentId?: string;
-  type: "document" | "uri";
+  type: "document" | "uri" | "";
   url?: string;
   uri?: string;
   target?: string;
